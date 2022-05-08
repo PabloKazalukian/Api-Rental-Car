@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const logging_1 = __importDefault(require("../config/logging"));
 const mysql_1 = require("../config/mysql");
+// import Car from '../interfaces/car.interface';
 const NAMESPACE = 'Car';
 const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     logging_1.default.info(NAMESPACE, 'Getting all car');
@@ -22,9 +23,42 @@ const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         .then((connection) => {
         (0, mysql_1.Query)(connection, query)
             .then((results) => {
-            logging_1.default.info(NAMESPACE, 'Retrieved car: ', results);
+            // logging.info(NAMESPACE, 'Retrieved car: ', results);
+            return res.status(200).json(results);
+        })
+            .catch((error) => {
+            logging_1.default.error(NAMESPACE, error.message, error);
             return res.status(200).json({
-                results
+                message: error.message,
+                error
+            });
+        })
+            .finally(() => {
+            logging_1.default.info(NAMESPACE, 'Closing connection.');
+            connection.end();
+        });
+    })
+        .catch((error) => {
+        logging_1.default.error(NAMESPACE, error.message, error);
+        return res.status(200).json({
+            message: error.message,
+            error
+        });
+    });
+});
+const createCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    logging_1.default.info(NAMESPACE, 'Inserting car');
+    let { image, brand, model, year, price, specifications } = req.body;
+    let { engine, power, torque, weight, max_speed, acceleration, consumption } = specifications;
+    let query = `INSERT INTO car (image,brand,model,year,price,engine,power,torque,weight,max_speed,acceleration,consumption) 
+    VALUES ("${image}", "${brand}", "${model}", "${year}", "${price}", "${engine}" ,"${power}" ,"${torque}" ,"${weight}" ,"${max_speed}" ,"${acceleration}" ,"${consumption}")`;
+    (0, mysql_1.Connect)()
+        .then((connection) => {
+        (0, mysql_1.Query)(connection, query)
+            .then((result) => {
+            logging_1.default.info(NAMESPACE, 'Car created: ', result);
+            return res.status(200).json({
+                result
             });
         })
             .catch((error) => {
@@ -47,4 +81,4 @@ const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         });
     });
 });
-exports.default = { getAllCars };
+exports.default = { createCar, getAllCars };
