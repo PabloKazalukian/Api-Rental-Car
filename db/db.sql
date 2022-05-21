@@ -21,11 +21,12 @@ CREATE TABLE car(
 
 CREATE TABLE user(
     id_user INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    username: VARCHAR(40),
-    password: VARCHAR(40),
+    username VARCHAR(40),
+    password VARCHAR(40),
+    mail VARCHAR(40),
+    role VARCHAR(5),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 
-RENAME TABLE car to cars;
 
 DESCRIBE car;

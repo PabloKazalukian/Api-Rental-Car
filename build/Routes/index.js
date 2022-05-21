@@ -3,9 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const express_1 = __importDefault(require("express"));
-const carController_1 = __importDefault(require("../controllers/carController"));
+const car_1 = __importDefault(require("./car"));
+const user_1 = __importDefault(require("./user"));
+const auth_1 = __importDefault(require("./auth"));
 const router = express_1.default.Router();
 // router.post('/create/book', controller.createBook);
-router.get('/car', carController_1.default.getAllCars);
-router.post('/car', carController_1.default.createCar);
+router.use('/car', car_1.default);
+router.use('/user', user_1.default);
+router.use('/auth', auth_1.default);
 module.exports = router;

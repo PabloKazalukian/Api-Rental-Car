@@ -1,10 +1,15 @@
 import express from 'express';
-import controller from '../controllers/carController';
+import car from './car'
+import user from './user'
+import auth from './auth';
 
 const router = express.Router();
 
 // router.post('/create/book', controller.createBook);
-router.get('/car', controller.getAllCars);
-router.post('/car', controller.createCar);
+
+router.use('/car',car)
+router.use('/user',user)
+router.use('/auth',auth)
+
 
 export = router;
