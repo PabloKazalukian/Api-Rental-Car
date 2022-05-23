@@ -14,27 +14,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const logging_1 = __importDefault(require("../config/logging"));
 const mysql_1 = require("../config/mysql");
+// import Car from '../interfaces/car.interface';
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const NAMESPACE = 'Auth';
-const findUserByEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const findUserLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     logging_1.default.info(NAMESPACE, 'Getting user by email');
-    let { email } = req.body;
-    if (email !== undefined) {
-        let query = `SELECT username,password,email,role FROM user WHERE email = '${email}'`;
+    let { email, password } = req.body;
+    if (email !== undefined && password !== undefined) {
+        let query = `SELECT username,password,email,role,id_user FROM user WHERE email = '${email}'`;
         (0, mysql_1.Connect)()
             .then((connection) => {
             (0, mysql_1.Query)(connection, query)
                 .then((results) => {
                 // logging.info(NAMESPACE, 'Retrieved car: ', results);
                 if (results.length > 0) {
-                    return res.status(200).json(results);
+                    let [user] = results;
+                    if (bcryptjs_1.default.compareSync(password, user.password)) {
+                        let token = jsonwebtoken_1.default.sign({ usedId: user.id_user, username: user.username }, 'SECRETO', { expiresIn: '1h' });
+                        return res.status(200).json({ message: 'ok', token });
+                    }
+                    else {
+                        throw new TypeError('no encontrado');
+                    }
                 }
                 else {
-                    throw new TypeError('no econtrado');
+                    throw new TypeError('no encontrado');
                 }
             })
                 .catch((error) => {
                 logging_1.default.error(NAMESPACE, error.message, error);
-                return res.status(404).json({
+                return res.status(400).json({
                     message: error.message,
                     error
                 });
@@ -54,8 +64,8 @@ const findUserByEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
     }
     else {
         return res.status(404).json({
-            message: 'no encontrado'
+            message: 'Error: Faltan datos '
         });
     }
 });
-exports.default = { findUserByEmail };
+exports.default = { findUserLogin };
