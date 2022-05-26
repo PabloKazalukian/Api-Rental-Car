@@ -21,8 +21,14 @@ const SERVER = {
     hostname: SERVER_HOSTNAME,
     port: SERVER_PORT
 };
+const AUTH_JWT = process.env.AUTH_JWT || 'SECRETO';
+const AUTH = {
+    key: AUTH_JWT,
+    expires: '1h'
+};
 const config = {
     mysql: MYSQL,
-    server: SERVER
+    server: SERVER,
+    auth: AUTH
 };
 exports.default = config;

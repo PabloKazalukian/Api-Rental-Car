@@ -12,23 +12,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkJwt = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const config_1 = __importDefault(require("../config/config"));
-const checkJwt = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.headers['auth'];
-    let jwtpayload;
-    try {
-        jwtpayload = jsonwebtoken_1.default.verify(token, config_1.default.auth.key);
-        res.locals.jwtpayload = jwtpayload;
-    }
-    catch (e) {
-        return res.status(401).send('error Token');
-    }
-    const { userId, username } = jwtpayload;
-    const newToken = jsonwebtoken_1.default.sign({ userId, username }, config_1.default.auth.key, { expiresIn: config_1.default.auth.expires });
-    res.setHeader('token', newToken);
-    //call Next
-    next();
-});
-exports.checkJwt = checkJwt;
+exports.checkRole = void 0;
+const AuthController_1 = __importDefault(require("../controllers/AuthController"));
+const checkRole = (roleA) => {
+    return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        const { userId } = res.locals.jwtpayload;
+        try {
+            let result = yield AuthController_1.default.getUserById(userId);
+            const { role } = result[0];
+            if (roleA.includes(role)) {
+                next();
+            }
+            else {
+                return res.status(401).send('no Autorizado');
+            }
+        }
+        catch (e) {
+            return res.status(401).send('no Autorizado');
+        }
+    });
+};
+exports.checkRole = checkRole;

@@ -6,11 +6,11 @@ import bcryptjs from 'bcryptjs';
 import controller from '../controllers/userController';
 import { User } from '../interfaces/user.interface';
 import jwt from 'jsonwebtoken';
+import config from '../config/config';
 
 
 
 const NAMESPACE = 'Auth';
-
 
 const findUserLogin = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -29,7 +29,7 @@ const findUserLogin = async (req: Request, res: Response, next: NextFunction) =>
                         if(results.length > 0){
                             let [user] = results
                             if(bcryptjs.compareSync(password,user.password)){
-                                let token = jwt.sign({usedId:user.id_user,username:user.username},'SECRETO',{expiresIn:'1h'})
+                                let token = jwt.sign({userId:user.id_user,username:user.username},config.auth.key,{expiresIn:config.auth.expires})
                                 return res.status(200).json({message:'ok',token});
                             }else{
                                 throw new TypeError('no encontrado')
@@ -66,4 +66,42 @@ const findUserLogin = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-export default { findUserLogin };
+const getUserById = async (userId:string) => {
+    logging.info(NAMESPACE, 'Getting user by user_id');
+
+    let query = `SELECT role  FROM user WHERE id_user = '${userId}'`;
+    let result
+    await Connect()
+        .then(async (connection) => {
+            await Query(connection, query)
+                .then( (results) => {
+                    // logging.info(NAMESPACE, 'Retrieved car: ', results);
+                    result = JSON.parse(JSON.stringify(results))
+                    console.log(result[0])
+                })
+                .catch((error) => {
+                    logging.error(NAMESPACE, error.message, error);
+
+                    return {
+                        message: error.message,
+                        error
+                    };
+                })
+                .finally(() => {
+                    logging.info(NAMESPACE, 'Closing connection.');
+                    connection.end();
+                });
+        })
+        .catch((error) => {
+            logging.error(NAMESPACE, error.message, error);
+
+            return {
+                message: error.message,
+                error
+            };
+        });
+    return result;
+
+};
+
+export default { findUserLogin,getUserById };
