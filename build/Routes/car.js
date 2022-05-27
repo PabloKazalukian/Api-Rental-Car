@@ -9,5 +9,6 @@ const role_1 = require("../middlewares/role");
 const router = express_1.default.Router();
 // router.get('/', controller.getAllCars);
 router.get('/', carController_1.default.getAllCars);
+router.get('/id/:id', carController_1.default.getCarById);
 router.post('/', [jwt_1.checkJwt], [(0, role_1.checkRole)(['admin'])], carController_1.default.createCar);
 module.exports = router;

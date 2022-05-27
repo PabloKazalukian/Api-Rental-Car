@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-router.get('/login', controller.findUserLogin);
+router.post('/login', controller.findUserLogin);
 
 
 export = router;

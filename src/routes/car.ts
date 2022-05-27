@@ -10,6 +10,7 @@ const router = express.Router();
 
 // router.get('/', controller.getAllCars);
 router.get('/',controller.getAllCars);
+router.get('/id/:id',controller.getCarById);
 
 router.post('/',[checkJwt],[checkRole(['admin'])], controller.createCar);
 

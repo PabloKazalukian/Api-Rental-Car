@@ -46,6 +46,36 @@ const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         });
     });
 });
+const getCarById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    logging_1.default.info(NAMESPACE, 'Getting all car');
+    const { id } = req.params;
+    let query = `SELECT * FROM car WHERE id_car = ${id}`;
+    (0, mysql_1.Connect)()
+        .then((connection) => {
+        (0, mysql_1.Query)(connection, query)
+            .then((results) => {
+            return res.status(200).json(results);
+        })
+            .catch((error) => {
+            logging_1.default.error(NAMESPACE, error.message, error);
+            return res.status(200).json({
+                message: error.message,
+                error
+            });
+        })
+            .finally(() => {
+            logging_1.default.info(NAMESPACE, 'Closing connection.');
+            connection.end();
+        });
+    })
+        .catch((error) => {
+        logging_1.default.error(NAMESPACE, error.message, error);
+        return res.status(200).json({
+            message: error.message,
+            error
+        });
+    });
+});
 const createCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     logging_1.default.info(NAMESPACE, 'Inserting car');
     let { image, brand, model, year, price, specifications } = req.body;
@@ -81,4 +111,4 @@ const createCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
     });
 });
-exports.default = { createCar, getAllCars };
+exports.default = { createCar, getAllCars, getCarById };

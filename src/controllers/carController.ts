@@ -41,6 +41,42 @@ const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
+const getCarById = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Getting all car');
+    const {id} = req.params;
+
+    let query = `SELECT * FROM car WHERE id_car = ${id}`;
+
+    Connect()
+        .then((connection) => {
+            Query(connection, query)
+                .then((results) => {
+
+                    return res.status(200).json(results);
+                })
+                .catch((error) => {
+                    logging.error(NAMESPACE, error.message, error);
+
+                    return res.status(200).json({
+                        message: error.message,
+                        error
+                    });
+                })
+                .finally(() => {
+                    logging.info(NAMESPACE, 'Closing connection.');
+                    connection.end();
+                });
+        })
+        .catch((error) => {
+            logging.error(NAMESPACE, error.message, error);
+
+            return res.status(200).json({
+                message: error.message,
+                error
+            });
+        });
+};
+
 const createCar = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Inserting car');
 
@@ -83,4 +119,4 @@ const createCar = async (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { createCar,getAllCars };
+export default { createCar,getAllCars,getCarById };
