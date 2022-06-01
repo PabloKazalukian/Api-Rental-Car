@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `rental_car_db`.`request` (
     ON UPDATE NO ACTION)
 
 CREATE TABLE IF NOT EXISTS `rental_car_db`.`payment` (
-  `id_payment` INT(5) NOT NULL,
+  `id_payment` INT(5) NOT NULL AUTO_INCREMENT,
   `amount` INT NULL,
   `paid_date` DATE NOT NULL,
   `automatic` VARCHAR(3) NOT NULL,

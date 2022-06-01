@@ -5,20 +5,15 @@ import { Connect, Query } from '../config/mysql';
 
 const NAMESPACE = 'Payment';
 
-const getAllRequest = async (req: Request, res: Response, next: NextFunction) => {
+const getAllPayment = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting all payment');
 
 
-    //     `id_payment` INT(5) NOT NULL,
-    // `amount` INT NULL,
-    // `paid_date` DATE NOT NULL,
-    // `automatic` VARCHAR(3) NOT NULL,
-    // `paid_request` INT NULL,
     let query = 
-    `SELECT  p.amount,p.paid_date,p.automatic,r.id_request, r.initial_date, r.final_date, r.state, u.email
+    `SELECT  p.amount,p.paid_date,p.automatic,r.id_request, r.initial_date, r.final_date, r.state
     FROM payment p 
     LEFT JOIN request r
-    ON  p.paid_request = r.created_by 
+    ON  p.paid_request = r.id_request
     `;
 
     Connect()
@@ -52,13 +47,19 @@ const getAllRequest = async (req: Request, res: Response, next: NextFunction) =>
         });
 };
 
-const createRequest = async (req: Request, res: Response, next: NextFunction) => {
+const createPayment = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Inserting payment');
 
-    let { initial_date,final_date,created_by,rented_car,state} = req.body;
+    //     `id_payment` INT(5) NOT NULL,
+    // `amount` INT NULL,
+    // `paid_date` DATE NOT NULL,
+    // `automatic` VARCHAR(3) NOT NULL,
+    // `paid_request` INT NULL,
 
-    let query = `INSERT INTO request (initial_date,final_date,created_by,rented_car,state) 
-    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","${state}" )`;
+    let { amount,paid_date,paid_request} = req.body;
+
+    let query = `INSERT INTO payment (amount,paid_date,automatic,paid_request) 
+    VALUES ("${amount}" ,"${paid_date}" ,"yes" ,"${paid_request}" )`;
 
     Connect()
         .then((connection) => {
@@ -94,4 +95,4 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
 };
 
 
-export default { getAllRequest,createRequest };
+export default { getAllPayment,createPayment };

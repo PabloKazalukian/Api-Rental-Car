@@ -56,19 +56,44 @@ const createRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     logging_1.default.info(NAMESPACE, 'Inserting request');
     let { initial_date, final_date, created_by, rented_car, state } = req.body;
     let query = `INSERT INTO request (initial_date,final_date,created_by,rented_car,state) 
-    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","${state}" )`;
+    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","paid" )`;
     (0, mysql_1.Connect)()
         .then((connection) => {
         (0, mysql_1.Query)(connection, query)
-            .then((result) => {
-            logging_1.default.info(NAMESPACE, 'Request created: ', result);
-            return res.status(200).json({
-                result
+            .then((resultCreated) => __awaiter(void 0, void 0, void 0, function* () {
+            logging_1.default.info(NAMESPACE, 'Request created: ', resultCreated);
+            let results = JSON.parse(JSON.stringify(resultCreated));
+            let paid_request = results.insertId;
+            let priceCar = yield getPriceCarById(rented_car)
+                .then((priceCar) => {
+                let { price } = priceCar;
+                return price;
             });
-        })
+            let days = getDays(initial_date, final_date);
+            let amount = days * priceCar;
+            console.log(priceCar, paid_request, days, amount);
+            let datejs = new Date();
+            let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;
+            let queryPayment = `INSERT INTO payment (amount,paid_date,automatic,paid_request) 
+                    VALUES ("${amount}", "${today}" ,"yes" ,"${paid_request}" )`;
+            (0, mysql_1.Query)(connection, queryPayment)
+                .then((resultPayment) => {
+                return res.status(200).json({
+                    resultCreated,
+                    resultPayment
+                });
+            })
+                .catch((error) => {
+                logging_1.default.error(NAMESPACE, error.message, error);
+                return res.status(403).json({
+                    message: error.message,
+                    error
+                });
+            });
+        }))
             .catch((error) => {
             logging_1.default.error(NAMESPACE, error.message, error);
-            return res.status(200).json({
+            return res.status(404).json({
                 message: error.message,
                 error
             });
@@ -86,4 +111,46 @@ const createRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         });
     });
 });
+const getPriceCarById = (carId) => __awaiter(void 0, void 0, void 0, function* () {
+    logging_1.default.info(NAMESPACE, 'Getting car by car_id');
+    let query = `SELECT price  FROM car WHERE id_car = '${carId}'`;
+    let result;
+    yield (0, mysql_1.Connect)()
+        .then((connection) => __awaiter(void 0, void 0, void 0, function* () {
+        yield (0, mysql_1.Query)(connection, query)
+            .then((results) => {
+            // logging.info(NAMESPACE, 'Retrieved car: ', results);
+            result = JSON.parse(JSON.stringify(results))[0];
+        })
+            .catch((error) => {
+            logging_1.default.error(NAMESPACE, error.message, error);
+            return {
+                message: error.message,
+                error
+            };
+        })
+            .finally(() => {
+            logging_1.default.info(NAMESPACE, 'Closing connection.');
+            connection.end();
+        });
+    }))
+        .catch((error) => {
+        logging_1.default.error(NAMESPACE, error.message, error);
+        return {
+            message: error.message,
+            error
+        };
+    });
+    return result;
+});
+const getDays = (f1, f2) => {
+    let aFecha1 = f1.split('-');
+    let aFecha2 = f2.split('-');
+    console.log(aFecha1, aFecha2);
+    let fFecha1 = Date.UTC(parseInt(aFecha1[0], 10), parseInt(aFecha1[1], 10) - 1, parseInt(aFecha1[2], 10));
+    let fFecha2 = Date.UTC(parseInt(aFecha2[0], 10), parseInt(aFecha2[1], 10) - 1, parseInt(aFecha2[2], 10));
+    let dif = fFecha2 - fFecha1;
+    let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
+    return dias;
+};
 exports.default = { getAllRequest, createRequest };

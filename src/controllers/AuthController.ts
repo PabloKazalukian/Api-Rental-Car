@@ -77,7 +77,6 @@ const getUserById = async (userId:string) => {
                 .then( (results) => {
                     // logging.info(NAMESPACE, 'Retrieved car: ', results);
                     result = JSON.parse(JSON.stringify(results))
-                    console.log(result[0])
                 })
                 .catch((error) => {
                     logging.error(NAMESPACE, error.message, error);

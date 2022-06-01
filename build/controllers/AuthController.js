@@ -79,7 +79,6 @@ const getUserById = (userId) => __awaiter(void 0, void 0, void 0, function* () {
             .then((results) => {
             // logging.info(NAMESPACE, 'Retrieved car: ', results);
             result = JSON.parse(JSON.stringify(results));
-            console.log(result[0]);
         })
             .catch((error) => {
             logging_1.default.error(NAMESPACE, error.message, error);

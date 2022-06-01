@@ -3,6 +3,7 @@ import car from './car'
 import user from './user'
 import auth from './auth';
 import request from './request'
+import payment from './payment'
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.use('/car',car)
 router.use('/user',user)
 router.use('/auth',auth)
 router.use('/request',request)
+router.use('/payment',payment)
 
 
 
