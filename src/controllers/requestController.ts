@@ -3,12 +3,19 @@ import logging from '../config/logging';
 import { Connect, Query } from '../config/mysql';
 // import Car from '../interfaces/car.interface';
 
-const NAMESPACE = 'Car';
+const NAMESPACE = 'Request';
 
-const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Getting all car');
+const getAllRequest = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Getting all Request');
 
-    let query = 'SELECT * FROM car';
+    let query = 
+    `SELECT  r.id_request, r.initial_date, r.final_date, r.state, u.email,c.brand,c.model,c.price
+    FROM request r 
+    LEFT JOIN user u
+    ON r.created_by = u.id_user
+    LEFT JOIN car c
+    ON r.rented_car = c.id_car
+    `;
 
     Connect()
         .then((connection) => {
@@ -41,56 +48,19 @@ const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-const getCarById = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Getting all car');
-    const {id} = req.params;
+const createRequest = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Inserting request');
 
-    let query = `SELECT * FROM car WHERE id_car = ${id}`;
+    let { initial_date,final_date,created_by,rented_car,state} = req.body;
 
-    Connect()
-        .then((connection) => {
-            Query(connection, query)
-                .then((results) => {
-
-                    return res.status(200).json(results);
-                })
-                .catch((error) => {
-                    logging.error(NAMESPACE, error.message, error);
-
-                    return res.status(200).json({
-                        message: error.message,
-                        error
-                    });
-                })
-                .finally(() => {
-                    logging.info(NAMESPACE, 'Closing connection.');
-                    connection.end();
-                });
-        })
-        .catch((error) => {
-            logging.error(NAMESPACE, error.message, error);
-
-            return res.status(200).json({
-                message: error.message,
-                error
-            });
-        });
-};
-
-const createCar = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Inserting car');
-
-    let { image,brand,model,year,price,specifications} = req.body;
-    let {engine,power,torque,weight,max_speed,acceleration,consumption } = specifications;
-
-    let query = `INSERT INTO car (image,brand,model,year,price,engine,power,torque,weight,max_speed,acceleration,consumption) 
-    VALUES ("${image}", "${brand}", "${model}", "${year}", "${price}", "${engine}" ,"${power}" ,"${torque}" ,"${weight}" ,"${max_speed}" ,"${acceleration}" ,"${consumption}")`;
+    let query = `INSERT INTO request (initial_date,final_date,created_by,rented_car,state) 
+    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","${state}" )`;
 
     Connect()
         .then((connection) => {
             Query(connection, query)
                 .then((result) => {
-                    logging.info(NAMESPACE, 'Car created: ', result);
+                    logging.info(NAMESPACE, 'Request created: ', result);
 
                     return res.status(200).json({
                         result
@@ -119,4 +89,5 @@ const createCar = async (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { createCar,getAllCars,getCarById };
+
+export default { getAllRequest,createRequest };

@@ -26,7 +26,7 @@ const AUTH_JWT = process.env.AUTH_JWT || 'SECRETO';
 
 const AUTH = {
     key : AUTH_JWT,
-    expires: '1h'
+    expires: '24h'
 }
 
 const config = {
