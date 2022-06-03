@@ -42,7 +42,7 @@ const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getCarById = async (req: Request, res: Response, next: NextFunction) => {
-    logging.info(NAMESPACE, 'Getting all car');
+    logging.info(NAMESPACE, 'Getting car by id');
     const {id} = req.params;
 
     let query = `SELECT * FROM car WHERE id_car = ${id}`;

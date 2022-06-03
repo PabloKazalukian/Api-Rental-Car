@@ -9,7 +9,9 @@ const router = express.Router();
 
 
 router.get('/all',[checkJwt],[checkRole(['admin'])], controller.getAllRequest);
+router.get('/allOfCarId/:idCar',[checkJwt], controller.getAllRequestByIdCar);
 router.post('/',[checkJwt], controller.createRequest);
+
 
 
 export = router;

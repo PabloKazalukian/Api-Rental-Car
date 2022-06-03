@@ -70,7 +70,7 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
                         })
                     let days = getDays(initial_date,final_date)
                     let amount =  days * priceCar;
-                    console.log(priceCar,paid_request,days,amount)
+                    // console.log(priceCar,paid_request,days,amount)
                     let datejs = new Date();
                     let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;
                     let queryPayment = `INSERT INTO payment (amount,paid_date,automatic,paid_request) 
@@ -108,7 +108,49 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
         .catch((error) => {
             logging.error(NAMESPACE, error.message, error);
 
-            return res.status(200).json({
+            return res.status(500).json({
+                message: error.message,
+                error
+            });
+        });
+};
+
+const getAllRequestByIdCar = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Getting all Request of a car by idCar');
+    const {idCar} = req.params;
+
+
+    let query = 
+    `SELECT  r.id_request, r.initial_date, r.final_date, r.state
+    FROM request r 
+    WHERE (r.rented_car = '${idCar}' ) AND  (r.state = 'req')
+    `;
+
+    Connect()
+        .then((connection) => {
+            Query(connection, query)
+                .then((results) => {
+                    // logging.info(NAMESPACE, 'Retrieved car: ', results);
+
+                    return res.status(200).json(results);
+                })
+                .catch((error) => {
+                    logging.error(NAMESPACE, error.message, error);
+
+                    return res.status(500).json({
+                        message: error.message,
+                        error
+                    });
+                })
+                .finally(() => {
+                    logging.info(NAMESPACE, 'Closing connection.');
+                    connection.end();
+                });
+        })
+        .catch((error) => {
+            logging.error(NAMESPACE, error.message, error);
+
+            return res.status(500).json({
                 message: error.message,
                 error
             });
@@ -161,4 +203,4 @@ const getDays = (f1:string,f2:string) =>{
     let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
     return dias;
  }
-export default { getAllRequest,createRequest };
+export default { getAllRequest,createRequest,getAllRequestByIdCar };

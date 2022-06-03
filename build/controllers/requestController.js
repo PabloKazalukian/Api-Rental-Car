@@ -71,7 +71,7 @@ const createRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             });
             let days = getDays(initial_date, final_date);
             let amount = days * priceCar;
-            console.log(priceCar, paid_request, days, amount);
+            // console.log(priceCar,paid_request,days,amount)
             let datejs = new Date();
             let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;
             let queryPayment = `INSERT INTO payment (amount,paid_date,automatic,paid_request) 
@@ -105,7 +105,41 @@ const createRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     })
         .catch((error) => {
         logging_1.default.error(NAMESPACE, error.message, error);
-        return res.status(200).json({
+        return res.status(500).json({
+            message: error.message,
+            error
+        });
+    });
+});
+const getAllRequestByIdCar = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    logging_1.default.info(NAMESPACE, 'Getting all Request of a car by idCar');
+    const { idCar } = req.params;
+    let query = `SELECT  r.id_request, r.initial_date, r.final_date, r.state
+    FROM request r 
+    WHERE (r.rented_car = '${idCar}' ) AND  (r.state = 'req')
+    `;
+    (0, mysql_1.Connect)()
+        .then((connection) => {
+        (0, mysql_1.Query)(connection, query)
+            .then((results) => {
+            // logging.info(NAMESPACE, 'Retrieved car: ', results);
+            return res.status(200).json(results);
+        })
+            .catch((error) => {
+            logging_1.default.error(NAMESPACE, error.message, error);
+            return res.status(500).json({
+                message: error.message,
+                error
+            });
+        })
+            .finally(() => {
+            logging_1.default.info(NAMESPACE, 'Closing connection.');
+            connection.end();
+        });
+    })
+        .catch((error) => {
+        logging_1.default.error(NAMESPACE, error.message, error);
+        return res.status(500).json({
             message: error.message,
             error
         });
@@ -153,4 +187,4 @@ const getDays = (f1, f2) => {
     let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
     return dias;
 };
-exports.default = { getAllRequest, createRequest };
+exports.default = { getAllRequest, createRequest, getAllRequestByIdCar };

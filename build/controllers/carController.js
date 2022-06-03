@@ -47,7 +47,7 @@ const getAllCars = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     });
 });
 const getCarById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    logging_1.default.info(NAMESPACE, 'Getting all car');
+    logging_1.default.info(NAMESPACE, 'Getting car by id');
     const { id } = req.params;
     let query = `SELECT * FROM car WHERE id_car = ${id}`;
     (0, mysql_1.Connect)()
