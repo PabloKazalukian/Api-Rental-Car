@@ -54,9 +54,9 @@ const getAllRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 });
 const createRequest = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     logging_1.default.info(NAMESPACE, 'Inserting request');
-    let { initial_date, final_date, created_by, rented_car, state } = req.body;
+    let { initial_date, final_date, created_by, rented_car } = req.body;
     let query = `INSERT INTO request (initial_date,final_date,created_by,rented_car,state) 
-    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","paid" )`;
+    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","req" )`;
     (0, mysql_1.Connect)()
         .then((connection) => {
         (0, mysql_1.Query)(connection, query)
@@ -123,7 +123,17 @@ const getAllRequestByIdCar = (req, res, next) => __awaiter(void 0, void 0, void 
         (0, mysql_1.Query)(connection, query)
             .then((results) => {
             // logging.info(NAMESPACE, 'Retrieved car: ', results);
-            return res.status(200).json(results);
+            let result = JSON.parse(JSON.stringify(results));
+            let resultFinal = result.map((date) => {
+                let [yearI, monthI, dayI] = date.initial_date.split('-');
+                dayI = dayI.slice(0, 2);
+                let initial = dayI + '-' + monthI + '-' + yearI;
+                let [yearF, monthF, dayF] = date.final_date.split('-');
+                dayF = dayF.slice(0, 2);
+                let final = parseInt(dayF) + '-' + parseInt(monthF) + '-' + yearF;
+                return { initial_date: initial, final_date: final };
+            });
+            return res.status(200).json(resultFinal);
         })
             .catch((error) => {
             logging_1.default.error(NAMESPACE, error.message, error);
