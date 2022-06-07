@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -w",
     "dev": "concurrently \"tsc -w\" \"nodemon build/src/index.js\"",
-    "start": "nodemon -L"
+    "postinstall": "tsc"
   },
   "engines": {
     "node": ">=12.18.3",
