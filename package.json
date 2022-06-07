@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon build/src/index.js",
     "build": "tsc -w",
     "dev": "concurrently \"tsc -w\" \"nodemon build/src/index.js\"",
     "postinstall": "tsc"
