@@ -2,11 +2,12 @@
   "name": "api-rental-car",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "dev": "concurrently \"tsc -w\" \"nodemon build/index.js\""
+    "dev": "concurrently \"tsc -w\" \"nodemon build/index.js\"",
+    "postinstall": "npm run build"
     
   },
   "engines": {
