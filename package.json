@@ -2,7 +2,7 @@
   "name": "api-rental-car",
   "version": "1.0.0",
   "description": "",
-  "main": "build/src/index.js",
+  "main": "build/index.js",
   "scripts": {
     "start": "nodemon build/src/index.js",
     "dev": "concurrently \"tsc -w\" \"nodemon build/src/index.js\""
