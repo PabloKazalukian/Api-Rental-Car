@@ -5,7 +5,6 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon build/index.js",
-    "build": "tsc -w",
     "dev": "concurrently \"tsc -w\" \"nodemon build/src/index.js\""
   },
   "engines": {
