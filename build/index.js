@@ -8,7 +8,6 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = __importDefault(require("express"));
 const logging_1 = __importDefault(require("./config/logging"));
 const config_1 = __importDefault(require("./config/config"));
-// import bookRoutes from './routes/book';
 const routes_1 = __importDefault(require("./routes"));
 const NAMESPACE = 'Server';
 const router = (0, express_1.default)();
