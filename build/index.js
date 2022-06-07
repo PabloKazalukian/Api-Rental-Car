@@ -7,8 +7,8 @@ const http_1 = __importDefault(require("http"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = __importDefault(require("express"));
 const logging_1 = __importDefault(require("./config/logging"));
-const config_1 = __importDefault(require("/app/build/config/config"));
-const routes_1 = __importDefault(require("/app/build/routes"));
+const config_1 = __importDefault(require("@app/config/config"));
+const routes_1 = __importDefault(require("@app/build/routes"));
 const NAMESPACE = 'Server';
 const router = (0, express_1.default)();
 /** Log the request */
