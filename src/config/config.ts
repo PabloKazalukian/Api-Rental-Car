@@ -17,32 +17,6 @@ const MYSQL = {
 const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT = process.env.PORT || 3001;
 
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
-console.log(process.env.PORT ,process.env.PORT ,process.env.PORT ,process.env.PORT )
 const SERVER = {
     hostname: SERVER_HOSTNAME,
     port: SERVER_PORT
