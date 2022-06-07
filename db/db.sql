@@ -22,7 +22,7 @@ CREATE TABLE car(
 CREATE TABLE user(
     id_user INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(40),
-    password VARCHAR(40),
+    password VARCHAR(100),
     email VARCHAR(40),
     role VARCHAR(5),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -60,6 +60,8 @@ CREATE TABLE IF NOT EXISTS `rental_car_db`.`payment` (
   `paid_request` INT NULL,
   `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX `paid_request_idx` (`paid_request` ASC) VISIBLE,
+  PRIMARY KEY (`id_payment`),
+  UNIQUE INDEX `id_payment_UNIQUE` (`id_payment` ASC) VISIBLE,
   CONSTRAINT `paid_request`
     FOREIGN KEY (`paid_request`)
     REFERENCES `rental_car_db`.`request` (`id_request`)
