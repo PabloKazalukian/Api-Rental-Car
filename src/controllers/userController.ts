@@ -51,7 +51,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     password =  bcryptjs.hashSync(password,salt)
 
     let query = `INSERT INTO user (username,password,email,role) 
-    VALUES ("${username}", "${password}", "${email}","user")`;
+    VALUES ("${username}", "${password}", "${email}","admin")`;
 
     Connect()
         .then((connection) => {
