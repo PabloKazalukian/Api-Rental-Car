@@ -4,7 +4,7 @@ import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
 import indexRoutes from './routes' 
-
+import cors from 'cors'
 const NAMESPACE = 'Server';
 const router = express();
 
@@ -24,10 +24,11 @@ router.use((req, res, next) => {
 /** Parse the body of the request */
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
+router.use(cors())
 
 /** Rules of our API */
 router.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
+    // res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
