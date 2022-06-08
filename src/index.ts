@@ -1,4 +1,4 @@
-import http from 'http';
+import http from 'https';
 import bodyParser from 'body-parser';
 import express from 'express';
 import logging from './config/logging';
