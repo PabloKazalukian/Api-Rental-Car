@@ -30,12 +30,12 @@ router.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
 
-    if (req.method == 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-        return res.status(200).json({});
-    }
+    // if (req.method == 'OPTIONS') {
+    //     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    //     return res.status(200).json({});
+    // }
 
     next();
 });
