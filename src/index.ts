@@ -1,10 +1,11 @@
-import http from 'https';
+import http from 'http';
 import bodyParser from 'body-parser';
 import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
 import indexRoutes from './routes' 
-import cors from 'cors'
+import cors from 'cors';
+
 const NAMESPACE = 'Server';
 const router = express();
 
@@ -24,22 +25,20 @@ router.use((req, res, next) => {
 /** Parse the body of the request */
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
-router.use(cors())
 
 /** Rules of our API */
-router.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+// router.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+//     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
 
-    // if (req.method == 'OPTIONS') {
-    //     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-    //     return res.status(200).json({});
-    // }
+//     // if (req.method == 'OPTIONS') {
+//     //     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+//     //     return res.status(200).json({});
+//     // }
 
-    next();
-});
+//     next();
+// });
 
 /** Routes go here */
 router.use(indexRoutes);
