@@ -4,7 +4,6 @@ import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
 import indexRoutes from './routes' 
-import cors from 'cors';
 
 const NAMESPACE = 'Server';
 const router = express();
@@ -42,7 +41,7 @@ router.use(bodyParser.json());
 
 /** Routes go here */
 router.use(indexRoutes);
-router.use(cors())
+// router.use(cors())
 
 /** Error handling */
 router.use((req, res, next) => {
