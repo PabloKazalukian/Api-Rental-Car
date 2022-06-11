@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/',[checkJwt], controller.getAllUsers);
 router.post('/', controller.createUser);
+router.put('/modifyPass/:idUser',controller.modifyPassword)
 
 
 export = router;
