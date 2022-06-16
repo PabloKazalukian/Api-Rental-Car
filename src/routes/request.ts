@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/all',[checkJwt],[checkRole(['admin'])], controller.getAllRequest);
 router.get('/allOfCarId/:idCar',[checkJwt], controller.getAllRequestByIdCar);
 router.get('/allOfUserId/:userId',[checkJwt], controller.getAllRequestByUserId);
+router.put('/cancel',[checkJwt],controller.cancelRequest)
 router.post('/',[checkJwt], controller.createRequest);
 
 

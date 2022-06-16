@@ -178,7 +178,7 @@ const getAllRequestByUserId = async (req: Request, res: Response, next: NextFunc
     ON r.id_request = p.paid_request  
     LEFT JOIN car c
     ON r.rented_car = c.id_car
-    WHERE (r.created_by = '${userId}' ) AND  (r.state = 'req')
+    WHERE (r.created_by = '${userId}' )
     `;
 
     Connect()
@@ -195,9 +195,46 @@ const getAllRequestByUserId = async (req: Request, res: Response, next: NextFunc
                         let [yearF,monthF,dayF] =date.final_date.split('-')
                         dayF = dayF.slice(0,2)
                         let final =parseInt(dayF,10)+'-'+parseInt(monthF,10)+'-'+yearF;
-                        return {initial_date:initial,final_date:final,id_request:date.id_request,brand:date.brand,model:date.model,price:date.price,amount:date.amount}
+                        return {initial_date:initial,final_date:final,id_request:date.id_request,brand:date.brand,model:date.model,price:date.price,amount:date.amount,state:date.state}
                      })
                     return res.status(200).json(resultFinal);
+                })
+                .catch((error) => {
+                    logging.error(NAMESPACE, error.message, error);
+
+                    return res.status(500).json({
+                        message: error.message,
+                        error
+                    });
+                })
+                .finally(() => {
+                    logging.info(NAMESPACE, 'Closing connection.');
+                    connection.end();
+                });
+        })
+        .catch((error) => {
+            logging.error(NAMESPACE, error.message, error);
+
+            return res.status(500).json({
+                message: error.message,
+                error
+            });
+        });
+};
+
+const cancelRequest = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Modify Request status to cancel');
+    const {idRequest} = req.body;
+    console.log(idRequest)
+    let query = `UPDATE request SET state = 'cancel'  WHERE id_request = ${idRequest}`;
+
+    Connect()
+        .then((connection) => {
+            Query(connection, query)
+                .then((results) => {
+                    // logging.info(NAMESPACE, 'Retrieved car: ', results);
+
+                    return res.status(200).json(results);
                 })
                 .catch((error) => {
                     logging.error(NAMESPACE, error.message, error);
@@ -267,4 +304,4 @@ const getDays = (f1:string,f2:string) =>{
     let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
     return dias+1;
  }
-export default { getAllRequest,createRequest,getAllRequestByIdCar,getAllRequestByUserId };
+export default { getAllRequest,createRequest,getAllRequestByIdCar,getAllRequestByUserId, cancelRequest };
