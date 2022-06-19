@@ -52,10 +52,13 @@ const getAllRequest = async (req: Request, res: Response, next: NextFunction) =>
 const createRequest = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Inserting request');
 
-    let { initial_date,final_date,created_by,rented_car} = req.body;
+    let { initial_date,final_date,created_by,rented_car,stateReq} = req.body;
+    let state;
+
+    stateReq?state="con":state="req";
 
     let query = `INSERT INTO request (initial_date,final_date,created_by,rented_car,state) 
-    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","req" )`;
+    VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","${state}" )`;
 
     Connect()
         .then((connection) => {
@@ -123,7 +126,7 @@ const getAllRequestByIdCar = async (req: Request, res: Response, next: NextFunct
     let query = 
     `SELECT  r.id_request, r.initial_date, r.final_date, r.state
     FROM request r 
-    WHERE (r.rented_car = '${idCar}' ) AND  (r.state = 'req')
+    WHERE (r.rented_car = '${idCar}' ) AND  (r.state = 'req' OR r.state = 'con')
     `;
 
     Connect()
@@ -222,12 +225,15 @@ const getAllRequestByUserId = async (req: Request, res: Response, next: NextFunc
         });
 };
 
-const cancelRequest = async (req: Request, res: Response, next: NextFunction) => {
+const modifyRequest = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Modify Request status to cancel');
     const {idRequest} = req.body;
-    console.log(idRequest)
-    let query = `UPDATE request SET state = 'cancel'  WHERE id_request = ${idRequest}`;
+    const boolean = req.route.path
+    let state
+    boolean==='/cancel' ? state='cancel' : state='con'
 
+    let query = `UPDATE request SET state = '${state}'  WHERE id_request = ${idRequest}`;
+    
     Connect()
         .then((connection) => {
             Query(connection, query)
@@ -258,6 +264,7 @@ const cancelRequest = async (req: Request, res: Response, next: NextFunction) =>
             });
         });
 };
+
 
 const getPriceCarById = async (carId:string):Promise<any> => {
     logging.info(NAMESPACE, 'Getting car by car_id');
@@ -304,4 +311,4 @@ const getDays = (f1:string,f2:string) =>{
     let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
     return dias+1;
  }
-export default { getAllRequest,createRequest,getAllRequestByIdCar,getAllRequestByUserId, cancelRequest };
+export default { getAllRequest,createRequest,getAllRequestByIdCar,getAllRequestByUserId, modifyRequest };
