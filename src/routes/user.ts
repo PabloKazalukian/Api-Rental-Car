@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/',[checkJwt], controller.getAllUsers);
 router.post('/', controller.createUser);
+router.post('/verifyEmail', controller.verifyEmail);
 router.put('/modifyPass/:idUser',[checkJwt],controller.modifyPassword)
 
 

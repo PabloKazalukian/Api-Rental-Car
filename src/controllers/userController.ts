@@ -45,10 +45,10 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Inserting user');
 
-    let { username,password,email} = req.body;
+    let { username,password1,email} = req.body;
 
-    const salt = bcryptjs.genSaltSync(8)
-    password =  bcryptjs.hashSync(password,salt)
+    const salt = bcryptjs.genSaltSync(8);
+    let password =  bcryptjs.hashSync(password1,salt);
 
     let query = `INSERT INTO user (username,password,email,role) 
     VALUES ("${username}", "${password}", "${email}","user")`;
@@ -66,7 +66,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
                 .catch((error) => {
                     logging.error(NAMESPACE, error.message, error);
 
-                    return res.status(200).json({
+                    return res.status(404).json({
                         message: error.message,
                         error
                     });
@@ -79,7 +79,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => {
             logging.error(NAMESPACE, error.message, error);
 
-            return res.status(200).json({
+            return res.status(500).json({
                 message: error.message,
                 error
             });
@@ -127,6 +127,46 @@ const modifyPassword = async (req: Request, res: Response, next: NextFunction) =
         });
 };
 
+const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
+    logging.info(NAMESPACE, 'Getting all user');
+    
+    let{email}= req.body;
 
+    let query = `SELECT * FROM user WHERE email='${email}'`;
 
-export default { createUser,getAllUsers,modifyPassword };
+    Connect()
+        .then((connection) => {
+            Query(connection, query)
+                .then((results:any) => {
+                    // logging.info(NAMESPACE, 'Retrieved car: ', results);
+                    console.log(results.length );
+                    if(results.length >0) {
+                        return res.status(200).json(true)
+                    }else{
+                        return res.status(200).json(false)
+                      } 
+                })
+                .catch((error) => {
+                    logging.error(NAMESPACE, error.message, error);
+
+                    return res.status(200).json({
+                        message: error.message,
+                        error
+                    });
+                })
+                .finally(() => {
+                    logging.info(NAMESPACE, 'Closing connection.');
+                    connection.end();
+                });
+        })
+        .catch((error) => {
+            logging.error(NAMESPACE, error.message, error);
+
+            return res.status(200).json({
+                message: error.message,
+                error
+            });
+        });
+};
+
+export default { createUser,getAllUsers,modifyPassword,verifyEmail };
