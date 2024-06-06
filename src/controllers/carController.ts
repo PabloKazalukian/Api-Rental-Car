@@ -43,7 +43,7 @@ const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
 
 const getCarById = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting car by id');
-    const {id} = req.params;
+    const { id } = req.params;
 
     let query = `SELECT * FROM car WHERE id_car = ${id}`;
 
@@ -80,8 +80,8 @@ const getCarById = async (req: Request, res: Response, next: NextFunction) => {
 const createCar = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Inserting car');
 
-    let { image,brand,model,year,price,specifications} = req.body;
-    let {engine,power,torque,weight,max_speed,acceleration,consumption } = specifications;
+    let { image, brand, model, year, price, specifications } = req.body;
+    let { engine, power, torque, weight, max_speed, acceleration, consumption } = specifications;
 
     let query = `INSERT INTO car (image,brand,model,year,price,engine,power,torque,weight,max_speed,acceleration,consumption) 
     VALUES ("${image}", "${brand}", "${model}", "${year}", "${price}", "${engine}" ,"${power}" ,"${torque}" ,"${weight}" ,"${max_speed}" ,"${acceleration}" ,"${consumption}")`;
@@ -119,4 +119,4 @@ const createCar = async (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { createCar,getAllCars,getCarById };
+export default { createCar, getAllCars, getCarById };

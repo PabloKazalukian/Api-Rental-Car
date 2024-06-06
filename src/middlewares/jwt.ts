@@ -4,22 +4,22 @@ import config from '../config/config';
 
 
 export const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
-    const token = <string> req.headers['auth']
+    const token = <string>req.headers['auth']
     let jwtpayload;
 
-    try{
-        jwtpayload = <any>jwt.verify(token, config.auth.key)
+    try {
+        jwtpayload = <any>jwt.verify(token, config.auth.key);
         res.locals.jwtpayload = jwtpayload
     }
-    catch(e){
-        return res.status(401).send('error Token')
+    catch (e) {
+        return res.status(401).send('error Token');
     }
 
-    const {userId, username} = jwtpayload;
+    const { userId, username } = jwtpayload;
 
 
-    const newToken = jwt.sign({userId,username},config.auth.key,{expiresIn: config.auth.expires})
-    res.setHeader('token',newToken);
+    const newToken = jwt.sign({ userId, username }, config.auth.key, { expiresIn: config.auth.expires })
+    res.setHeader('token', newToken);
 
     //call Next
     next();

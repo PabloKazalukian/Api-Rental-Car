@@ -9,14 +9,7 @@ const NAMESPACE = 'Request';
 const getAllRequest = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting all Request');
 
-    let query = 
-    `SELECT  r.id_request, r.initial_date, r.final_date, r.state, u.email,c.brand,c.model,c.price
-    FROM request r 
-    LEFT JOIN user u
-    ON r.created_by = u.id_user
-    LEFT JOIN car c
-    ON r.rented_car = c.id_car
-    `;
+    let query = `SELECT  r.id_request, r.initial_date, r.final_date, r.state, u.email,c.brand,c.model,c.price FROM request r  LEFT JOIN user u ON r.created_by = u.id_user LEFT JOIN car c ON r.rented_car = c.id_car`;
 
     Connect()
         .then((connection) => {
@@ -52,10 +45,10 @@ const getAllRequest = async (req: Request, res: Response, next: NextFunction) =>
 const createRequest = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Inserting request');
 
-    let { initial_date,final_date,created_by,rented_car,stateReq} = req.body;
+    let { initial_date, final_date, created_by, rented_car, stateReq } = req.body;
     let state;
 
-    stateReq?state="con":state="req";
+    stateReq ? state = "con" : state = "req";
 
     let query = `INSERT INTO request (initial_date,final_date,created_by,rented_car,state) 
     VALUES ("${initial_date}" ,"${final_date}" ,"${created_by}" ,"${rented_car}","${state}" )`;
@@ -63,23 +56,30 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
     Connect()
         .then((connection) => {
             Query(connection, query)
-                .then( async(resultCreated) => {
+                .then(async (resultCreated) => {
                     logging.info(NAMESPACE, 'Request created: ', resultCreated);
                     let results = JSON.parse(JSON.stringify(resultCreated))
                     let paid_request = results.insertId
                     let priceCar = await getPriceCarById(rented_car)
-                        .then((priceCar)=>{
-                            let {price} = priceCar
+                        .then((priceCar) => {
+                            let { price } = priceCar
                             return price
                         })
-                    let days = getDays(initial_date,final_date)
-                    let amount =  days * priceCar;
+                        .catch((error) => {
+                            logging.error(NAMESPACE, error.message, error);
+
+                            return res.status(404).json({
+                                message: error.message,
+                                error
+                            });
+                        });
+                    let days = getDays(initial_date, final_date)
+                    let amount = days * priceCar;
                     let datejs = new Date();
                     let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;
-                    let queryPayment = `INSERT INTO payment (amount,paid_date,automatic,paid_request) 
-                    VALUES ("${amount}", "${today}" ,"yes" ,"${paid_request}" )`;
+                    let queryPayment = `INSERT INTO payment (amount,paid_date,automatic,paid_request) VALUES ("${amount}", "${today}" ,"yes" ,"${paid_request}" )`;
                     Query(connection, queryPayment)
-                        .then((resultPayment)=>{
+                        .then((resultPayment) => {
                             return res.status(200).json({
                                 resultCreated,
                                 resultPayment
@@ -87,13 +87,13 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
                         })
                         .catch((error) => {
                             logging.error(NAMESPACE, error.message, error);
-        
+
                             return res.status(403).json({
                                 message: error.message,
                                 error
                             });
                         })
-                    
+
                 })
                 .catch((error) => {
                     logging.error(NAMESPACE, error.message, error);
@@ -120,11 +120,11 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
 
 const getAllRequestByIdCar = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting all Request of a car by idCar');
-    const {idCar} = req.params;
+    const { idCar } = req.params;
 
 
-    let query = 
-    `SELECT  r.id_request, r.initial_date, r.final_date, r.state
+    let query =
+        `SELECT  r.id_request, r.initial_date, r.final_date, r.state
     FROM request r 
     WHERE (r.rented_car = '${idCar}' ) AND  (r.state = 'req' OR r.state = 'con')
     `;
@@ -134,17 +134,17 @@ const getAllRequestByIdCar = async (req: Request, res: Response, next: NextFunct
             Query(connection, query)
                 .then((results) => {
                     // logging.info(NAMESPACE, 'Retrieved car: ', results);
-                    
+
                     let result = JSON.parse(JSON.stringify(results))
-                    let resultFinal =result.map((date:request) =>{
-                        let [yearI,monthI,dayI] =date.initial_date.split('-')
-                        dayI = dayI.slice(0,2)
-                        let initial =parseInt(dayI,10)+'-'+parseInt(monthI,10)+'-'+yearI;
-                        let [yearF,monthF,dayF] =date.final_date.split('-')
-                        dayF = dayF.slice(0,2)
-                        let final =parseInt(dayF,10)+'-'+parseInt(monthF,10)+'-'+yearF;
-                        return {initial_date:initial,final_date:final,id_request:date.id_request}
-                     })
+                    let resultFinal = result.map((date: request) => {
+                        let [yearI, monthI, dayI] = date.initial_date.split('-')
+                        dayI = dayI.slice(0, 2)
+                        let initial = parseInt(dayI, 10) + '-' + parseInt(monthI, 10) + '-' + yearI;
+                        let [yearF, monthF, dayF] = date.final_date.split('-')
+                        dayF = dayF.slice(0, 2)
+                        let final = parseInt(dayF, 10) + '-' + parseInt(monthF, 10) + '-' + yearF;
+                        return { initial_date: initial, final_date: final, id_request: date.id_request }
+                    })
                     return res.status(200).json(resultFinal);
                 })
                 .catch((error) => {
@@ -172,10 +172,10 @@ const getAllRequestByIdCar = async (req: Request, res: Response, next: NextFunct
 
 const getAllRequestByUserId = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting all Request of a USER by UserId');
-    const {userId} = req.params;
+    const { userId } = req.params;
 
-    let query = 
-    `SELECT  r.id_request, r.initial_date, r.final_date, r.state,c.brand,c.model,c.price,p.amount
+    let query =
+        `SELECT  r.id_request, r.initial_date, r.final_date, r.state,c.brand,c.model,c.price,p.amount
     FROM request r 
     LEFT JOIN payment p
     ON r.id_request = p.paid_request  
@@ -189,17 +189,17 @@ const getAllRequestByUserId = async (req: Request, res: Response, next: NextFunc
             Query(connection, query)
                 .then((results) => {
                     // logging.info(NAMESPACE, 'Retrieved car: ', results);
-                    
+
                     let result = JSON.parse(JSON.stringify(results))
-                    let resultFinal =result.map((date:any) =>{
-                        let [yearI,monthI,dayI] =date.initial_date.split('-')
-                        dayI = dayI.slice(0,2)
-                        let initial =parseInt(dayI,10)+'-'+parseInt(monthI,10)+'-'+yearI;
-                        let [yearF,monthF,dayF] =date.final_date.split('-')
-                        dayF = dayF.slice(0,2)
-                        let final =parseInt(dayF,10)+'-'+parseInt(monthF,10)+'-'+yearF;
-                        return {initial_date:initial,final_date:final,id_request:date.id_request,brand:date.brand,model:date.model,price:date.price,amount:date.amount,state:date.state}
-                     })
+                    let resultFinal = result.map((date: any) => {
+                        let [yearI, monthI, dayI] = date.initial_date.split('-')
+                        dayI = dayI.slice(0, 2)
+                        let initial = parseInt(dayI, 10) + '-' + parseInt(monthI, 10) + '-' + yearI;
+                        let [yearF, monthF, dayF] = date.final_date.split('-')
+                        dayF = dayF.slice(0, 2)
+                        let final = parseInt(dayF, 10) + '-' + parseInt(monthF, 10) + '-' + yearF;
+                        return { initial_date: initial, final_date: final, id_request: date.id_request, brand: date.brand, model: date.model, price: date.price, amount: date.amount, state: date.state }
+                    })
                     return res.status(200).json(resultFinal);
                 })
                 .catch((error) => {
@@ -227,13 +227,13 @@ const getAllRequestByUserId = async (req: Request, res: Response, next: NextFunc
 
 const modifyRequest = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Modify Request status to cancel');
-    const {idRequest} = req.body;
+    const { idRequest } = req.body;
     const boolean = req.route.path
     let state
-    boolean==='/cancel' ? state='cancel' : state='con'
+    boolean === '/cancel' ? state = 'cancel' : state = 'con'
 
     let query = `UPDATE request SET state = '${state}'  WHERE id_request = ${idRequest}`;
-    
+
     Connect()
         .then((connection) => {
             Query(connection, query)
@@ -265,8 +265,7 @@ const modifyRequest = async (req: Request, res: Response, next: NextFunction) =>
         });
 };
 
-
-const getPriceCarById = async (carId:string):Promise<any> => {
+const getPriceCarById = async (carId: string): Promise<any> => {
     logging.info(NAMESPACE, 'Getting car by car_id');
 
     let query = `SELECT price  FROM car WHERE id_car = '${carId}'`;
@@ -274,7 +273,7 @@ const getPriceCarById = async (carId:string):Promise<any> => {
     await Connect()
         .then(async (connection) => {
             await Query(connection, query)
-                .then( (results) => {
+                .then((results) => {
                     // logging.info(NAMESPACE, 'Retrieved car: ', results);
                     result = JSON.parse(JSON.stringify(results))[0]
                 })
@@ -302,13 +301,15 @@ const getPriceCarById = async (carId:string):Promise<any> => {
     return result;
 
 };
-const getDays = (f1:string,f2:string) =>{
-    let aFecha1:string[] = f1.split('-');
-    let aFecha2:string[] = f2.split('-');
-    let fFecha1 = Date.UTC(parseInt( aFecha1[0],10),parseInt( aFecha1[1] ,10)-1, parseInt( aFecha1[2],10));
-    let fFecha2 = Date.UTC(parseInt( aFecha2[0],10), parseInt( aFecha2[1],10)-1, parseInt( aFecha2[2],10));
+
+const getDays = (f1: string, f2: string) => {
+    let aFecha1: string[] = f1.split('-');
+    let aFecha2: string[] = f2.split('-');
+    let fFecha1 = Date.UTC(parseInt(aFecha1[0], 10), parseInt(aFecha1[1], 10) - 1, parseInt(aFecha1[2], 10));
+    let fFecha2 = Date.UTC(parseInt(aFecha2[0], 10), parseInt(aFecha2[1], 10) - 1, parseInt(aFecha2[2], 10));
     let dif = fFecha2 - fFecha1;
     let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
-    return dias+1;
- }
-export default { getAllRequest,createRequest,getAllRequestByIdCar,getAllRequestByUserId, modifyRequest };
+    return dias + 1;
+};
+
+export default { getAllRequest, createRequest, getAllRequestByIdCar, getAllRequestByUserId, modifyRequest };

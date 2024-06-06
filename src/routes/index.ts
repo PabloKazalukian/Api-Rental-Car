@@ -9,12 +9,12 @@ const router = express.Router();
 
 // router.post('/create/book', controller.createBook);
 
-router.use('/car',car)
-router.use('/user',user)
-router.use('/auth',auth)
-router.use('/request',request)
-router.use('/payment',payment)
-router.use('/email',email)
+router.use('/car', car);
+router.use('/user', user);
+router.use('/auth', auth);
+router.use('/request', request);
+router.use('/payment', payment);
+router.use('/email', email);
 
 
 

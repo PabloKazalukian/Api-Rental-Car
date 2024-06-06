@@ -6,21 +6,21 @@ dotenv.config();
 
 const contact = async (req: Request, res: Response, next: NextFunction) => {
 
-try {
-    const { email,  name, comment } = req.body;
+    try {
+        const { email, name, comment } = req.body;
 
 
-   
-    const sgMail = require('@sendgrid/mail');
+
+        const sgMail = require('@sendgrid/mail');
 
 
-    sgMail.setApiKey(process.env.API_KEY);
+        sgMail.setApiKey(process.env.API_KEY);
 
-    const message = {
-        to: "kazalukianpablo@gmail.com",
-        from: "pablokazadev@gmail.com",
-        subject: `Comentario desde Rental-Car!`,
-        html: `<html>
+        const message = {
+            to: "kazalukianpablo@gmail.com",
+            from: "pablokazadev@gmail.com",
+            subject: `Comentario desde Rental-Car!`,
+            html: `<html>
         <head>
         <body>
         <h2> Nombre: ${name}</h2>
@@ -30,13 +30,13 @@ try {
         </body>
         </head>
         </html>`,
-    };
-    res.json({})
+        };
+        res.json({})
 
-    sgMail
-        .send(message)
-        .then((response:any) => console.log('Email sent...'))
-        .catch((error:any) => console.log(error.message))
+        sgMail
+            .send(message)
+            .then((response: any) => console.log('Email sent...'))
+            .catch((error: any) => console.log(error.message))
     } catch (error) {
         console.log(error)
     }

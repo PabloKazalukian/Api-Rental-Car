@@ -16,8 +16,8 @@ const findUserLogin = async (req: Request, res: Response, next: NextFunction) =>
 
     logging.info(NAMESPACE, 'Getting user by email');
 
-    let {email,password} = req.body;
-    if(email !== undefined && password !== undefined){
+    let { email, password } = req.body;
+    if (email !== undefined && password !== undefined) {
 
         let query = `SELECT username,password,email,role,id_user FROM user WHERE email = '${email}'`;
 
@@ -26,16 +26,16 @@ const findUserLogin = async (req: Request, res: Response, next: NextFunction) =>
                 Query(connection, query)
                     .then((results: any) => {
                         // logging.info(NAMESPACE, 'Retrieved car: ', results);
-                        if(results.length > 0){
+                        if (results.length > 0) {
                             let [user] = results
-                            if(bcryptjs.compareSync(password,user.password)){
-                                let token = jwt.sign({userId:user.id_user,username:user.username},config.auth.key,{expiresIn:config.auth.expires})
-                                return res.status(200).json({message:'ok',token});
-                            }else{
-                                throw new TypeError('no encontrado')
+                            if (bcryptjs.compareSync(password, user.password)) {
+                                let token = jwt.sign({ userId: user.id_user, username: user.username }, config.auth.key, { expiresIn: config.auth.expires })
+                                return res.status(200).json({ message: 'ok', token });
+                            } else {
+                                throw new TypeError('no encontrado');
                             }
-                        } else{
-                            throw new TypeError('no encontrado')
+                        } else {
+                            throw new TypeError('no encontrado');
                         }
                     })
                     .catch((error) => {
@@ -59,14 +59,14 @@ const findUserLogin = async (req: Request, res: Response, next: NextFunction) =>
                     error
                 });
             });
-    } else{
+    } else {
         return res.status(404).json({
             message: 'Error: Faltan datos '
         });
     }
 };
 
-const getUserById = async (userId:string) => {
+const getUserById = async (userId: string) => {
     logging.info(NAMESPACE, 'Getting user by user_id');
 
     let query = `SELECT role  FROM user WHERE id_user = '${userId}'`;
@@ -74,7 +74,7 @@ const getUserById = async (userId:string) => {
     await Connect()
         .then(async (connection) => {
             await Query(connection, query)
-                .then( (results) => {
+                .then((results) => {
                     // logging.info(NAMESPACE, 'Retrieved car: ', results);
                     result = JSON.parse(JSON.stringify(results))
                 })
@@ -103,4 +103,4 @@ const getUserById = async (userId:string) => {
 
 };
 
-export default { findUserLogin,getUserById };
+export default { findUserLogin, getUserById };

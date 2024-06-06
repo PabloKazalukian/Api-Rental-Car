@@ -9,12 +9,7 @@ const getAllPayment = async (req: Request, res: Response, next: NextFunction) =>
     logging.info(NAMESPACE, 'Getting all payment');
 
 
-    let query = 
-    `SELECT  p.amount,p.paid_date,p.automatic,r.id_request, r.initial_date, r.final_date, r.state
-    FROM payment p 
-    LEFT JOIN request r
-    ON  p.paid_request = r.id_request
-    `;
+    let query = `SELECT  p.amount,p.paid_date,p.automatic,r.id_request, r.initial_date, r.final_date, r.state FROM payment p LEFT JOIN request r ON  p.paid_request = r.id_request`;
 
     Connect()
         .then((connection) => {
@@ -56,7 +51,7 @@ const createPayment = async (req: Request, res: Response, next: NextFunction) =>
     // `automatic` VARCHAR(3) NOT NULL,
     // `paid_request` INT NULL,
 
-    let { amount,paid_date,paid_request} = req.body;
+    let { amount, paid_date, paid_request } = req.body;
 
     let query = `INSERT INTO payment (amount,paid_date,automatic,paid_request) 
     VALUES ("${amount}" ,"${paid_date}" ,"yes" ,"${paid_request}" )`;
@@ -95,4 +90,4 @@ const createPayment = async (req: Request, res: Response, next: NextFunction) =>
 };
 
 
-export default { getAllPayment,createPayment };
+export default { getAllPayment, createPayment };
