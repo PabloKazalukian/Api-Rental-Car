@@ -99,7 +99,7 @@ const createCar = async (req: Request, res: Response, next: NextFunction) => {
                 .catch((error) => {
                     logging.error(NAMESPACE, error.message, error);
 
-                    return res.status(200).json({
+                    return res.status(400).json({
                         message: error.message,
                         error
                     });
@@ -112,7 +112,7 @@ const createCar = async (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => {
             logging.error(NAMESPACE, error.message, error);
 
-            return res.status(200).json({
+            return res.status(404).json({
                 message: error.message,
                 error
             });
