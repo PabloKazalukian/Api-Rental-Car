@@ -4,6 +4,7 @@ import { Connect, Query } from '../config/mysql';
 import { Connection } from 'mysql';
 // import Car from '../interfaces/car.interface';
 
+
 const NAMESPACE = 'Car';
 
 const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
