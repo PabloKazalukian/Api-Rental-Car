@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import logging from '../config/logging';
 import { Connect, Query } from '../config/mysql';
+import { Connection } from 'mysql';
 // import Car from '../interfaces/car.interface';
 
 const NAMESPACE = 'Car';
@@ -8,7 +9,7 @@ const NAMESPACE = 'Car';
 const getAllCars = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting all car');
 
-    let query = 'SELECT * FROM car';
+    let query: string = 'SELECT * FROM car';
 
     Connect()
         .then((connection) => {
@@ -45,13 +46,13 @@ const getCarById = async (req: Request, res: Response, next: NextFunction) => {
     logging.info(NAMESPACE, 'Getting car by id');
     const { id } = req.params;
 
-    let query = `SELECT * FROM car WHERE id_car = ${id}`;
+    let query: string = `SELECT * FROM car WHERE id_car = ${id}`;
 
     Connect()
-        .then((connection) => {
+        .then((connection: Connection) => {
             Query(connection, query)
                 .then((results) => {
-
+                    console.log(results);
                     return res.status(200).json(results);
                 })
                 .catch((error) => {

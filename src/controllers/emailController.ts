@@ -23,7 +23,7 @@ const contact = async (req: Request, res: Response, next: NextFunction) => {
             html: `<html>
         <head>
         <body>
-        <h2> Nombre: ${name}</h2>
+        <h2> Nombre: ${name}</h2> 
         <h2> email: ${email}</h2>
         <h4>Comentario:</h4>
         <div>${comment}</div>

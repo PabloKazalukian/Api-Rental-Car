@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
-import indexRoutes from './routes'
+import indexRoutes from './routes';
 
 const NAMESPACE = 'Server';
 const router = express();
