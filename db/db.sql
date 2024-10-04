@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS rental_car_db;
+CREATE DATABASE IF NOT EXISTS rental_car_db_test;
 
 USE rental_car_db;
 

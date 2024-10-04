@@ -9,7 +9,6 @@ import jwt from 'jsonwebtoken';
 import config from '../config/config';
 
 
-
 const NAMESPACE = 'Auth';
 
 const findUserLogin = async (req: Request, res: Response, next: NextFunction) => {

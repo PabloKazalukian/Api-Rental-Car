@@ -4,6 +4,14 @@ import { Connect, Query } from '../config/mysql';
 // import Car from '../interfaces/car.interface';
 import bcryptjs from 'bcryptjs';
 
+class UserController {
+    getUser(req: Request, res: Response) {
+        res.status(200).json({
+            message: 'worker'
+        })
+    }
+}
+
 const NAMESPACE = 'User';
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
@@ -227,4 +235,4 @@ const verifyEmail = async (req: Request, res: Response, next: NextFunction) => {
         });
 };
 
-export default { createUser, getAllUsers, modifyPassword, modifyUser, verifyEmail };
+export default { createUser, getAllUsers, modifyPassword, modifyUser, verifyEmail, UserController };
