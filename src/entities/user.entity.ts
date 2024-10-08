@@ -1,5 +1,12 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "../config/base.entity";
+import { RequestEntity } from "./request.entity";
+import { Exclude } from "class-transformer";
+
+export enum UserRole {
+    ADMIN = "admin",
+    USER = "user",
+}
 
 @Entity({ name: "user" })
 export class UserEntity extends BaseEntity {
@@ -7,13 +14,18 @@ export class UserEntity extends BaseEntity {
     @Column()
     username!: string;
 
+    @Exclude()
     @Column()
-    name!: string;
+    password!: string;
 
     @Column()
-    lastname!: string;
+    email!: string;
 
-    @Column({ nullable: true })
-    jobPosition?: string;
+    @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
+    role!: UserRole;
+
+    @OneToMany(() => RequestEntity, (request) => request.createBy)
+    requests!: RequestEntity[];
+
 
 }

@@ -17,7 +17,6 @@ export abstract class ConfigServer {
 
     public get typeORMConfig(): DataSourceOptions {
 
-
         return {
             type: "mysql",
             host: this.getEnverioment("DB_HOST"),
@@ -30,6 +29,10 @@ export abstract class ConfigServer {
             logging: false,
             namingStrategy: new SnakeNamingStrategy()
         }
+    }
+
+    async dbConnect(): Promise<DataSource> {
+        return await new DataSource((this.typeORMConfig)).initialize()
     }
 }
 

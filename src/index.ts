@@ -84,9 +84,7 @@ class Server extends ConfigServer {
         })
     }
 
-    async dbConnect(): Promise<DataSource> {
-        return await new DataSource((this.typeORMConfig)).initialize()
-    }
+
     public listen() {
         this.app.listen(this.port, () => {
             console.log('listening on port ' + this.port);
