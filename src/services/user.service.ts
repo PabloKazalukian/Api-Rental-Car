@@ -23,5 +23,4 @@ export class UserService extends BaseService<UserEntity> {
     async updateUser(id: string, infoUpdate: UserDTO): Promise<UpdateResult> {
         return (await this.execRepository).update(id, infoUpdate)
     }
-
 }

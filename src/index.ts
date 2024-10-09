@@ -7,6 +7,8 @@ import indexRoutes from './routes';
 import morgan from 'morgan';
 import { UserRouter } from './routes/user.routes';
 import { ConnectOptions, DataSource } from 'typeorm';
+import { CarRouter } from './routes/car.routes';
+import { RequestRouter } from './routes/request.routes';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -69,7 +71,7 @@ class Server extends ConfigServer {
     }
 
     public routers(): Array<express.Router> {
-        return [new UserRouter().router];
+        return [new UserRouter().router, new CarRouter().router, new RequestRouter().router,];
     }
 
     /** Error handling */

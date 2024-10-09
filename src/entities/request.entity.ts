@@ -36,5 +36,4 @@ export class RequestEntity extends BaseEntity {
 
     @OneToMany(() => PaymentEntity, (payment) => payment.paidRequest)
     requestPayment!: PaymentEntity[];
-
 }

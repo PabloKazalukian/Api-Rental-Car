@@ -1,12 +1,12 @@
-import { IsNotEmpty } from "class-validator";
-import { BaseDto } from "../config/base.dto";
+import { IsEnum, IsNotEmpty } from "class-validator";
+import { BaseDTO } from "../config/base.dto";
 
 export enum UserRole {
     ADMIN = "admin",
     USER = "user",
 }
 
-export class UserDTO extends BaseDto {
+export class UserDTO extends BaseDTO {
 
     @IsNotEmpty()
     username!: string;
@@ -18,6 +18,7 @@ export class UserDTO extends BaseDto {
     email!: string;
 
     @IsNotEmpty()
+    @IsEnum(UserRole)
     role!: UserRole;
 
     // @OneToMany(() => RequestEntity, (request) => request.createBy)

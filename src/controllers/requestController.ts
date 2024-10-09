@@ -73,7 +73,7 @@ const createRequest = async (req: Request, res: Response, next: NextFunction) =>
                                 error
                             });
                         });
-                    let days = getDays(initial_date, final_date)
+                    let days = getDays(initial_date, final_date);
                     let amount = days * priceCar;
                     let datejs = new Date();
                     let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;

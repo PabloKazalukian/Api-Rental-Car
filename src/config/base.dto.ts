@@ -1,6 +1,6 @@
 import { IsDate, IsOptional, IsUUID } from "class-validator";
 
-export class BaseDto {
+export class BaseDTO {
 
     @IsUUID()
     @IsOptional()
