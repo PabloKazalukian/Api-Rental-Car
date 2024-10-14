@@ -1,5 +1,7 @@
 import { BaseDTO } from "../config/base.dto";
 import { IsEnum, IsNotEmpty } from "class-validator";
+import { UserEntity } from "../entities/user.entity";
+import { CarEntity } from "../entities/car.entity";
 
 export enum StateCar {
     REQUEST = "req",
@@ -10,20 +12,20 @@ export enum StateCar {
 export class RequestDTO extends BaseDTO {
 
     @IsNotEmpty()
-    initial_date!: string;
+    initialDate!: string;
 
     @IsNotEmpty()
-    final_date!: string;
+    finalDate!: string;
 
     @IsNotEmpty()
     @IsEnum(StateCar)
     state!: StateCar;
 
     @IsNotEmpty()
-    user_id!: string;
+    user_id!: UserEntity;
 
     @IsNotEmpty()
-    car_id!: string;
+    car_id!: CarEntity;
 
     // @ManyToOne(() => UserEntity, (user) => user.requests)
     // @JoinColumn({ name: "user_id" })

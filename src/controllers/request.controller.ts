@@ -3,58 +3,74 @@ import { RequestService } from "../services/request.service";
 import { CarService } from "../services/car.service";
 import { CarEntity } from "../entities/car.entity";
 import { RequestDTO } from "../dto/request.dto";
+import { HttpResponse } from "../shared/http.response";
+import { PaymentService } from "../services/payment.service";
 
 export class RequestController {
-    constructor(private readonly requestSvc: RequestService = new RequestService(), private readonly carSvc: CarService = new CarService()) { }
+    constructor(
+        private readonly requestSvc: RequestService = new RequestService(),
+        private readonly carSvc: CarService = new CarService(),
+        private readonly paymentSvc: PaymentService = new PaymentService(),
+        private readonly httpResponse: HttpResponse = new HttpResponse()
+    ) { }
 
     async getAllRequest(req: Request, res: Response) {
         try {
             const data = await this.requestSvc.findAllRequest();
-            res.status(200).json(data)
+            return this.httpResponse.Ok(res, data);
         } catch (err) {
-            console.log(err);
+            return this.httpResponse.Error(res, 'Ocurrio un error');
         }
     };
 
     async getRequestById(req: Request, res: Response) {
         try {
             const data = await this.requestSvc.findById(req.params.id);
-            if (!data) return res.status(404).json({ message: "Car not found" });
-            res.status(200).json(data)
+            if (!data) return this.httpResponse.NotFound(res, 'Solicitud no encontrada');
+            return this.httpResponse.Ok(res, data);
         } catch (err) {
-            console.log(err);
+            return this.httpResponse.Error(res, err);
         }
     }
 
     async createRequest(req: Request, res: Response) {
         let price;
         try {
-            let data = await this.getPriceCarById(req.body);
-            console.log(data);
-            // const data = await this.requestSvc.createRequest(req.body);
-            // console.log(data);
-            res.status(201).json(data)
+            let data = await this.requestSvc.createRequest(req.body);
+            // let data;
+            // let amount = await this.getPriceCarById(res, req.body);
+            // console.log("body", req.body);
+            // if (amount == 0) return this.httpResponse.NotFound(res);
+            // console.log("new:", re)
+            // return this.httpResponse.Ok(res, newRequest);
+            //create payment
+            // let datejs = new Date();
+            // let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;
+            // let newPayment = { amount, paid_date: today, automatic: "yes", }
+            // this.paymentSvc.createPayment(newPayment)
+
+            return this.httpResponse.Created(res, data);
         } catch (err) {
-            console.log(err);
+            console.log(err)
+            return this.httpResponse.Error(res, err);
         }
     }
 
-    private async getPriceCarById(request: RequestDTO): Promise<any> {
+    private async getPriceCarById(res: Response, request: RequestDTO): Promise<any> {
         try {
-            const data: CarEntity | null = await this.carSvc.findPriceCarById(request.car_id);
-            console.log("data:", data);
+            // console.log(request.car_id)
+            const data: CarEntity | null = await this.carSvc.findPriceCarById(request.id);
             if (data !== null) {
-                console.log(typeof request.initial_date)
-                let days: number = this.getDays(request.initial_date, request.final_date);
-                console.log("days", days);
+                let days: number = this.getDays(request.initialDate, request.finalDate);
                 let amount: number = days * data.price;
                 // console.log(amount);
                 return amount;
-            } else { return 1; }
-            // res.status(201).json(data);
+            } else { return 0; }
+            // this.httpResponse.Created(res,data);;
         }
         catch (err) {
-            console.log(err);
+            console.log(err)
+            return this.httpResponse.Forbidden(res, err);
         }
     }
 

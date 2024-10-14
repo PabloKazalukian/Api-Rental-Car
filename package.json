@@ -2,10 +2,13 @@
     "name": "api-rental-car",
     "version": "1.0.0",
     "description": "",
-    "main": "index.ts",
+    "main": "index.js",
     "scripts": {
         "start": "node build/index.js",
-        "dev": "concurrently \"tsc -watch\" \"nodemon build/index.js\""
+        "dev": "concurrently \"tsc -watch\" \"nodemon build/index.js\"",
+        "typeorm": "typeorm-ts-node-esm -d ./src/config/data.source.ts",
+        "m:generate": "npm run typeorm migration:generate",
+        "m:run": "npm run typeorm migration:run"
     },
     "engines": {
         "node": ">=12.18.3",
@@ -35,6 +38,7 @@
         "morgan": "^1.10.0",
         "mysql": "^2.18.1",
         "nodemailer": "^6.7.5",
+        "reflect-metadata": "^0.2.2",
         "typeorm": "^0.3.20",
         "typeorm-naming-strategies": "^4.1.0"
     },
@@ -48,7 +52,8 @@
         "@types/morgan": "^1.9.3",
         "@types/mysql": "^2.15.21",
         "concurrently": "^9.0.1",
-        "nodemon": "^2.0.6",
+        "nodemon": "^3.1.7",
+        "ts-node": "^10.9.2",
         "typescript": "^5.6.2"
     }
 }
