@@ -28,12 +28,12 @@ export class RequestEntity extends BaseEntity {
 
     @ManyToOne(() => UserEntity, (user) => user.requests)
     @JoinColumn({ name: "user_id" })
-    createBy!: UserEntity;
+    user_id!: UserEntity;
 
     @ManyToOne(() => CarEntity, (car) => car.requests)
     @JoinColumn({ name: "car_id" })
-    requestedCar!: CarEntity;
+    car_id!: CarEntity;
 
-    @OneToMany(() => PaymentEntity, (payment) => payment.paidRequest)
+    @OneToMany(() => PaymentEntity, (payment) => payment.request_id)
     requestPayment!: PaymentEntity[];
 }

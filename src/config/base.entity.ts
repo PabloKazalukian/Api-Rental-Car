@@ -15,5 +15,5 @@ export abstract class BaseEntity {
         name: "updated_ad",
         type: "timestamp",
     })
-    UpdatedAd!: Date;
+    updatedAd!: Date;
 }

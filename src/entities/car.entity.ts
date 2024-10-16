@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "../config/base.entity";
 import { SpecificationsCar } from "./specificationsCar";
 import { RequestEntity } from "./request.entity";
@@ -24,7 +24,6 @@ export class CarEntity extends BaseEntity {
     @Column(() => SpecificationsCar)
     specificationsCar!: SpecificationsCar;
 
-    @OneToMany(() => RequestEntity, (request) => request.requestedCar)
+    @OneToMany(() => RequestEntity, (request) => request.car_id)
     requests!: RequestEntity[];
-
 }

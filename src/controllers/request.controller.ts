@@ -5,6 +5,7 @@ import { CarEntity } from "../entities/car.entity";
 import { RequestDTO } from "../dto/request.dto";
 import { HttpResponse } from "../shared/http.response";
 import { PaymentService } from "../services/payment.service";
+import { Automatic, PaymentDTO } from "../dto/payment.dto";
 
 export class RequestController {
     constructor(
@@ -14,7 +15,7 @@ export class RequestController {
         private readonly httpResponse: HttpResponse = new HttpResponse()
     ) { }
 
-    async getAllRequest(req: Request, res: Response) {
+    async getAllRequest(req: Request, res: Response): Promise<Response> {
         try {
             const data = await this.requestSvc.findAllRequest();
             return this.httpResponse.Ok(res, data);
@@ -23,7 +24,7 @@ export class RequestController {
         }
     };
 
-    async getRequestById(req: Request, res: Response) {
+    async getRequestById(req: Request, res: Response): Promise<Response> {
         try {
             const data = await this.requestSvc.findById(req.params.id);
             if (!data) return this.httpResponse.NotFound(res, 'Solicitud no encontrada');
@@ -33,20 +34,24 @@ export class RequestController {
         }
     }
 
-    async createRequest(req: Request, res: Response) {
+    async createRequest(req: Request, res: Response): Promise<Response> {
         let price;
         try {
             let data = await this.requestSvc.createRequest(req.body);
-            // let data;
-            // let amount = await this.getPriceCarById(res, req.body);
-            // console.log("body", req.body);
+            let amount = await this.getPriceCarById(res, req.body);
+            console.log("amount:", amount);
             // if (amount == 0) return this.httpResponse.NotFound(res);
             // console.log("new:", re)
             // return this.httpResponse.Ok(res, newRequest);
-            //create payment
-            // let datejs = new Date();
-            // let today = `${datejs.getFullYear()}-${datejs.getMonth() + 1}-${datejs.getDate()}`;
-            // let newPayment = { amount, paid_date: today, automatic: "yes", }
+            // create payment
+            let datejs = new Date();
+            let newPayment: PaymentDTO = new PaymentDTO();
+            newPayment.amount = amount;
+            newPayment.paid_date = new Date();
+            newPayment.automatic = Automatic.YES;
+            newPayment.request_id = data;
+
+            // { amount, paid_date: datejs, automatic: "yes", request_id: data.id }
             // this.paymentSvc.createPayment(newPayment)
 
             return this.httpResponse.Created(res, data);
@@ -59,13 +64,20 @@ export class RequestController {
     private async getPriceCarById(res: Response, request: RequestDTO): Promise<any> {
         try {
             // console.log(request.car_id)
-            const data: CarEntity | null = await this.carSvc.findPriceCarById(request.id);
-            if (data !== null) {
-                let days: number = this.getDays(request.initialDate, request.finalDate);
-                let amount: number = days * data.price;
-                // console.log(amount);
-                return amount;
-            } else { return 0; }
+            console.log("super_id", request.car_id)
+            let data: CarEntity | null;
+            if (typeof request.car_id == "string") {
+                data = await this.carSvc.findPriceCarById(request.car_id);
+                if (data !== null) {
+                    let days: number = this.getDays(request.initialDate, request.finalDate);
+                    let amount: number = days * data.price;
+                    // console.log(amount);
+                    return amount;
+                } else { return 0; }
+            }
+
+
+            // console.log(data, request.id);
             // this.httpResponse.Created(res,data);;
         }
         catch (err) {

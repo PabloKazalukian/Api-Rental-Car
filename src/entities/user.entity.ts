@@ -24,8 +24,7 @@ export class UserEntity extends BaseEntity {
     @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
     role!: UserRole;
 
-    @OneToMany(() => RequestEntity, (request) => request.createBy)
+    @OneToMany(() => RequestEntity, (request) => request.user_id)
     requests!: RequestEntity[];
-
 
 }

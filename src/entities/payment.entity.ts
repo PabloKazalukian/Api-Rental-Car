@@ -30,6 +30,6 @@ export class PaymentEntity extends BaseEntity {
 
     @ManyToOne(() => RequestEntity, (request) => request.requestPayment)
     @JoinColumn({ name: "request_id" })
-    paidRequest!: RequestEntity;
+    request_id!: RequestEntity;
 
 }

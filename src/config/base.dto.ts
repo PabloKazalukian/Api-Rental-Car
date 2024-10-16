@@ -12,5 +12,5 @@ export class BaseDTO {
 
     @IsDate()
     @IsOptional()
-    UpdatedAd!: Date;
+    updatedAd!: Date;
 }
