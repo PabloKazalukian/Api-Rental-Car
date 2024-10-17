@@ -15,11 +15,31 @@ export class RequestService extends BaseService<RequestEntity> {
             .createQueryBuilder("request")
             .leftJoinAndSelect("request.user_id", "user_id")
             .select(["request", "user_id.username", "user_id.id", "user_id.email"])
+            .leftJoinAndSelect("request.car_id", "car_id")
             .getMany()
     }
     async findById(id: string): Promise<RequestEntity | null> {
         return (await this.execRepository).findOneBy({ id })
     }
+
+    async findByUser(idUser: string): Promise<RequestEntity[] | null> {
+        return (await this.execRepository)
+            .createQueryBuilder("request")
+            .leftJoinAndSelect("request.user_id", "user_id")
+            .andWhere("(user_id.id = :iduser)", { iduser: idUser })
+            .select(["request", "user_id.username", "user_id.id", "user_id.email"])
+            .getMany()
+    }
+
+    async findByCar(idCar: string): Promise<RequestEntity[] | null> {
+        return (await this.execRepository)
+            .createQueryBuilder("request")
+            .leftJoinAndSelect("request.car_id", "car_id")
+            .andWhere("(car_id.id = :idcar)", { idcar: idCar })
+            .select(["request", "car_id.id", "car_id.brand", "car_id.model", "car_id.year", "car_id.price", "car_id.image"])
+            .getMany()
+    }
+
     async createRequest(newRequest: RequestDTO): Promise<RequestEntity> {
         return (await this.execRepository).save(newRequest)
     }

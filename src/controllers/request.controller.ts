@@ -4,14 +4,14 @@ import { CarService } from "../services/car.service";
 import { CarEntity } from "../entities/car.entity";
 import { RequestDTO } from "../dto/request.dto";
 import { HttpResponse } from "../shared/http.response";
-import { PaymentService } from "../services/payment.service";
+// import { PaymentService } from "../services/payment.service";
 import { Automatic, PaymentDTO } from "../dto/payment.dto";
 
 export class RequestController {
     constructor(
         private readonly requestSvc: RequestService = new RequestService(),
         private readonly carSvc: CarService = new CarService(),
-        private readonly paymentSvc: PaymentService = new PaymentService(),
+        // private readonly paymentSvc: PaymentService = new PaymentService(),
         private readonly httpResponse: HttpResponse = new HttpResponse()
     ) { }
 
@@ -26,14 +26,33 @@ export class RequestController {
 
     async getRequestById(req: Request, res: Response): Promise<Response> {
         try {
-            const data = await this.requestSvc.findById(req.params.id);
+            const data = await this.requestSvc.findByUser(req.params.id);
             if (!data) return this.httpResponse.NotFound(res, 'Solicitud no encontrada');
             return this.httpResponse.Ok(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 
+    async getRequestByUser(req: Request, res: Response): Promise<Response> {
+        try {
+            let user_id = req.params.user_id
+            let data = await this.requestSvc.findByUser(user_id);
+            return this.httpResponse.Ok(res, data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    };
+
+    async getRequestBycar(req: Request, res: Response): Promise<Response> {
+        try {
+            let car_id = req.params.car_id
+            let data = await this.requestSvc.findByCar(car_id);
+            return this.httpResponse.Ok(res, data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    }
     async createRequest(req: Request, res: Response): Promise<Response> {
         let price;
         try {
@@ -59,7 +78,7 @@ export class RequestController {
             console.log(err)
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 
     private async getPriceCarById(res: Response, request: RequestDTO): Promise<any> {
         try {
