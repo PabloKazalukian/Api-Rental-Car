@@ -26,6 +26,4 @@ export class PaymentDTO extends BaseDTO {
 
     @IsNotEmpty()
     request_id!: RequestEntity;
-    // paidRequest!: RequestEntity;
-
 }

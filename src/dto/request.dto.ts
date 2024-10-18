@@ -26,16 +26,4 @@ export class RequestDTO extends BaseDTO {
 
     @IsNotEmpty()
     car_id!: CarEntity;
-
-    // @ManyToOne(() => UserEntity, (user) => user.requests)
-    // @JoinColumn({ name: "user_id" })
-    // createBy!: UserEntity;
-
-    // @ManyToOne(() => CarEntity, (car) => car.requests)
-    // @JoinColumn({ name: "car_id" })
-    // requestedCar!: CarEntity;
-
-    // @OneToMany(() => PaymentEntity, (payment) => payment.paidRequest)
-    // requestPayment!: PaymentEntity[];
-
 }

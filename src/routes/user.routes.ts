@@ -1,15 +1,20 @@
 import { UserController } from "../controllers/user.controller";
+import { UserMiddleware } from "../middlewares/user.middleware";
 import { Routes } from "./routes";
 
 
-export class UserRouter extends Routes<UserController> {
+export class UserRouter extends Routes<UserController, UserMiddleware> {
     constructor() {
-        super(UserController)
+        super(UserController, UserMiddleware);
     }
 
     routes(): void {
-        this.router.get('/user', (req, res) => { this.controller.getUser(req, res) });
-        this.router.post('/user', (req, res) => { this.controller.createUser(req, res); });
+        this.router.get('/user', (req, res) => { this.controller.getAllUser(req, res) });
+        this.router.get('/user', (req, res) => { this.controller.getUserById(req, res) });
+        this.router.post('/user', (req, res, next) => [this.middleware.userValidator(req, res, next)], (req, res) => { this.controller.createUser(req, res); });
+        this.router.post('/verifyEmail', (req, res) => { this.controller.verifyEmail(req, res); });
+        this.router.put('/modifyPass/:idUser', (req, res) => { this.controller.modifyPassword(req, res); });
+        this.router.put('/modifyUser/:idUser', (req, res) => { this.controller.modifyUser(req, res); });
         // this.router.get('/login', (req, res) => { this.controller.login(req, res); });
     }
 }
