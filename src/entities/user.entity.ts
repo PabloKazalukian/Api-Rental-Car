@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, Unique } from "typeorm";
 import { BaseEntity } from "../config/base.entity";
 import { RequestEntity } from "./request.entity";
 import { Exclude } from "class-transformer";
+import { DiscountEntity } from "./discount.entity";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -11,14 +12,14 @@ export enum UserRole {
 @Entity({ name: "user" })
 export class UserEntity extends BaseEntity {
 
-    @Column()
+    @Column({ unique: true })
     username!: string;
 
     @Exclude()
     @Column()
     password!: string;
 
-    @Column()
+    @Column({ unique: true })
     email!: string;
 
     @Column({ type: "enum", enum: UserRole, default: UserRole.USER })
@@ -26,5 +27,8 @@ export class UserEntity extends BaseEntity {
 
     @OneToMany(() => RequestEntity, (request) => request.user_id)
     requests!: RequestEntity[];
+
+    @ManyToMany(() => DiscountEntity, (discount) => discount.users)
+    discounts!: DiscountEntity[];
 
 }

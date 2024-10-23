@@ -28,6 +28,12 @@ export class UserController {
     async createUser(req: Request, res: Response): Promise<Response> {
         try {
             // console.log(req.body);
+
+            const userExist = await this.userService.findUserByEmail(req.body.email);
+            if (userExist) return this.httpResponse.Error(res, 'El email ya está en uso');
+            const userExistUsername = await this.userService.findUserByUsername(req.body.username);
+            if (userExistUsername) return this.httpResponse.Error(res, 'El nombre de usuario ya está en uso');
+
             const data = await this.userService.createUser(req.body);
             return this.httpResponse.Created(res, data);
         } catch (err) {
@@ -37,7 +43,7 @@ export class UserController {
 
     async verifyEmail(req: Request, res: Response): Promise<Response> {
         try {
-            const data = await this.userService.findById(req.params.id);
+            const data = await this.userService.findUserByEmail(req.body);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             // TODO: Implementar el envío de correo electrónico
             return this.httpResponse.Ok(res, data);

@@ -6,7 +6,7 @@ import { HttpResponse } from "../shared/http.response";
 export class RequestMiddleware {
     constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
 
-    RequestValidator(req: Request, res: Response, next: NextFunction) {
+    requestValidator(req: Request, res: Response, next: NextFunction) {
         const { initialDate, finalDate, state, user_id, car_id } = req.body;
         const valid = new RequestDTO()
 

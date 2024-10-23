@@ -18,7 +18,7 @@ export class PaymentService extends BaseService<PaymentEntity> {
         return (await this.execRepository).save(newPayment)
 
     }
-    async deleteUser(id: string): Promise<DeleteResult> {
+    async deletePayment(id: string): Promise<DeleteResult> {
         return (await this.execRepository).delete({ id })
     }
     async updatePayment(id: string, infoUpdate: PaymentDTO): Promise<UpdateResult> {

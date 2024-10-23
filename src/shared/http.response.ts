@@ -51,7 +51,7 @@ export class HttpResponse {
         });
     }
 
-    Unauthoraized(res: Response, data?: any): Response {
+    Unauthorized(res: Response, data?: any): Response {
         return res.status(HttpStatus.UNAUTHORIZED).json({
             status: HttpStatus.UNAUTHORIZED,
             statusMsg: "Unauthoraized",

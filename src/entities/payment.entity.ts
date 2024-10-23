@@ -28,7 +28,7 @@ export class PaymentEntity extends BaseEntity {
     })
     automatic!: Automatic;
 
-    @ManyToOne(() => RequestEntity, (request) => request.requestPayment)
+    @ManyToOne(() => RequestEntity, (request) => request.requestPayment, { nullable: false })
     @JoinColumn({ name: "request_id" })
     request_id!: RequestEntity;
 

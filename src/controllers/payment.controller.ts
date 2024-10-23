@@ -1,8 +1,4 @@
 import { Request, Response } from "express";
-import { RequestService } from "../services/request.service";
-import { CarService } from "../services/car.service";
-import { CarEntity } from "../entities/car.entity";
-import { RequestDTO } from "../dto/request.dto";
 import { HttpResponse } from "../shared/http.response";
 import { PaymentService } from "../services/payment.service";
 

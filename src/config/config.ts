@@ -8,12 +8,12 @@ export abstract class ConfigServer {
         dotenv.config();
     }
 
-    public getEnverioment(k: string): string | undefined {
+    public getEnvironment(k: string): string | undefined {
         return process.env[k];
     }
 
     public getNumberEnv(k: string): number {
-        return Number(this.getEnverioment(k));
+        return Number(this.getEnvironment(k));
     }
 
     get initConnect(): Promise<DataSource> {

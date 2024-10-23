@@ -15,6 +15,5 @@ export class UserRouter extends Routes<UserController, UserMiddleware> {
         this.router.post('/verifyEmail', (req, res) => { this.controller.verifyEmail(req, res); });
         this.router.put('/modifyPass/:idUser', (req, res) => { this.controller.modifyPassword(req, res); });
         this.router.put('/modifyUser/:idUser', (req, res) => { this.controller.modifyUser(req, res); });
-        // this.router.get('/login', (req, res) => { this.controller.login(req, res); });
     }
 }

@@ -11,6 +11,9 @@ import { ConnectOptions, DataSource } from 'typeorm';
 import { CarRouter } from './routes/car.routes';
 import { RequestRouter } from './routes/request.routes';
 import { PaymentRouter } from './routes/payment.routes';
+import { AuthRouter } from './routes/auth.routes';
+import { LoginStrategy } from './strategies/login.strategy';
+import { DiscountRouter } from './routes/discount.routes';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -19,18 +22,10 @@ class Server extends ConfigServer {
 
     constructor() {
         super();
-        this.dbConnect()
-        // .then(() => {
-        //     console.log("Data Source has been initialized!")
-        // })
-        // .catch((err) => {
-        //     console.error("Error during Data Source initialization", err)
-        // });
+        this.passportUse();
+        this.dbConnect();
         this.configureApp();
         this.listen();
-        /** Error handling */
-
-        // });
     }
 
     async dbConnect(): Promise<DataSource | void> {
@@ -83,7 +78,11 @@ class Server extends ConfigServer {
     }
 
     public routers(): Array<express.Router> {
-        return [new UserRouter().router, new CarRouter().router, new RequestRouter().router, new PaymentRouter().router];
+        return [new UserRouter().router, new CarRouter().router, new RequestRouter().router, new PaymentRouter().router, new AuthRouter().router, new DiscountRouter().router];
+    }
+
+    passportUse() {
+        return [new LoginStrategy().use]
     }
 
     /** Error handling */

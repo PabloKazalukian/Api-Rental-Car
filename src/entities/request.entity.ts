@@ -3,6 +3,7 @@ import { BaseEntity } from "../config/base.entity";
 import { UserEntity } from "./user.entity";
 import { PaymentEntity } from "./payment.entity";
 import { CarEntity } from "./car.entity";
+import { DiscountEntity } from "./discount.entity";
 
 export enum StateCar {
     REQUEST = "req",
@@ -19,7 +20,6 @@ export class RequestEntity extends BaseEntity {
     @Column()
     finalDate!: Date;
 
-
     @Column({
         type: "enum",
         enum: StateCar,
@@ -34,6 +34,11 @@ export class RequestEntity extends BaseEntity {
     @JoinColumn({ name: "car_id" })
     car_id!: CarEntity;
 
-    @OneToMany(() => PaymentEntity, (payment) => payment.request_id)
+    @OneToMany(() => PaymentEntity, (payment) => payment.request_id, { nullable: true })
     requestPayment!: PaymentEntity[];
+
+    @OneToMany(() => DiscountEntity, (discount) => discount.request_id, { nullable: true })
+    @JoinColumn({ name: "discount_id" })
+    discount_id!: DiscountEntity;
+
 }
