@@ -7,9 +7,9 @@ import { UserEntity } from "../entities/user.entity";
 export class JwtMiddleware {
     constructor(public httResponse: HttpResponse = new HttpResponse()) { }
 
-    jwtMiddleware(req: Request, res: Response, next: NextFunction) {
+    // jwtMiddleware(req: Request, res: Response, next: NextFunction) {
 
-    }
+    // }
 
     passAuth(type: string) {
         return passport.authenticate(type, { session: false });

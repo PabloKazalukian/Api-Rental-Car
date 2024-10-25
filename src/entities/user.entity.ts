@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, OneToMany, Unique } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 import { BaseEntity } from "../config/base.entity";
 import { RequestEntity } from "./request.entity";
 import { Exclude } from "class-transformer";

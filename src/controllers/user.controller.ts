@@ -74,4 +74,16 @@ export class UserController {
             return this.httpResponse.Error(res, 'Ocurrio un error');
         }
     };
+
+    async deleteUser(req: Request, res: Response): Promise<Response> {
+        try {
+            const data = await this.userService.deleteUser(req.params.idUser);
+            if (!data.affected) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
+            return this.httpResponse.Ok(res, data);
+        }
+        catch (err) {
+            return this.httpResponse.Error(res, 'Ocurrio un error');
+        }
+
+    }
 }

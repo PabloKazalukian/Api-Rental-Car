@@ -10,6 +10,7 @@ export class AuthController extends AuthService {
 
     async login(req: Request, res: Response) {
         try {
+            console.log('post')
             const userEncode = req.user as UserEntity;
             const encode = await this.generateJWT(userEncode);
             if (!encode) {

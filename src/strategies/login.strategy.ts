@@ -16,7 +16,7 @@ export class LoginStrategy {
     }
 
     get use() {
-        return PassportUse<LocalStrategy, Object, VerifyFunction>("login", LocalStrategy, { usernameField: "username", passwordField: "password" }, this.validate)
+        return PassportUse<LocalStrategy, Object, VerifyFunction>("login", LocalStrategy, { usernameField: "email", passwordField: "password" }, this.validate)
     }
 
 }

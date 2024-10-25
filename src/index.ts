@@ -14,6 +14,7 @@ import { PaymentRouter } from './routes/payment.routes';
 import { AuthRouter } from './routes/auth.routes';
 import { LoginStrategy } from './strategies/login.strategy';
 import { DiscountRouter } from './routes/discount.routes';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -82,7 +83,7 @@ class Server extends ConfigServer {
     }
 
     passportUse() {
-        return [new LoginStrategy().use]
+        return [new LoginStrategy().use, new JwtStrategy().use]
     }
 
     /** Error handling */

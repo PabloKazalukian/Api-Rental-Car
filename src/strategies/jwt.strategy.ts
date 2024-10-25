@@ -1,5 +1,5 @@
 import { AuthService } from "../services/auth.service";
-import { Strategy as JwtStr, StrategyOptions, ExtractJwt } from "passport-jwt";
+import { Strategy as JwtStr, StrategyOptions, ExtractJwt, StrategyOptionsWithSecret } from "passport-jwt";
 import { PayloadToken } from "../interfaces/auth.interface";
 import { PassportUse } from "../utils/passport.use";
 
@@ -15,16 +15,15 @@ export class JwtStrategy extends AuthService {
     get use() {
         return PassportUse<
             JwtStr,
-            any,
+            StrategyOptionsWithSecret,
             (payload: PayloadToken, done: any) => Promise<PayloadToken>
         >(
             "jwt",
             JwtStr,
             {
                 jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-                secretOrKey: this.getEnvironment("AUTH_JWT"),
-                ignoreExpiration: false,
-                passReqToCallback: true
+                secretOrKey: "SECRETO",
+                ignoreExpiration: false
             },
             this.validate
         );
