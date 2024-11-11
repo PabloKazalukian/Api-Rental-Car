@@ -43,9 +43,9 @@ export class UserController {
 
     async verifyEmail(req: Request, res: Response): Promise<Response> {
         try {
-            const data = await this.userService.findUserByEmail(req.body);
+            console.log('work', req.body)
+            const data = await this.userService.findUserByEmail(req.body.email);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
-            // TODO: Implementar el envío de correo electrónico
             return this.httpResponse.Ok(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, 'Ocurrio un error');
@@ -56,7 +56,6 @@ export class UserController {
         try {
             const data = await this.userService.findById(req.params.idUser);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
-            // TODO: Implementar el cambio de contraseña
             return this.httpResponse.Ok(res, data);
 
         } catch (err) {
