@@ -45,7 +45,8 @@ export class AuthService extends ConfigServer {
 
         const payload: PayloadToken = {
             role: userConsult!.role,
-            sub: userConsult!.id
+            sub: userConsult!.id,
+            username: userConsult!.username
         }
 
         if (userConsult) {
