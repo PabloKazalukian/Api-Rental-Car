@@ -7,9 +7,10 @@ export class RequestMiddleware {
     constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
 
     requestValidator(req: Request, res: Response, next: NextFunction) {
-        const { initialDate, finalDate, state, user_id, car_id } = req.body;
+        const { amount, initialDate, finalDate, state, user_id, car_id } = req.body;
         const valid = new RequestDTO()
 
+        valid.amount = amount;
         valid.car_id = car_id;
         valid.finalDate = finalDate;
         valid.initialDate = initialDate;

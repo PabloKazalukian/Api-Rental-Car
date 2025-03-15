@@ -6,6 +6,7 @@ import { RequestDTO } from "../dto/request.dto";
 import { HttpResponse } from "../shared/http.response";
 // import { PaymentService } from "../services/payment.service";
 import { Automatic, PaymentDTO } from "../dto/payment.dto";
+import { StateCar } from "../entities/request.entity";
 
 export class RequestController {
     constructor(
@@ -37,7 +38,7 @@ export class RequestController {
     async getRequestByUser(req: Request, res: Response): Promise<Response> {
         try {
             let user_id = req.params.user_id
-            let data = await this.requestSvc.findByUser(user_id);
+            let data = await this.requestSvc.findByUserAndCar(user_id);
             return this.httpResponse.Ok(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
@@ -53,8 +54,39 @@ export class RequestController {
             return this.httpResponse.Error(res, err);
         }
     }
+    async cancelRequest(req: Request, res: Response): Promise<Response> {
+        try {
+            const { requestId } = req.body; // Obtener el ID de la request desde la URL
+
+            console.log(req.body)
+            // Buscar la solicitud en la base de datos
+            console.log(requestId)
+            const request = await this.requestSvc.findById(requestId);
+
+            if (request === null) {
+                return res.status(404).json({ message: "Solicitud no encontrada" });
+            } else {
+                // Verificar si ya está cancelada
+                console.log(request.state)
+                if (request.state === StateCar.CANCEL) {
+                    return res.status(400).json({ message: "La solicitud ya está cancelada" });
+                }
+
+                // Actualizar el estado a "can"
+                request.state = StateCar.CANCEL;
+
+
+                // Guardar los cambios en la base de datos
+                await this.requestSvc.updateRequest(request.id, request);
+
+                return res.status(200).json({ message: "Solicitud cancelada exitosamente", request });
+            }
+        } catch (error) {
+            console.error("Error al cancelar la solicitud:", error);
+            return res.status(500).json({ message: "Error interno del servidor" });
+        }
+    }
     async createRequest(req: Request, res: Response): Promise<Response> {
-        let price;
         try {
             let data = await this.requestSvc.createRequest(req.body);
             let amount = await this.getPriceCarById(res, req.body);
@@ -65,7 +97,7 @@ export class RequestController {
             // create payment
             let datejs = new Date();
             let newPayment: PaymentDTO = new PaymentDTO();
-            newPayment.amount = amount;
+            // newPayment.amount = amount;
             newPayment.paid_date = new Date();
             newPayment.automatic = Automatic.YES;
             newPayment.request_id = data;
@@ -88,6 +120,7 @@ export class RequestController {
             if (typeof request.car_id == "string") {
                 data = await this.carSvc.findPriceCarById(request.car_id);
                 if (data !== null) {
+
                     let days: number = this.getDays(request.initialDate, request.finalDate);
                     let amount: number = days * data.price;
                     // console.log(amount);
@@ -105,13 +138,18 @@ export class RequestController {
         }
     }
 
-    private getDays = (f1: string, f2: string): number => {
-        let aFecha1: string[] = f1.split('-');
-        let aFecha2: string[] = f2.split('-');
-        let fFecha1 = Date.UTC(parseInt(aFecha1[0], 10), parseInt(aFecha1[1], 10) - 1, parseInt(aFecha1[2], 10));
-        let fFecha2 = Date.UTC(parseInt(aFecha2[0], 10), parseInt(aFecha2[1], 10) - 1, parseInt(aFecha2[2], 10));
+    private getDays = (f1: Date, f2: Date): number => {
+        // Convertir ambas fechas a milisegundos desde la época Unix (1970-01-01)
+        let fFecha1 = f1.getTime();  // f1 es un objeto Date
+        let fFecha2 = f2.getTime();  // f2 es un objeto Date
+
+        // Calcular la diferencia en milisegundos
         let dif = fFecha2 - fFecha1;
+
+        // Convertir la diferencia de milisegundos a días (1 día = 1000 ms * 60 s * 60 min * 24 hrs)
         let dias = Math.floor(dif / (1000 * 60 * 60 * 24));
+
+        // Devolver el número de días + 1 (si lo deseas incluir como parte de la duración)
         return dias + 1;
     };
 }

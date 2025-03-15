@@ -31,6 +31,16 @@ export class RequestService extends BaseService<RequestEntity> {
             .getMany()
     }
 
+    async findByUserAndCar(idUser: string): Promise<RequestEntity[] | null> {
+        return (await this.execRepository)
+            .createQueryBuilder("request")
+            .leftJoinAndSelect("request.user_id", "user_id")
+            .leftJoinAndSelect("request.car_id", "car")
+            .andWhere("(user_id.id = :iduser)", { iduser: idUser })
+            .select(["request", "user_id.username", "user_id.id", "user_id.email", "car.id", "car.brand", "car.model"])
+            .getMany()
+    }
+
     async findByCar(idCar: string): Promise<RequestEntity[] | null> {
         return (await this.execRepository)
             .createQueryBuilder("request")
@@ -47,6 +57,7 @@ export class RequestService extends BaseService<RequestEntity> {
         return (await this.execRepository).delete({ id })
     }
     async updateRequest(id: string, infoUpdate: RequestDTO): Promise<UpdateResult> {
+        console.log(infoUpdate)
         return (await this.execRepository).update(id, infoUpdate)
     }
 }

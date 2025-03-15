@@ -7,10 +7,9 @@ export class PaymentMiddleware {
     constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
 
     paymentValidator(req: Request, res: Response, next: NextFunction) {
-        const { amount, paid_date, created_time, automatic, request_id } = req.body;
+        const { paid_date, created_time, automatic, request_id } = req.body;
         const valid = new PaymentDTO();
 
-        valid.amount = amount;
         valid.paid_date = paid_date;
         valid.created_time = created_time;
         valid.automatic = automatic;

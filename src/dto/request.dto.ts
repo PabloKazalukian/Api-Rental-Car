@@ -12,10 +12,13 @@ export enum StateCar {
 export class RequestDTO extends BaseDTO {
 
     @IsNotEmpty()
-    initialDate!: string;
+    amount!: number;
 
     @IsNotEmpty()
-    finalDate!: string;
+    initialDate!: Date;
+
+    @IsNotEmpty()
+    finalDate!: Date;
 
     @IsNotEmpty()
     @IsEnum(StateCar)

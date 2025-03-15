@@ -10,9 +10,6 @@ export enum Automatic {
 @Entity({ name: "payment" })
 export class PaymentEntity extends BaseEntity {
 
-    @Column()
-    amount!: number;
-
     @Column({ nullable: false })
     paidDate!: Date;
 

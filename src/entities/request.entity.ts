@@ -15,6 +15,9 @@ export enum StateCar {
 export class RequestEntity extends BaseEntity {
 
     @Column()
+    amount!: number;
+
+    @Column()
     initialDate!: Date;
 
     @Column()

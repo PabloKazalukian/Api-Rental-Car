@@ -12,9 +12,6 @@ export enum Automatic {
 export class PaymentDTO extends BaseDTO {
 
     @IsNotEmpty()
-    amount!: number;
-
-    @IsNotEmpty()
     paid_date!: Date;
 
     @IsNotEmpty()

@@ -14,5 +14,7 @@ export class RequestRouter extends Routes<RequestController, RequestMiddleware> 
         this.router.get('/request/:id', (req, res) => { this.controller.getRequestById(req, res); });
         this.router.get('/request/allOfUserId/:user_id', (req, res) => { this.controller.getRequestByUser(req, res); });
         this.router.get('/request/allOfCarId/:car_id', (req, res) => { this.controller.getRequestBycar(req, res); });
+        this.router.put('/request/cancel', (req, res) => { this.controller.cancelRequest(req, res); });
+
     }
 }

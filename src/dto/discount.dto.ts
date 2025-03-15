@@ -12,7 +12,7 @@ export class DiscountDTO extends BaseDTO {
     initialDate!: string;
 
     @IsNotEmpty()
-    expirationDate!: string;
+    expirationDate!: Date;
 
     @IsNotEmpty()
     percentage!: number;
