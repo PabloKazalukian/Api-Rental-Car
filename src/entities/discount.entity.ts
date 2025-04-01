@@ -10,10 +10,10 @@ export class DiscountEntity extends BaseEntity {
     codeDiscount!: string;
 
     @Column()
-    initialDate!: string;
+    initialDate!: Date;
 
     @Column()
-    expirationDate!: string;
+    expirationDate!: Date;
 
     @Column()
     percentage!: number;

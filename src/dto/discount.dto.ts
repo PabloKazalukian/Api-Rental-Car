@@ -9,7 +9,7 @@ export class DiscountDTO extends BaseDTO {
     codeDiscount!: string;
 
     @IsNotEmpty()
-    initialDate!: string;
+    initialDate!: Date;
 
     @IsNotEmpty()
     expirationDate!: Date;
