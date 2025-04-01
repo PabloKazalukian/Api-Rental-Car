@@ -4,7 +4,7 @@ import "reflect-metadata";
 import express from 'express';
 import logging from './config/logging';
 import config, { ConfigServer } from './config/config';
-import indexRoutes from './routes';
+// import indexRoutes from './routes/routes';
 import morgan from 'morgan';
 import { UserRouter } from './routes/user.routes';
 import { ConnectOptions, DataSource } from 'typeorm';
