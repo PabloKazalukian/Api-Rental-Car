@@ -28,12 +28,15 @@ const MYSQL_HOST = process.env.DB_HOST;
 const MYSQL_DATABASE = process.env.DB_DATABASE;
 const MYSQL_USER = process.env.DB_USER;
 const MYSQL_PASS = process.env.DB_PASSWORD;
+const MYSQL_PORT = process.env.DB_PORT;
+
 
 const MYSQL = {
     host: MYSQL_HOST,
     database: MYSQL_DATABASE,
     user: MYSQL_USER,
     pass: MYSQL_PASS,
+    port: MYSQL_PORT
 };
 
 // const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || "localhost";

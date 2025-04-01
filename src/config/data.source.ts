@@ -9,12 +9,14 @@ dotenv.config({
 const Config: DataSourceOptions = {
 
     type: "mysql",
+    port: 47239,
     host: process.env.DB_HOST,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
+    connectTimeout: 20000, // Aumenta el timeout a 20 segundos
     entities: [__dirname + "/../entities/*.entity{.ts,.js}"],
-    migrations: [__dirname + "/../migrations/*{.ts,.js}"],
+    migrations: [__dirname + "/../migration/*{.ts,.js}"],
     synchronize: false,
     migrationsRun: false,
     logging: false,
