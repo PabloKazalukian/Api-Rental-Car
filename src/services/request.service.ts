@@ -6,6 +6,7 @@ import { User } from '../interfaces/user.interface';
 import { UserEntity } from "../entities/user.entity";
 
 export class RequestService extends BaseService<RequestEntity> {
+
     constructor() {
         super(RequestEntity);
     }
@@ -16,10 +17,11 @@ export class RequestService extends BaseService<RequestEntity> {
             .leftJoinAndSelect("request.user_id", "user_id")
             .select(["request", "user_id.username", "user_id.id", "user_id.email"])
             .leftJoinAndSelect("request.car_id", "car_id")
-            .getMany()
+            .getMany();
     }
+
     async findById(id: string): Promise<RequestEntity | null> {
-        return (await this.execRepository).findOneBy({ id })
+        return (await this.execRepository).findOneBy({ id });
     }
 
     async findByUser(idUser: string): Promise<RequestEntity[] | null> {
@@ -28,7 +30,7 @@ export class RequestService extends BaseService<RequestEntity> {
             .leftJoinAndSelect("request.user_id", "user_id")
             .andWhere("(user_id.id = :iduser)", { iduser: idUser })
             .select(["request", "user_id.username", "user_id.id", "user_id.email"])
-            .getMany()
+            .getMany();
     }
 
     async findByUserAndCar(idUser: string): Promise<RequestEntity[] | null> {
@@ -38,7 +40,7 @@ export class RequestService extends BaseService<RequestEntity> {
             .leftJoinAndSelect("request.car_id", "car")
             .andWhere("(user_id.id = :iduser)", { iduser: idUser })
             .select(["request", "user_id.username", "user_id.id", "user_id.email", "car.id", "car.brand", "car.model"])
-            .getMany()
+            .getMany();
     }
 
     async findByCar(idCar: string): Promise<RequestEntity[] | null> {
@@ -51,13 +53,19 @@ export class RequestService extends BaseService<RequestEntity> {
     }
 
     async createRequest(newRequest: RequestDTO): Promise<RequestEntity> {
-        return (await this.execRepository).save(newRequest)
+        try {
+            return (await this.execRepository).save(newRequest);
+        } catch {
+            throw new Error("FALLA CRITICA");
+        }
     }
+
     async deleteRequest(id: string): Promise<DeleteResult> {
-        return (await this.execRepository).delete({ id })
+        return (await this.execRepository).delete({ id });
     }
+
     async updateRequest(id: string, infoUpdate: RequestDTO): Promise<UpdateResult> {
         console.log(infoUpdate)
-        return (await this.execRepository).update(id, infoUpdate)
+        return (await this.execRepository).update(id, infoUpdate);
     }
 }

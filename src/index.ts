@@ -7,7 +7,7 @@ import config, { ConfigServer } from './config/config';
 // import indexRoutes from './routes/routes';
 import morgan from 'morgan';
 import { UserRouter } from './routes/user.routes';
-import { ConnectOptions, DataSource } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { CarRouter } from './routes/car.routes';
 import { RequestRouter } from './routes/request.routes';
 import { PaymentRouter } from './routes/payment.routes';
