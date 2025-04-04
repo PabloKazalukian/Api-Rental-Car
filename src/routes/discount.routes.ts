@@ -9,9 +9,9 @@ export class DiscountRouter extends Routes<DiscountController, DiscountMiddlewar
     }
 
     routes(): void {
-        this.router.post('/discount', (req, res, next) => [this.middleware.discountValidator(req, res, next)], (req, res) => { this.controller.createDiscount(req, res); });
         this.router.get('/discount', (req, res) => { this.controller.getAllDiscount(req, res); });
         this.router.get('/discount/:id', (req, res) => { this.controller.getDiscountById(req, res); });
+        this.router.post('/discount', (req, res, next) => [this.middleware.discountValidator(req, res, next)], (req, res) => { this.controller.createDiscount(req, res); });
 
     }
 }

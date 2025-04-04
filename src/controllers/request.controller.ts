@@ -93,6 +93,33 @@ export class RequestController {
             return res.status(500).json({ message: "Error interno del servidor" });
         }
     }
+
+    async confirmRequest(req: Request, res: Response): Promise<Response> {
+        try {
+            const { requestId } = req.body; // Obtener el ID de la request desde la URL
+
+            // Buscar la solicitud en la base de datos
+            console.log(requestId)
+            const request = await this.requestSvc.findById(requestId);
+
+            if (request === null) {
+                return res.status(404).json({ message: "Solicitud no encontrada" });
+            } else {
+
+                if (request.state === StateCar.CONFIRM) {
+                    return res.status(400).json({ message: "La solicitud ya está confiramda" });
+                }
+
+                request.state = StateCar.CONFIRM;
+                await this.requestSvc.updateRequest(request.id, request);
+
+                return res.status(200).json({ message: "Solicitud confirmada exitosamente", request });
+            }
+        } catch (error) {
+            console.error("Error al cancelar la solicitud:", error);
+            return res.status(500).json({ message: "Error interno del servidor" });
+        }
+    }
     async createRequest(req: Request, res: Response): Promise<Response> {
         try {
             let data = await this.requestSvc.createRequest(req.body);
