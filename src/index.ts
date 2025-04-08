@@ -1,10 +1,8 @@
-import http from 'http';
-import bodyParser from 'body-parser';
+import cors from 'cors';
 import "reflect-metadata";
 import express from 'express';
 import logging from './config/logging';
-import config, { ConfigServer } from './config/config';
-// import indexRoutes from './routes/routes';
+import { ConfigServer } from './config/config';
 import morgan from 'morgan';
 import { UserRouter } from './routes/user.routes';
 import { DataSource } from 'typeorm';
@@ -23,11 +21,10 @@ class Server extends ConfigServer {
 
     constructor() {
         super();
-        this.debug();
-        // this.passportUse();
-        // this.dbConnect();
-        // this.configureApp();
-        // this.listen();
+        this.passportUse();
+        this.dbConnect();
+        this.configureApp();
+        this.listen();
     }
     debug(): void {
         console.log(
@@ -52,6 +49,14 @@ class Server extends ConfigServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(morgan('dev'));
+
+        /**CORS config */
+        this.app.use(cors({
+            origin: ['https://rental-car-ag4g-o8avo0z00-pablokazalukians-projects.vercel.app', 'http://localhost:4200'],
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'Auth'],
+        }));
+
         /** Log the request */
         this.app.use((req, res, next) => {
 
