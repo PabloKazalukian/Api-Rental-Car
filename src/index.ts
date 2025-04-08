@@ -24,10 +24,10 @@ class Server extends ConfigServer {
     constructor() {
         super();
         this.debug();
-        this.passportUse();
-        this.dbConnect();
-        this.configureApp();
-        this.listen();
+        // this.passportUse();
+        // this.dbConnect();
+        // this.configureApp();
+        // this.listen();
     }
     debug(): void {
         console.log(
