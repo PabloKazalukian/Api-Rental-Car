@@ -52,7 +52,7 @@ class Server extends ConfigServer {
 
         /**CORS config */
         this.app.use(cors({
-            origin: ['https://rental-car-ag4g-o8avo0z00-pablokazalukians-projects.vercel.app', 'http://localhost:4200'],
+            origin: ['https://rental-car-ag4g-o8avo0z00-pablokazalukians-projects.vercel.app', 'https://rental-car-pablo-kaza.vercel.app', 'http://localhost:4200'],
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'Auth'],
             credentials: true,
