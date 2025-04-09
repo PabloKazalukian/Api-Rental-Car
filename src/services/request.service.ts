@@ -48,6 +48,7 @@ export class RequestService extends BaseService<RequestEntity> {
             .createQueryBuilder("request")
             .leftJoinAndSelect("request.car_id", "car_id")
             .andWhere("(car_id.id = :idcar)", { idcar: idCar })
+            .andWhere("request.state != :cancelled", { cancelled: "can" })
             .select(["request", "car_id.id", "car_id.brand", "car_id.model", "car_id.year", "car_id.price", "car_id.image"])
             .getMany()
     }
