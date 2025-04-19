@@ -26,4 +26,21 @@ export class AuthController extends AuthService {
         }
     }
 
+    async loginGoogle(req: Request, res: Response) {
+        try {
+            const userEncode = req.user as UserEntity;
+            const encode = await this.generateJWT(userEncode);
+            if (!encode) {
+                return this.httpResponse.Unauthorized(res, 'Token invalido');
+            }
+            res.header('Content-Type', 'application/json');
+            res.cookie("accessToken", encode.accessToken, { maxAge: 60000 * 60 });
+            res.write(JSON.stringify(encode));
+            res.end();
+
+        } catch (err) {
+            return this.httpResponse.Error(res, 'Ocurrio un error');
+        }
+    }
+
 }

@@ -12,12 +12,16 @@ export class JwtMiddleware {
     // }
 
     passAuth(type: string) {
-        return passport.authenticate(type, { session: false });
+        return (req: Request, res: Response, next: NextFunction) => {
+            console.log('🔥 Middleware ejecutado para tipo:', type);
+            passport.authenticate(type, { session: false })(req, res, next);
+        };
     }
 
     checkAdminRole(req: Request, res: Response, next: NextFunction) {
         //para que el request del usuario sea del formato de la entidad usuario
         const user = req.user as UserEntity;
+        console.log('roso', req.user)
         if (user.role !== UserRole.ADMIN) {
             return this.httResponse.Unauthorized(res, " no tienes permisos");
         }

@@ -13,6 +13,7 @@ import { AuthRouter } from './routes/auth.routes';
 import { LoginStrategy } from './strategies/login.strategy';
 import { DiscountRouter } from './routes/discount.routes';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GoogleOAuthStrategy } from './strategies/google.strategy';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -72,22 +73,6 @@ class Server extends ConfigServer {
             next();
         });
 
-        /** Rules of our API */
-        // this.app.use((req, res, next) => {
-        //     res.header('Access-Control-Allow-Origin', '*');
-        //     // res.header('Access-Control-Allow-Headers', '*');
-        //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization,Auth");
-        //     res.header('Access-Control-Allow-Methods', 'GET,OPTIONS, POST, PUT, DELETE');
-
-        //     if (req.method == 'OPTIONS') {
-        //         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-        //         return res.status(200).json({});
-        //     }
-
-        //     next();
-        // });
-
-
         // this.app.use(indexRoutes);
         this.app.use("/api", this.routers());
         logging.info('Server', 'Express server is running on port ' + this.port);
@@ -98,7 +83,9 @@ class Server extends ConfigServer {
     }
 
     passportUse() {
-        return [new LoginStrategy().use, new JwtStrategy().use]
+        new LoginStrategy().use;
+        new JwtStrategy().use;
+        new GoogleOAuthStrategy().use;
     }
 
     /** Error handling */
