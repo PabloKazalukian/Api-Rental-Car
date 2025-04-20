@@ -8,9 +8,9 @@ export class BaseDTO {
 
     @IsDate()
     @IsOptional()
-    createdAd!: Date;
+    createdAt!: Date;
 
     @IsDate()
     @IsOptional()
-    updatedAd!: Date;
+    updatedAt!: Date;
 }

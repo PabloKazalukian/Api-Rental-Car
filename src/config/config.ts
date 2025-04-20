@@ -39,19 +39,6 @@ const MYSQL = {
     port: MYSQL_PORT
 };
 
-// const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || "localhost";
-// const SERVER_PORT = process.env.PORT || 3001;
-
-// interface Server {
-//     port: number | string;
-//     hostname: string;
-// };
-
-// const SERVER: Server = {
-//     hostname: SERVER_HOSTNAME,
-//     port: SERVER_PORT,
-// };
-
 const AUTH_JWT: string = process.env.AUTH_JWT || "SECRETO";
 
 const AUTH = {
@@ -61,7 +48,6 @@ const AUTH = {
 
 const config = {
     mysql: MYSQL,
-    // server: SERVER,
     auth: AUTH,
 };
 
