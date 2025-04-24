@@ -21,10 +21,8 @@ export class AuthService extends ConfigServer {
      * Puede recibir como identificador un nombre de usuario o un correo electrónico.
      */
     public async validateUser(identifier: string, plainPassword: string): Promise<UserEntity | null> {
-        // Buscar usuario por nombre de usuario
-        const userByUsername: UserEntity | null = await this.userService.findUserByUsername(identifier);
 
-        // Buscar usuario por email
+        const userByUsername: UserEntity | null = await this.userService.findUserByUsername(identifier);
         const userByEmail: UserEntity | null = await this.userService.findUserByEmail(identifier);
 
         // Validar contraseña si se encontró usuario por nombre de usuario
@@ -43,7 +41,6 @@ export class AuthService extends ConfigServer {
             }
         }
 
-        // Retorna null si no se encontró un usuario válido
         return null;
     }
 
@@ -58,7 +55,6 @@ export class AuthService extends ConfigServer {
      * Genera un JWT para el usuario autenticado e incluye sus datos (sin contraseña).
      */
     public async generateJWT(user: UserEntity): Promise<{ accessToken: string; user: UserEntity }> {
-        // Obtener datos del usuario junto con su rol
         const userWithRole = await this.userService.findUserWithRole(user.id, user.role);
 
         // Preparar el payload del token

@@ -28,6 +28,8 @@ export class AuthController extends AuthService {
 
     async loginGoogle(req: Request, res: Response) {
         try {
+            console.log(req.user);
+            return res.status(200).json({ message: "Login Google", user: req.user });
             const userEncode = req.user as UserEntity;
             const encode = await this.generateJWT(userEncode);
             if (!encode) {
