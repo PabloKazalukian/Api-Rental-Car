@@ -21,7 +21,15 @@ export class JwtStrategy extends AuthService {
             "jwt",
             JwtStr,
             {
-                jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+                // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+                jwtFromRequest: ExtractJwt.fromExtractors([
+                    (req) => {
+                        if (req && req.cookies) {
+                            return req.cookies['accessToken'];
+                        }
+                        return null;
+                    }
+                ]),
                 secretOrKey: "SECRETO",
                 ignoreExpiration: false
             },

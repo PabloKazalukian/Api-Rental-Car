@@ -14,6 +14,7 @@ import { LoginStrategy } from './strategies/login.strategy';
 import { DiscountRouter } from './routes/discount.routes';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleOAuthStrategy } from './strategies/google.strategy';
+import cookieParser from 'cookie-parser';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -50,6 +51,7 @@ class Server extends ConfigServer {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(morgan('dev'));
+        this.app.use(cookieParser());
 
         /**CORS config */
         this.app.use(cors({
@@ -72,9 +74,16 @@ class Server extends ConfigServer {
 
             next();
         });
+        // this.app.use((req, res, next) => {
+        //     console.log('Headers:', req.headers);
+        //     console.log('Cookies:', req.headers.cookie);
+        //     next();
+        // });
 
         // this.app.use(indexRoutes);
         this.app.use("/api", this.routers());
+        // Agrega esta línea
+        this.errorHandler();
         logging.info('Server', 'Express server is running on port ' + this.port);
     }
 

@@ -12,7 +12,7 @@ export class UserDTO extends BaseDTO {
     @IsNotEmpty()
     username!: string;
 
-    @IsNotEmpty()
+    // @IsNotEmpty()
     password!: string;
 
     @IsEmail()
