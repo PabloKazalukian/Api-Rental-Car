@@ -17,7 +17,10 @@ export abstract class ConfigServer {
     }
 
     get initConnect(): Promise<DataSource> {
-        return AppDataSource.initialize();
+        if (AppDataSource.isInitialized) {
+            return Promise.resolve(AppDataSource); // Ya está conectado
+        }
+        return AppDataSource.initialize(); // Lo conecta si aún no lo está
     }
 }
 

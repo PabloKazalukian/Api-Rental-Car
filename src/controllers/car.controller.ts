@@ -17,7 +17,6 @@ export class CarController {
     async getCarById(req: Request, res: Response) {
         try {
             // console.log(req.params.id);
-            console.log("data");
             const data = await this.carService.findById(req.params.id);
             if (!data) return res.status(404).json({ message: "Car not found" });
             return this.httpResponse.Ok(res, data);

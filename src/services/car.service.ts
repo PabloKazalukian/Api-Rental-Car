@@ -15,6 +15,10 @@ export class CarService extends BaseService<CarEntity> {
     async findById(id: string): Promise<CarEntity | null> {
         return (await this.execRepository).findOneBy({ id })
     }
+
+    async findByModelAndYear(model: string, year: number): Promise<CarEntity | null> {
+        return (await this.execRepository).findOneBy({ model, year })
+    }
     async createCar(newCar: CarDTO): Promise<CarEntity> {
         return (await this.execRepository).save(newCar)
     }
@@ -29,4 +33,5 @@ export class CarService extends BaseService<CarEntity> {
         console.log("id:", id)
         return (await this.execRepository).createQueryBuilder().select('car.price').from(CarEntity, 'car').where('car.id = :id', { id }).getOne();
     }
+
 }

@@ -8,6 +8,7 @@
         "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
         "typeorm": "typeorm-ts-node-commonjs -d ./src/config/data.source.ts",
         "m:generate": "npm run typeorm migration:generate",
+        "seed": "ts-node ./src/seeds/seed.ts",
         "m:run": "npm run typeorm migration:run",
         "build": "tsc"
     },

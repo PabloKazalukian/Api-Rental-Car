@@ -24,9 +24,7 @@ export class UserService extends BaseService<UserEntity> {
     async createUser(body: UserDTO): Promise<UserEntity> {
 
         // Hash password before saving to database
-        console.log(body);
         const newUser = (await this.execRepository).create(body);
-        console.log(newUser);
         if (newUser.password !== null) {
             const salt = bcryptjs.genSaltSync(8);
             let password = bcryptjs.hashSync(newUser.password, salt);

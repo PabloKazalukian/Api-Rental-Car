@@ -43,7 +43,6 @@ export class UserController {
 
     async verifyEmail(req: Request, res: Response): Promise<Response> {
         try {
-            console.log('work', req.body)
             const data = await this.userService.findUserByEmail(req.body.email);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);
