@@ -60,8 +60,8 @@ export class AuthController {
             res.cookie("accessToken", encode.accessToken, {
                 maxAge: 60000 * 60,
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
+                sameSite: 'none',
+                secure: true,
                 path: '/',
             });
             const redirectUri = req.cookies.redirectUri || 'http://localhost:4200/callback';
