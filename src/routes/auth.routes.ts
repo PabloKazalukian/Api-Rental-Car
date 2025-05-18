@@ -19,6 +19,7 @@ export class AuthRouter extends Routes<AuthController, JwtMiddleware> {
                     sameSite: 'lax',
                     secure: process.env.NODE_ENV === 'production',
                 });
+                console.log('redirectUri', redirectUri);
             }
             this.middleware.passAuth("google", { scope: ['profile', 'email'] })(req, res, next);
         });
