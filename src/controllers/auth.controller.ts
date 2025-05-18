@@ -65,6 +65,7 @@ export class AuthController {
                 path: '/',
             });
             const redirectUri = req.cookies.redirectUri || 'http://localhost:4200/callback';
+            console.log('versos', redirectUri);
             res.clearCookie('redirectUri'); // limpiar la cookie después de usarla
             res.redirect(redirectUri);
             // res.redirect(`${redirectUri}/callback`);
