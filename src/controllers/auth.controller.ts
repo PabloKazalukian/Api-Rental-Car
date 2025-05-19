@@ -13,8 +13,7 @@ export class AuthController {
     async login(req: Request, res: Response) {
         try {
             // console.log('post')
-            const { user } = req.body;
-            const userEncode = user as UserEntity;
+            const userEncode = req.user as UserEntity;
             const encode = await this.authService.generateJWT(userEncode);
             if (!encode) {
                 return this.httpResponse.Unauthorized(res, 'Token invalido');
@@ -26,8 +25,8 @@ export class AuthController {
                 sameSite: 'lax',
                 path: '/',
             });
-            res.json(encode);
-            res.send();
+            res.write(JSON.stringify(encode));
+            res.end();
 
         } catch (err) {
             return this.httpResponse.Error(res, 'Ocurrio un error');
