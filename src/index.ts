@@ -1,6 +1,6 @@
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import "reflect-metadata";
-import express from 'express';
+import express, { NextFunction, Request, Response } from "express";
 import logging from './config/logging';
 import { ConfigServer } from './config/config';
 import morgan from 'morgan';
@@ -17,7 +17,7 @@ import { GoogleOAuthStrategy } from './strategies/google.strategy';
 import cookieParser from 'cookie-parser';
 
 class Server extends ConfigServer {
-    public app: express.Application = express();
+    public app = express();
     private port: number = this.getNumberEnv('PORT') || 3001;
     private NAMESPACE = 'Server';
 
@@ -54,23 +54,31 @@ class Server extends ConfigServer {
         this.app.use(cookieParser());
 
         /**CORS config */
-        this.app.use(cors({
-            origin: ['https://rental-car-ag4g-o8avo0z00-pablokazalukians-projects.vercel.app', 'https://rental-car-pablo-kaza.vercel.app', 'http://localhost:4200'],
+
+        const corsOptions: CorsOptions = {
+            origin: [
+                'https://rental-car-ag4g-o8avo0z00-pablokazalukians-projects.vercel.app',
+                'https://rental-car-pablo-kaza.vercel.app',
+                'http://localhost:4200'
+            ],
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
             allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'Auth'],
-            credentials: true,
-        }));
+            credentials: true
+        };
+
+        // 👇 Esto ya debería funcionar bien:
+        this.app.use((req: Request, res: Response, next) => { cors(corsOptions); next() });
 
         /** Log the request */
-        this.app.use((req, res, next) => {
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
 
             /** Log the req */
             logging.info(this.NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
-            res.on('finish', () => {
-                /** Log the res */
-                logging.info(this.NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`);
-            });
+            // res.on('finish', () => {
+            //     /** Log the res */
+            //     logging.info(this.NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`);
+            // });
 
             next();
         });
@@ -99,7 +107,7 @@ class Server extends ConfigServer {
 
     /** Error handling */
     public errorHandler(): void {
-        this.app.use((req, res, next) => {
+        this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
 
             const error = new Error('Not found');
 

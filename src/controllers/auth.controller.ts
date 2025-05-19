@@ -25,8 +25,8 @@ export class AuthController {
                 sameSite: 'lax',
                 path: '/',
             });
-            res.write(JSON.stringify(encode));
-            res.end();
+            res.json(encode);
+            res.send();
 
         } catch (err) {
             return this.httpResponse.Error(res, 'Ocurrio un error');
