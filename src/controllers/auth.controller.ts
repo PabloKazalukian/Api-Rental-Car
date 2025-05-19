@@ -60,13 +60,13 @@ export class AuthController {
             res.cookie("accessToken", encode.accessToken, {
                 maxAge: 60000 * 60,
                 httpOnly: true,
-                sameSite: 'none',
-                secure: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
                 path: '/',
             });
             const redirectUri = req.cookies.redirectUri || 'http://localhost:4200/callback';
-            console.log('versos', redirectUri);
             res.clearCookie('redirectUri'); // limpiar la cookie después de usarla
+            console.log('redirectUri', redirectUri)
             res.redirect(redirectUri);
             // res.redirect(`${redirectUri}/callback`);
 
