@@ -12,6 +12,7 @@ export class AuthRouter extends Routes<AuthController, JwtMiddleware> {
         this.router.post('/auth/login', this.middleware.passAuth("login"), (req, res) => { this.controller.login(req, res) });
         this.router.get('/auth/google', (req, res, next) => {
             const redirectUri = req.query.redirectUri as string;
+            console.log('redirectUri', redirectUri);
             if (redirectUri) {
                 res.cookie('redirectUri', redirectUri, {
                     httpOnly: false, // solo se necesita para redirección del navegador

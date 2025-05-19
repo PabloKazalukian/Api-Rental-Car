@@ -25,6 +25,12 @@ export class GoogleOAuthStrategy extends AuthService {
     }
 
     get use() {
+        const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+        const host = process.env.HOST || 'localhost:3100';
+        console.log('host', host);
+        console.log('protocol', protocol);
+        const callbackURL = `${protocol}://${host}/api/auth/google/callback`;
+
         return PassportUse<
             GoogleStrategy,
             {
@@ -44,7 +50,7 @@ export class GoogleOAuthStrategy extends AuthService {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID!,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-                callbackURL: '/api/auth/google/callback'
+                callbackURL: callbackURL
             },
             this.validate
         );
