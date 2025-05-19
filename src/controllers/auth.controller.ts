@@ -65,6 +65,8 @@ export class AuthController {
                 sameSite: 'lax',
                 path: '/',
             });
+            console.log('cookie', encode.accessToken);
+            console.log('cookie en cookie', req.cookies.accessToken);
             const redirectUri = req.cookies.redirectUri || 'http://localhost:4200/callback';
             res.clearCookie('redirectUri'); // limpiar la cookie después de usarla
             console.log('redirectUri', redirectUri)
