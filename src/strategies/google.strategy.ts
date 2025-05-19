@@ -84,6 +84,8 @@ export class GoogleOAuthStrategy extends AuthService {
     }
 
     get use() {
+        const reedirect = process.env.NODE_ENV === 'production' ? 'https://api-rental-car-9niy.onrender.com/api/auth/google/callback' : '/api/auth/google/callback';
+
         return PassportUse<
             GoogleStrategy,
             {
@@ -105,7 +107,7 @@ export class GoogleOAuthStrategy extends AuthService {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID!,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-                callbackURL: '/api/auth/google/callback',
+                callbackURL: reedirect,
                 passReqToCallback: true
             },
             this.validate
