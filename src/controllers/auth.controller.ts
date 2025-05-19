@@ -52,6 +52,7 @@ export class AuthController {
 
             const encode = await this.authService.generateJWT(user);
             if (!encode) {
+                console.log('failed', encode);
                 return this.httpResponse.Unauthorized(res, 'Token invalido');
             }
 
