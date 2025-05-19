@@ -75,10 +75,10 @@ class Server extends ConfigServer {
             /** Log the req */
             logging.info(this.NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
-            // res.on('finish', () => {
-            //     /** Log the res */
-            //     logging.info(this.NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`);
-            // });
+            (res as any).on('finish', () => {
+                /** Log the res */
+                logging.info(this.NAMESPACE, `METHOD: [${req.method}] - URL: [${req.url}] - STATUS: [${res.statusCode}] - IP: [${req.socket.remoteAddress}]`);
+            });
 
             next();
         });
