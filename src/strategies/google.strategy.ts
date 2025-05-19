@@ -84,14 +84,6 @@ export class GoogleOAuthStrategy extends AuthService {
     }
 
     get use() {
-        const isProduction = process.env.NODE_ENV === 'production';
-
-        // 🔒 Forzar protocolo HTTPS y dominio correcto en producción
-        const callbackURL = isProduction
-            ? 'https://api-rental-car-9niy.onrender.com/api/auth/google/callback'
-            : 'http://localhost:3100/api/auth/google/callback';
-
-        console.log('Google Strategy callbackURL:', callbackURL);
         return PassportUse<
             GoogleStrategy,
             {
@@ -113,7 +105,7 @@ export class GoogleOAuthStrategy extends AuthService {
             {
                 clientID: process.env.GOOGLE_CLIENT_ID!,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-                callbackURL,
+                callbackURL: '/api/auth/google/callback',
                 passReqToCallback: true
             },
             this.validate
