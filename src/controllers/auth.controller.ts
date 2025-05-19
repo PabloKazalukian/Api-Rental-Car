@@ -62,8 +62,10 @@ export class AuthController {
                 maxAge: 60000 * 60,
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
+                sameSite: 'none',
                 path: '/',
+                // sameSite: 'None', // 🔥 para que funcione cross-origin
+                // maxAge: 3600 * 1000
             });
             console.log('cookie', encode.accessToken);
             console.log('cookie en cookie', req.cookies.accessToken);
