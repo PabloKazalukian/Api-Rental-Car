@@ -1,0 +1,25 @@
+import { Request, Response } from "express";
+import { __Name__Service } from "../services/__name__.service";
+import { HttpResponse } from "../shared/http.response";
+
+export class __Name__Controller {
+    constructor(private readonly __name__Service: __Name__Service = new __Name__Service(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
+
+    async getAll__Name__(req: Request, res: Response) {
+        try {
+            const data = await this.__name__Service.findAll__Name__();
+            return this.httpResponse.Ok(res, data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    }
+
+    async create__Name__(req: Request, res: Response) {
+        try {
+            const data = await this.__name__Service.create__Name__(req.body);
+            return res.status(201).json(data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    }
+}

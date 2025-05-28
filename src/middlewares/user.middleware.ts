@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserDTO, UserRole } from "../dto/user.dto";
+import { UserDTO, UserRole } from "../dtos/user.dto";
 import { validate } from "class-validator";
 import { HttpResponse } from '../shared/http.response';
 import { JwtMiddleware } from "./jwt.middleware";

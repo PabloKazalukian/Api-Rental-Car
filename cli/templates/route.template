@@ -1,0 +1,14 @@
+import { __Name__Controller } from "../controllers/__name__.controller";
+import { __Name__Middleware } from "../middlewares/__name__.middleware";
+import { Routes } from "./routes";
+
+export class __Name__Router extends Routes<__Name__Controller, __Name__Middleware> {
+    constructor() {
+        super(__Name__Controller, __Name__Middleware)
+    }
+
+    routes(): void {
+        this.router.get('/__name__', (req, res) => { this.controller.getAll__Name__(req, res) });
+        this.router.post('/__name__', (req, res, next) => [this.middleware.__name__Validator(req, res, next)], (req, res) => { this.controller.create__Name__(req, res); });
+    }
+}

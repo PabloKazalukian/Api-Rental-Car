@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { HttpResponse } from "../shared/http.response";
-import { UserRole } from "../dto/user.dto";
 import { UserEntity } from "../entities/user.entity";
+import { UserRole } from "../dtos/user.dto";
 // import { Response } from "@sendgrid/helpers/classes";
 
 export class JwtMiddleware {

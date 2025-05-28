@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
-import { DiscountDTO } from "../dto/discount.dto";
+import { DiscountDTO } from "../dtos/discount.dto";
 
 export class DiscountMiddleware {
     constructor(private httpResponse: HttpResponse = new HttpResponse()) { }

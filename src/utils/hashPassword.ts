@@ -1,4 +1,3 @@
-import { UserDTO } from "../dto/user.dto";
 import bcryptjs from 'bcryptjs';
 
 export async function hashPassword(pass: string): Promise<string> {

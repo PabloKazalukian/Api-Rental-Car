@@ -1,6 +1,6 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../config/base.service";
-import { UserDTO } from "../dto/user.dto";
+import { UserDTO } from "../dtos/user.dto";
 import { UserEntity, UserRole } from "../entities/user.entity";
 import bcryptjs from 'bcryptjs';
 

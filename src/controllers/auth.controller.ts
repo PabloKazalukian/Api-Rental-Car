@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { HttpResponse } from "../shared/http.response";
 import { UserEntity } from "../entities/user.entity";
 import { UserService } from "../services/user.service";
-import { UserDTO, UserRole } from "../dto/user.dto";
+import { UserDTO, UserRole } from "../dtos/user.dto";
 
 export class AuthController {
     constructor(private readonly httpResponse: HttpResponse = new HttpResponse(),
@@ -62,7 +62,7 @@ export class AuthController {
                 maxAge: 60000 * 60,
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: 'none',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                 path: '/',
                 // sameSite: 'None', // 🔥 para que funcione cross-origin
                 // maxAge: 3600 * 1000

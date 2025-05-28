@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { RequestDTO } from "../dto/request.dto";
+import { RequestDTO } from "../dtos/request.dto";
 import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
 

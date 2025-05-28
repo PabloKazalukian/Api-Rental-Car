@@ -1,7 +1,7 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../config/base.service";
 import { RequestEntity } from "../entities/request.entity";
-import { RequestDTO } from "../dto/request.dto";
+import { RequestDTO } from "../dtos/request.dto";
 import { User } from '../interfaces/user.interface';
 import { UserEntity } from "../entities/user.entity";
 

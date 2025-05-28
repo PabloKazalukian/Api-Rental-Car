@@ -1,5 +1,5 @@
 import { Profile } from "passport";
-import { UserRole } from "../dto/user.dto";
+import { UserRole } from "../dtos/user.dto";
 
 export interface PayloadToken {
     role: UserRole;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
 import { HttpResponse } from '../shared/http.response';
-import { CarDTO } from "../dto/car.dto";
+import { CarDTO } from "../dtos/car.dto";
 
 export class CarMiddleware {
     constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
