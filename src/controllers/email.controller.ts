@@ -1,22 +1,22 @@
 import { Request, Response } from "express";
 import { HttpResponse } from "../shared/http.response";
+import { EmailService } from "../services/email.service";
+import { ResendEmailProvider } from "../providers/email/resend.provider";
+// import { NodemailerEmailProvider } from "../providers/email/nodemailerEmail.provider";
 
 export class EmailController {
-    constructor(private readonly httpResponse: HttpResponse = new HttpResponse()) {}
-
-    async getAllEmail(req: Request, res: Response) {
-        try {
-            return this.httpResponse.Ok(res, { message: "getAllEmail works!" });
-        } catch (err) {
-            return this.httpResponse.Error(res, err);
-        }
-    }
+    private readonly http = new HttpResponse();
+    private readonly emailService = new EmailService(
+        new ResendEmailProvider() // <- Cambiá esto por NodemailerEmailProvider si querés
+    );
 
     async createEmail(req: Request, res: Response) {
         try {
-            return res.status(201).json({ message: "createEmail works!", body: req.body });
-        } catch (err) {
-            return this.httpResponse.Error(res, err);
+            console.log("Datos recibidos:", req.body);
+            const result = await this.emailService.send(req.body);
+            return res.status(201).json({ message: "Email enviado!", result });
+        } catch (error) {
+            return this.http.Error(res, error);
         }
     }
 }

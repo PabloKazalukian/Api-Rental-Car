@@ -15,6 +15,7 @@ import { DiscountRouter } from './routes/discount.routes';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleOAuthStrategy } from './strategies/google.strategy';
 import cookieParser from 'cookie-parser';
+import { EmailRouter } from './routes/email.routes';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -88,7 +89,7 @@ class Server extends ConfigServer {
     }
 
     public routers(): Array<express.Router> {
-        return [new UserRouter().router, new CarRouter().router, new RequestRouter().router, new PaymentRouter().router, new AuthRouter().router, new DiscountRouter().router];
+        return [new UserRouter().router, new CarRouter().router, new RequestRouter().router, new PaymentRouter().router, new AuthRouter().router, new DiscountRouter().router, new EmailRouter().router];
     }
 
     passportUse() {

@@ -3,5 +3,13 @@ import { IsNotEmpty } from "class-validator";
 
 export class EmailDTO extends BaseDTO {
     @IsNotEmpty()
-    exampleField!: string;
+    name!: string;
+
+    @IsNotEmpty()
+    email!: string;
+
+    @IsNotEmpty()
+    message!: string;
+
+    subject?: string;
 }

@@ -7,7 +7,13 @@ export class EmailMiddleware {
     constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
 
     emailValidator(req: Request, res: Response, next: NextFunction) {
+
+        const { name, email, message } = req.body;
         const valid = new EmailDTO();
+        valid.name = name;
+        valid.email = email;
+        valid.message = message;
+
         Object.assign(valid, req.body);
 
         validate(valid).then(errors => {
