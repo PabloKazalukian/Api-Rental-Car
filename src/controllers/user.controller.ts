@@ -17,7 +17,7 @@ export class UserController {
 
     async getUserById(req: Request, res: Response): Promise<Response> {
         try {
-            const data: UserEntity | null = await this.userService.findById(req.params.id);
+            const data: UserEntity | null = await this.userService.findById(req.params.idUser);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);
         } catch (err) {
@@ -74,6 +74,7 @@ export class UserController {
 
     async modifyUser(req: Request, res: Response): Promise<Response> {
         try {
+            console.log(req.params.idUser, req.body)
             const data = await this.userService.updateUser(req.params.idUser, req.body);
             if (!data.affected) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);

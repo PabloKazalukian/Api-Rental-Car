@@ -46,7 +46,7 @@ export class AuthController {
             let user = await this.userService.findUserByEmail(googleUser.email);
 
             if (!user) {
-                // 👶 No existe, lo registramos
+                // 👌 No existe, lo registramos
                 user = await this.userService.createUser(googleUser);
             }
 
@@ -79,6 +79,36 @@ export class AuthController {
             console.log(err);
             return this.httpResponse.Error(res, 'Ocurrio un error');
         }
+    }
+
+    async refresh(req: Request, res: Response) {
+        try {
+            console.log(req.body)
+            const user = req.body;
+            const encode = await this.authService.generateJWT(user)
+            if (!encode) {
+                return this.httpResponse.Unauthorized(res, 'Token invalido');
+            }
+            res.clearCookie('accessToken', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                path: '/', // ⚠️ Este debe coincidir con el `path` usado cuando seteaste la cookie
+            });
+            res.header('Content-Type', 'application/json');
+            res.cookie("accessToken", encode.accessToken, {
+                maxAge: 60000 * 60, httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                path: '/',
+            });
+            res.write(JSON.stringify(encode));
+            res.end();
+        } catch (err) {
+            console.log(err);
+            return this.httpResponse.Error(res, 'Ocurrio un error');
+        }
+
     }
 
     async logout(req: Request, res: Response) {

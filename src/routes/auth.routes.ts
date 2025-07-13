@@ -24,6 +24,7 @@ export class AuthRouter extends Routes<AuthController, JwtMiddleware> {
             this.middleware.passAuth("google", { scope: ['profile', 'email'] })(req, res, next);
         });
         this.router.get('/auth/google/callback', this.middleware.passAuth("google"), (req, res) => this.controller.loginGoogle(req, res));
+        this.router.post('/auth/refresh', this.middleware.passAuth('jwt', { session: false }), (req, res) => this.controller.refresh(req, res));
         this.router.get('/auth/me', this.middleware.passAuth('jwt', { session: false }), (req, res) => { res.json(req.cookies.accessToken); });
         this.router.get('/auth/logout', this.middleware.passAuth('jwt', { session: false }), (req, res) => { this.controller.logout(req, res) });
     }

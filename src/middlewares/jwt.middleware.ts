@@ -14,6 +14,7 @@ export class JwtMiddleware {
 
     passAuth(type: string, options = {}) {
         return (req: Request, res: Response, next: NextFunction) => {
+            console.log('pesao', req.body)
             passport.authenticate(type, { session: false, ...options })(req, res, next);
         };
     }
