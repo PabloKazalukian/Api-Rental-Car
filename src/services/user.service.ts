@@ -3,6 +3,7 @@ import { BaseService } from "../config/base.service";
 import { UserDTO } from "../dtos/user.dto";
 import { UserEntity, UserRole } from "../entities/user.entity";
 import bcryptjs from 'bcryptjs';
+import { hashPassword } from "../utils/hashPassword";
 
 export class UserService extends BaseService<UserEntity> {
     constructor() {
@@ -24,12 +25,7 @@ export class UserService extends BaseService<UserEntity> {
     async createUser(body: UserDTO): Promise<UserEntity> {
 
         // Hash password before saving to database
-        const newUser = (await this.execRepository).create(body);
-        if (newUser.password !== null) {
-            const salt = bcryptjs.genSaltSync(8);
-            let password = bcryptjs.hashSync(newUser.password, salt);
-            newUser.password = password;
-        }
+        const newUser = await this.createUserEntity(body);
 
         return (await this.execRepository).save(newUser)
     }
@@ -49,4 +45,12 @@ export class UserService extends BaseService<UserEntity> {
         return (await this.execRepository).findOneBy({ username })
     }
 
+    async createUserEntity(body: UserDTO): Promise<UserEntity> {
+        const newUser = (await this.execRepository).create(body);
+        if (newUser.password !== null) {
+
+            newUser.password = await hashPassword(newUser.password)
+        }
+        return newUser
+    }
 }

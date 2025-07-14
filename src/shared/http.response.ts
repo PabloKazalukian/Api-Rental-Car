@@ -51,6 +51,14 @@ export class HttpResponse {
         });
     }
 
+    Conflict(res: Response, data?: any): Response {
+        return res.status(HttpStatus.CONFLICT).json({
+            status: HttpStatus.CONFLICT,
+            statusMsg: "Conflict",
+            error: data
+        })
+    }
+
     Unauthorized(res: Response, data?: any): Response {
         return res.status(HttpStatus.UNAUTHORIZED).json({
             status: HttpStatus.UNAUTHORIZED,

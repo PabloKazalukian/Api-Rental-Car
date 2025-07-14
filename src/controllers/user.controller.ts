@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import { HttpResponse } from '../shared/http.response';
 import { UserEntity } from "../entities/user.entity";
+import { hashPassword, isSamePassword } from "../utils/hashPassword";
+import { UserDTO } from "../dtos/user.dto";
 
 export class UserController {
     constructor(private readonly userService: UserService = new UserService(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
@@ -63,7 +65,21 @@ export class UserController {
 
     async modifyPassword(req: Request, res: Response): Promise<Response> {
         try {
-            const data = await this.userService.findById(req.params.idUser);
+
+            const user = await this.userService.findById(req.params.idUser);
+            if (user) {
+                const isSame = await isSamePassword(req.body.password, user.password);
+                if (isSame) {
+                    return this.httpResponse.Conflict(res);
+                }
+            }
+            let pass = await hashPassword(req.body.password);
+
+            const userNew = new UserDTO();
+
+            userNew.password = pass;
+
+            const data = await this.userService.updateUser(req.params.idUser, userNew);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);
 
