@@ -70,7 +70,7 @@ export class UserController {
             if (user) {
                 const isSame = await isSamePassword(req.body.password, user.password);
                 if (isSame) {
-                    return this.httpResponse.Conflict(res);
+                    return this.httpResponse.Conflict(res, 'La nueva contraseña no puede ser igual a la anterior.');
                 }
             }
             let pass = await hashPassword(req.body.password);

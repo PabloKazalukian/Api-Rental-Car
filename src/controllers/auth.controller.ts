@@ -114,6 +114,7 @@ export class AuthController {
     async logout(req: Request, res: Response) {
         try {
 
+            console.log('logout', req.cookies.accessToken);
             res.clearCookie('accessToken', {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',

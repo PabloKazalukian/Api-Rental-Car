@@ -47,7 +47,7 @@ export class HttpResponse {
         return res.status(HttpStatus.NOT_FOUND).json({
             status: HttpStatus.NOT_FOUND,
             statusMsg: "Not Found",
-            error: data
+            message: data
         });
     }
 
@@ -55,7 +55,7 @@ export class HttpResponse {
         return res.status(HttpStatus.CONFLICT).json({
             status: HttpStatus.CONFLICT,
             statusMsg: "Conflict",
-            error: data
+            message: data
         })
     }
 
@@ -63,7 +63,7 @@ export class HttpResponse {
         return res.status(HttpStatus.UNAUTHORIZED).json({
             status: HttpStatus.UNAUTHORIZED,
             statusMsg: "Unauthoraized",
-            error: data
+            message: data
         });
     }
 
@@ -71,7 +71,7 @@ export class HttpResponse {
         return res.status(HttpStatus.FORBIDDEN).json({
             status: HttpStatus.FORBIDDEN,
             statusMsg: "Forbidden",
-            error: data
+            message: data
         });
     }
 
@@ -79,7 +79,7 @@ export class HttpResponse {
         return res.status(HttpStatus.SERVER_ERROR).json({
             status: HttpStatus.SERVER_ERROR,
             statusMsg: "Internal Server Error",
-            error: data
+            message: data
         });
     }
 }
