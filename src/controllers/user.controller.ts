@@ -4,6 +4,7 @@ import { HttpResponse } from '../shared/http.response';
 import { UserEntity } from "../entities/user.entity";
 import { hashPassword, isSamePassword } from "../utils/hashPassword";
 import { UserDTO } from "../dtos/user.dto";
+import { instanceToPlain } from "class-transformer";
 
 export class UserController {
     constructor(private readonly userService: UserService = new UserService(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
@@ -21,7 +22,7 @@ export class UserController {
         try {
             const data: UserEntity | null = await this.userService.findById(req.params.idUser);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
-            return this.httpResponse.Ok(res, data);
+            return this.httpResponse.Ok(res, instanceToPlain(data));
         } catch (err) {
             return this.httpResponse.Error(res, 'Ocurrio un error');
         }

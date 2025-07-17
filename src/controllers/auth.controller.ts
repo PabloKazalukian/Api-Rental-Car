@@ -4,6 +4,7 @@ import { HttpResponse } from "../shared/http.response";
 import { UserEntity } from "../entities/user.entity";
 import { UserService } from "../services/user.service";
 import { UserDTO, UserRole } from "../dtos/user.dto";
+import { JwtPayload } from "jsonwebtoken";
 
 export class AuthController {
     constructor(private readonly httpResponse: HttpResponse = new HttpResponse(),
@@ -83,49 +84,58 @@ export class AuthController {
 
     async refresh(req: Request, res: Response) {
         try {
-            console.log(req.body)
-            const user = req.body;
-            const encode = await this.authService.generateJWT(user)
-            if (!encode) {
-                return this.httpResponse.Unauthorized(res, 'Token invalido');
-            }
+            const user = req.user as JwtPayload;
+            if (!user?.sub) return this.httpResponse.Unauthorized(res, 'Token inválido');
+
+            const foundUser = await this.userService.findById(user.sub);
+            if (!foundUser) return this.httpResponse.Unauthorized(res, 'Usuario no encontrado');
+
+            const encode = await this.authService.generateJWT(foundUser);
+
             res.clearCookie('accessToken', {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                path: '/', // ⚠️ Este debe coincidir con el `path` usado cuando seteaste la cookie
-            });
-            res.header('Content-Type', 'application/json');
-            res.cookie("accessToken", encode.accessToken, {
-                maxAge: 60000 * 60, httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
                 path: '/',
             });
-            res.write(JSON.stringify(encode));
-            res.end();
-        } catch (err) {
-            console.log(err);
-            return this.httpResponse.Error(res, 'Ocurrio un error');
-        }
+            this.clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
-    }
 
-    async logout(req: Request, res: Response) {
-        try {
-
-            console.log('logout', req.cookies.accessToken);
-            res.clearCookie('accessToken', {
+            res.cookie('accessToken', encode.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
-                path: '/', // ⚠️ Este debe coincidir con el `path` usado cuando seteaste la cookie
+                path: '/',
+                maxAge: 60 * 60 * 1000,
             });
+
+            return res.json(encode);
+        } catch (err) {
+            console.error('[REFRESH ERROR]', err);
+            return this.httpResponse.Error(res, 'Ocurrió un error');
+        }
+    }
+
+
+    logout(req: Request, res: Response) {
+        try {
+            this.clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
             return this.httpResponse.Ok(res, 'Logout exitoso');
 
         } catch (err) {
             return this.httpResponse.Error(res, 'Ocurrio un error');
+        }
+    }
+
+    async clearCookies(res: Response, names: string[]) {
+        for (const name of names) {
+            res.clearCookie(name, {
+                httpOnly: true,
+                sameSite: "strict",
+                secure: true,
+                path: "/",
+            });
         }
     }
 
