@@ -10,10 +10,11 @@ export class RequestMiddleware {
         const { amount, initialDate, finalDate, state, user_id, car_id } = req.body;
         const valid = new RequestDTO()
 
+        console.log(typeof initialDate, typeof finalDate);
         valid.amount = amount;
         valid.car_id = car_id;
-        valid.finalDate = finalDate;
-        valid.initialDate = initialDate;
+        valid.finalDate = new Date(finalDate);
+        valid.initialDate = new Date(initialDate);
         valid.state = state;
         valid.user_id = user_id;
 

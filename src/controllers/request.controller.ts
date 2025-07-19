@@ -122,7 +122,9 @@ export class RequestController {
     }
     async createRequest(req: Request, res: Response): Promise<Response> {
         try {
+            console.log('Request data received:', req.body);
             let data = await this.requestSvc.createRequest(req.body);
+            console.log('Request created:', data);
             let amount = await this.getAmountCarById(res, req.body);
 
             if (amount == 0) { return this.httpResponse.NotFound(res); }
