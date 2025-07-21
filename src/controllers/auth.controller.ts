@@ -53,12 +53,11 @@ export class AuthController {
 
             const encode = await this.authService.generateJWT(user);
             if (!encode) {
-                console.log('failed', encode);
                 return this.httpResponse.Unauthorized(res, 'Token invalido');
             }
 
             res.header('Content-Type', 'application/json');
-            console.log('passs ', req.query);
+
             res.cookie("accessToken", encode.accessToken, {
                 maxAge: 60000 * 60,
                 httpOnly: true,
@@ -68,11 +67,10 @@ export class AuthController {
                 // sameSite: 'None', // 🔥 para que funcione cross-origin
                 // maxAge: 3600 * 1000
             });
-            console.log('cookie', encode.accessToken);
-            console.log('cookie en cookie', req.cookies.accessToken);
+
             const redirectUri = req.cookies.redirectUri || 'http://localhost:4200/auth/callback';
+
             res.clearCookie('redirectUri'); // limpiar la cookie después de usarla
-            console.log('redirectUri', redirectUri)
             res.redirect(redirectUri);
             // res.redirect(`${redirectUri}/callback`);
 
@@ -119,6 +117,7 @@ export class AuthController {
 
     logout(req: Request, res: Response) {
         try {
+            console.log('oy estoy funcionando.')
             this.clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
             return this.httpResponse.Ok(res, 'Logout exitoso');

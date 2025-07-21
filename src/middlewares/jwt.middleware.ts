@@ -14,8 +14,6 @@ export class JwtMiddleware {
 
     passAuth(type: string, options = {}) {
         return (req: Request, res: Response, next: NextFunction) => {
-            console.log('Cookies:', req.cookies);
-            console.log('Authorization:', req.headers['authorization']);
             passport.authenticate(type, { session: false, ...options })(req, res, next);
         };
     }
