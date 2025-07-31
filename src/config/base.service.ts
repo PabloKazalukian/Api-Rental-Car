@@ -3,14 +3,17 @@ import { BaseEntity } from "./base.entity";
 import { ConfigServer } from "./config";
 
 export class BaseService<T extends BaseEntity> extends ConfigServer {
-    public execRepository: Promise<Repository<T>>
+    private repository: Repository<T> | null = null;
+
     constructor(private getEntity: EntityTarget<T>) {
         super();
-        this.execRepository = this.initRepository(getEntity);
     }
 
-    async initRepository<T extends BaseEntity>(entity: EntityTarget<T>): Promise<Repository<T>> {
-        const getConn = await this.initConnect
-        return getConn.getRepository(entity);
+    protected async execRepository(): Promise<Repository<T>> {
+        if (!this.repository) {
+            const conn = await this.initConnect;
+            this.repository = conn.getRepository(this.getEntity);
+        }
+        return this.repository;
     }
 }

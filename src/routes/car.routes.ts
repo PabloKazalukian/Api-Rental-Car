@@ -1,17 +1,13 @@
-import { CarController } from "../controllers/car.controller";
+import { Router } from "express";
 import { CarMiddleware } from "../middlewares/car.middleware";
-import { Routes } from "./routes";
+import { carController } from "../controllers/index.controller";
 
+const router = Router();
+const middleware = new CarMiddleware();
 
-export class CarRouter extends Routes<CarController, CarMiddleware> {
-    constructor() {
-        super(CarController, CarMiddleware)
-    }
+router.get('/car', (req, res) => { carController.getAllCar(req, res) });
+router.get('/car/:id', (req, res) => { carController.getCarById(req, res); });
+router.get('/car/price/:id', (req, res) => { carController.getPriceById(req, res); });
+router.post('/car', (req, res, next) => [middleware.carValidator(req, res, next)], (req, res) => { carController.createCar(req, res); });
 
-    routes(): void {
-        this.router.get('/car', (req, res) => { this.controller.getAllCar(req, res) });
-        this.router.get('/car/:id', (req, res) => { this.controller.getCarById(req, res); });
-        this.router.get('/car/price/:id', (req, res) => { this.controller.getPriceById(req, res); });
-        this.router.post('/car', (req, res, next) => [this.middleware.carValidator(req, res, next)], (req, res) => { this.controller.createCar(req, res); });
-    }
-}
+export const CarRouter = router;

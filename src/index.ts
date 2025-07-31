@@ -7,14 +7,14 @@ import morgan from 'morgan';
 import { UserRouter } from './routes/user.routes';
 import { DataSource } from 'typeorm';
 import { CarRouter } from './routes/car.routes';
-import { RequestRouter } from './routes/request.routes';
-import { PaymentRouter } from './routes/payment.routes';
-import { AuthRouter } from './routes/auth.routes';
 import { LoginStrategy } from './strategies/login.strategy';
 import { DiscountRouter } from './routes/discount.routes';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleOAuthStrategy } from './strategies/google.strategy';
 import cookieParser from 'cookie-parser';
+import { AuthRouter } from './routes/auth.routes';
+import { RequestRouter } from './routes/request.routes';
+import { PaymentRouter } from './routes/payment.routes';
 import { EmailRouter } from './routes/email.routes';
 
 class Server extends ConfigServer {
@@ -75,11 +75,6 @@ class Server extends ConfigServer {
 
             next();
         });
-        // this.app.use((req, res, next) => {
-        //     console.log('Headers:', req.headers);
-        //     console.log('Cookies:', req.headers.cookie);
-        //     next();
-        // });
 
         // this.app.use(indexRoutes);
         this.app.use("/api", this.routers());
@@ -89,7 +84,7 @@ class Server extends ConfigServer {
     }
 
     public routers(): Array<express.Router> {
-        return [new UserRouter().router, new CarRouter().router, new RequestRouter().router, new PaymentRouter().router, new AuthRouter().router, new DiscountRouter().router, new EmailRouter().router];
+        return [UserRouter, AuthRouter, CarRouter, RequestRouter, PaymentRouter, DiscountRouter, EmailRouter];
     }
 
     passportUse() {

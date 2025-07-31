@@ -1,9 +1,10 @@
 import { Strategy as LocalStrategy, VerifyFunction } from "passport-local";
 import { UserEntity } from '../entities/user.entity';
-import { AuthService } from '../services/auth.service';
 import { PassportUse } from '../utils/passport.use';
+import { authService } from "../services/index.service";
 
-const authService: AuthService = new AuthService();
+
+// const authService: AuthService = new AuthService();
 
 export class LoginStrategy {
     async validate(username: string, passport: string, done: any): Promise<UserEntity> {

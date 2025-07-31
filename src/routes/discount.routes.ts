@@ -1,17 +1,13 @@
-import { Routes } from "./routes";
-import { DiscountController } from "../controllers/discount.controller";
 import { DiscountMiddleware } from "../middlewares/discount.middleware";
+import { Router } from "express";
+import { discountController } from "../controllers/index.controller";
 
 
-export class DiscountRouter extends Routes<DiscountController, DiscountMiddleware> {
-    constructor() {
-        super(DiscountController, DiscountMiddleware)
-    }
+const router = Router();
+const middleware = new DiscountMiddleware;
 
-    routes(): void {
-        this.router.get('/discount', (req, res) => { this.controller.getAllDiscount(req, res); });
-        this.router.get('/discount/:id', (req, res) => { this.controller.getDiscountById(req, res); });
-        this.router.post('/discount', (req, res, next) => [this.middleware.discountValidator(req, res, next)], (req, res) => { this.controller.createDiscount(req, res); });
+router.get('/discount', (req, res) => { discountController.getAllDiscount(req, res); });
+router.get('/discount/:id', (req, res) => { discountController.getDiscountById(req, res); });
+router.post('/discount', (req, res, next) => [middleware.discountValidator(req, res, next)], (req, res) => { discountController.createDiscount(req, res); });
 
-    }
-}
+export const DiscountRouter = router;

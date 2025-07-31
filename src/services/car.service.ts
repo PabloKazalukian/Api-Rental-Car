@@ -10,28 +10,35 @@ export class CarService extends BaseService<CarEntity> {
     }
 
     async findAllCar(): Promise<CarEntity[]> {
-        return (await this.execRepository).find();
+        const repo = await this.execRepository();
+        return repo.find();
     }
     async findById(id: string): Promise<CarEntity | null> {
-        return (await this.execRepository).findOneBy({ id })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id })
     }
 
     async findByModelAndYear(model: string, year: number): Promise<CarEntity | null> {
-        return (await this.execRepository).findOneBy({ model, year })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ model, year })
     }
     async createCar(newCar: CarDTO): Promise<CarEntity> {
-        return (await this.execRepository).save(newCar)
+        const repo = await this.execRepository();
+        return repo.save(newCar)
     }
     async deleteCar(id: string): Promise<DeleteResult> {
-        return (await this.execRepository).delete({ id })
+        const repo = await this.execRepository();
+        return repo.delete({ id })
     }
     async updateCar(id: string, infoUpdate: CarDTO): Promise<UpdateResult> {
-        return (await this.execRepository).update(id, infoUpdate)
+        const repo = await this.execRepository();
+        return repo.update(id, infoUpdate)
     }
 
     async findPriceCarById(id: string): Promise<CarEntity | null> {
         console.log("id:", id)
-        return (await this.execRepository).createQueryBuilder().select('car.price').from(CarEntity, 'car').where('car.id = :id', { id }).getOne();
+        const repo = await this.execRepository();
+        return repo.createQueryBuilder().select('car.price').from(CarEntity, 'car').where('car.id = :id', { id }).getOne();
     }
 
 }

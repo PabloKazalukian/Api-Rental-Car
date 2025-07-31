@@ -1,14 +1,10 @@
-import { EmailController } from "../controllers/email.controller";
+import { Router } from "express";
 import { EmailMiddleware } from "../middlewares/email.middleware";
-import { Routes } from "./routes";
+import { emailController } from "../controllers/index.controller";
 
-export class EmailRouter extends Routes<EmailController, EmailMiddleware> {
-    constructor() {
-        super(EmailController, EmailMiddleware)
-    }
+const router = Router();
+const middleware = new EmailMiddleware();
+// this.router.get('/email', (req, res) => { this.controller.(req, res) });
+router.post('/email', (req, res, next) => [middleware.emailValidator(req, res, next)], (req, res) => { emailController.createEmail(req, res); });
 
-    routes(): void {
-        // this.router.get('/email', (req, res) => { this.controller.(req, res) });
-        this.router.post('/email', (req, res, next) => [this.middleware.emailValidator(req, res, next)], (req, res) => { this.controller.createEmail(req, res); });
-    }
-}
+export const EmailRouter = router;

@@ -12,8 +12,8 @@ export class RequestService extends BaseService<RequestEntity> {
     }
 
     async findAllRequest(): Promise<RequestEntity[]> {
-        return (await this.execRepository)
-            .createQueryBuilder("request")
+        const repo = await this.execRepository();
+        return repo.createQueryBuilder("request")
             .leftJoinAndSelect("request.user_id", "user_id")
             .select(["request", "user_id.username", "user_id.id", "user_id.email"])
             .leftJoinAndSelect("request.car_id", "car_id")
@@ -21,11 +21,13 @@ export class RequestService extends BaseService<RequestEntity> {
     }
 
     async findById(id: string): Promise<RequestEntity | null> {
-        return (await this.execRepository).findOneBy({ id });
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id });
     }
 
     async findByUser(idUser: string): Promise<RequestEntity[] | null> {
-        return (await this.execRepository)
+        const repo = await this.execRepository();
+        return repo
             .createQueryBuilder("request")
             .leftJoinAndSelect("request.user_id", "user_id")
             .andWhere("(user_id.id = :iduser)", { iduser: idUser })
@@ -34,7 +36,8 @@ export class RequestService extends BaseService<RequestEntity> {
     }
 
     async findByUserAndCar(idUser: string): Promise<RequestEntity[] | null> {
-        return (await this.execRepository)
+        const repo = await this.execRepository();
+        return repo
             .createQueryBuilder("request")
             .leftJoinAndSelect("request.user_id", "user_id")
             .leftJoinAndSelect("request.car_id", "car")
@@ -44,7 +47,8 @@ export class RequestService extends BaseService<RequestEntity> {
     }
 
     async findByCar(idCar: string): Promise<RequestEntity[] | null> {
-        return (await this.execRepository)
+        const repo = await this.execRepository();
+        return repo
             .createQueryBuilder("request")
             .leftJoinAndSelect("request.car_id", "car_id")
             .andWhere("(car_id.id = :idcar)", { idcar: idCar })
@@ -55,18 +59,21 @@ export class RequestService extends BaseService<RequestEntity> {
 
     async createRequest(newRequest: RequestDTO): Promise<RequestEntity> {
         try {
-            return (await this.execRepository).save(newRequest);
+            const repo = await this.execRepository();
+            return repo.save(newRequest);
         } catch {
             throw new Error("FALLA CRITICA");
         }
     }
 
     async deleteRequest(id: string): Promise<DeleteResult> {
-        return (await this.execRepository).delete({ id });
+        const repo = await this.execRepository();
+        return repo.delete({ id });
     }
 
     async updateRequest(id: string, infoUpdate: RequestDTO): Promise<UpdateResult> {
         console.log(infoUpdate)
-        return (await this.execRepository).update(id, infoUpdate);
+        const repo = await this.execRepository();
+        return repo.update(id, infoUpdate);
     }
 }

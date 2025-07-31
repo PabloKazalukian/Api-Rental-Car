@@ -1,18 +1,15 @@
 // import { UserController } from "../controllers/user.controller";
-import { PaymentController } from "../controllers/payment.controller";
+import { Router } from "express";
 import { PaymentMiddleware } from "../middlewares/payment.middleware";
-import { Routes } from "./routes";
+import { paymentController } from "../controllers/index.controller";
 
 
-export class PaymentRouter extends Routes<PaymentController, PaymentMiddleware> {
-    constructor() {
-        super(PaymentController, PaymentMiddleware);
-    }
+const middleware = new PaymentMiddleware();
+const router = Router();
 
-    routes(): void {
-        this.router.get('/payment', (req, res) => { this.controller.getAllPayment(req, res) });
-        this.router.get('/payment/:id', (req, res) => { this.controller.getPaymentById(req, res) });
-        this.router.post('/payment', (req, res, next) => [this.middleware.paymentValidator(req, res, next)], (req, res) => { this.controller.createPayment(req, res); });
-        // this.router.get('/login', (req, res) => { this.controller.login(req, res); });
-    }
-}
+router.get('/payment', (req, res) => { paymentController.getAllPayment(req, res) });
+router.get('/payment/:id', (req, res) => { paymentController.getPaymentById(req, res) });
+router.post('/payment', (req, res, next) => [middleware.paymentValidator(req, res, next)], (req, res) => { paymentController.createPayment(req, res); });
+// router.get('/login', (req, res) => { paymentController.login(req, res); });
+
+export const PaymentRouter = router;

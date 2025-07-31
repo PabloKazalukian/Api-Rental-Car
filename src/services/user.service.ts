@@ -11,15 +11,18 @@ export class UserService extends BaseService<UserEntity> {
     }
 
     async findAllUser(): Promise<UserEntity[]> {
-        return (await this.execRepository).find();
+        const repo = await this.execRepository();
+        return repo.find();
     }
 
     async findById(id: string): Promise<UserEntity | null> {
-        return (await this.execRepository).findOneBy({ id })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id })
     }
 
     async findUserWithRole(id: string, role: UserRole): Promise<UserEntity | null> {
-        return (await this.execRepository).findOneBy({ id, role: role })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id, role: role })
     }
 
     async createUser(body: UserDTO): Promise<UserEntity> {
@@ -27,26 +30,33 @@ export class UserService extends BaseService<UserEntity> {
         // Hash password before saving to database
         const newUser = await this.createUserEntity(body);
 
-        return (await this.execRepository).save(newUser)
+        const repo = await this.execRepository();
+        return repo.save(newUser)
     }
 
     async deleteUser(id: string): Promise<DeleteResult> {
-        return (await this.execRepository).delete({ id })
+        const repo = await this.execRepository();
+        return repo.delete({ id })
     }
     async updateUser(id: string, infoUpdate: UserDTO): Promise<UpdateResult> {
-        return (await this.execRepository).update(id, infoUpdate)
+        const repo = await this.execRepository();
+        return repo.update(id, infoUpdate)
     }
 
     async findUserByEmail(email: string): Promise<UserEntity | null> {
-        return (await this.execRepository).findOneBy({ email })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ email })
     }
 
     async findUserByUsername(username: string): Promise<UserEntity | null> {
-        return (await this.execRepository).findOneBy({ username })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ username })
     }
 
     async createUserEntity(body: UserDTO): Promise<UserEntity> {
-        const newUser = (await this.execRepository).create(body);
+        const repo = await this.execRepository();
+
+        const newUser = repo.create(body);
         if (newUser.password !== null) {
 
             newUser.password = await hashPassword(newUser.password)

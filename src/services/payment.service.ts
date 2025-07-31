@@ -9,19 +9,24 @@ export class PaymentService extends BaseService<PaymentEntity> {
     }
 
     async findAllPayment(): Promise<PaymentEntity[]> {
-        return (await this.execRepository).find();
+        const repo = await this.execRepository();
+        return repo.find();
     }
     async findById(id: string): Promise<PaymentEntity | null> {
-        return (await this.execRepository).findOneBy({ id })
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id })
     }
     async createPayment(newPayment: PaymentDTO): Promise<PaymentEntity> {
-        return (await this.execRepository).save(newPayment)
+        const repo = await this.execRepository();
+        return repo.save(newPayment)
 
     }
     async deletePayment(id: string): Promise<DeleteResult> {
-        return (await this.execRepository).delete({ id })
+        const repo = await this.execRepository();
+        return repo.delete({ id })
     }
     async updatePayment(id: string, infoUpdate: PaymentDTO): Promise<UpdateResult> {
-        return (await this.execRepository).update(id, infoUpdate)
+        const repo = await this.execRepository();
+        return repo.update(id, infoUpdate)
     }
 }

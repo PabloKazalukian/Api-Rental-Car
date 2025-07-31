@@ -7,9 +7,12 @@ import { UserDTO, UserRole } from "../dtos/user.dto";
 import { JwtPayload } from "jsonwebtoken";
 
 export class AuthController {
-    constructor(private readonly httpResponse: HttpResponse = new HttpResponse(),
-        private readonly userService: UserService = new UserService(),
-        private readonly authService: AuthService = new AuthService()) { }
+    constructor(
+        private readonly userService: UserService,
+        private readonly authService: AuthService,
+        private readonly httpResponse: HttpResponse = new HttpResponse()
+    ) { }
+
 
     async login(req: Request, res: Response) {
         try {

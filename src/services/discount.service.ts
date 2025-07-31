@@ -9,22 +9,27 @@ export class DiscountService extends BaseService<DiscountEntity> {
     }
 
     async findAllDiscount(): Promise<DiscountEntity[]> {
-        return (await this.execRepository).find();
+        const repo = await this.execRepository();
+        return repo.find();
     }
 
     async findById(id: string): Promise<DiscountEntity | null> {
-        return (await this.execRepository).findOneBy({ id });
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id });
     }
 
     async createDiscount(newDiscount: DiscountDTO): Promise<DiscountEntity> {
-        return (await this.execRepository).save(newDiscount);
+        const repo = await this.execRepository();
+        return repo.save(newDiscount);
     }
 
     async deleteDiscount(id: string): Promise<DeleteResult> {
-        return (await this.execRepository).delete({ id });
+        const repo = await this.execRepository();
+        return repo.delete({ id });
     }
 
     async updateDiscount(id: string, infoUpdate: DiscountDTO): Promise<UpdateResult> {
-        return (await this.execRepository).update(id, infoUpdate);
+        const repo = await this.execRepository();
+        return repo.update(id, infoUpdate);
     }
 }

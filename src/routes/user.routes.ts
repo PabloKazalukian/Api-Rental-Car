@@ -1,21 +1,19 @@
-import { UserController } from "../controllers/user.controller";
+import { Router } from "express";
+import { userController } from "../controllers/index.controller"
 import { UserMiddleware } from "../middlewares/user.middleware";
 import { Routes } from "./routes";
 
 
-export class UserRouter extends Routes<UserController, UserMiddleware> {
-    constructor() {
-        super(UserController, UserMiddleware);
-    }
+const middleware = new UserMiddleware();
+const router = Router();
 
-    routes(): void {
-        this.router.get('/user', (req, res) => { this.controller.getAllUser(req, res) });
-        this.router.get('/user/:idUser', (req, res) => { this.controller.getUserById(req, res) });
-        this.router.put('/user/modifyPass/:idUser', (req, res) => { this.controller.modifyPassword(req, res); });
-        this.router.put('/user/:idUser', (req, res, next) => [this.middleware.userValidator(req, res, next)], (req, res) => { this.controller.modifyUser(req, res); });
-        this.router.post('/user', (req, res, next) => [this.middleware.userValidator(req, res, next)], (req, res) => { this.controller.createUser(req, res); });
-        this.router.post('/user/verifyEmail', (req, res) => { this.controller.verifyEmail(req, res); });
-        this.router.post('/user/verifyUsername', (req, res) => { this.controller.verifyUsername(req, res); });
-        this.router.delete('/user/:idUser', this.middleware.passAuth("jwt"), (req, res, next) => [this.middleware.checkAdminRole(req, res, next)], (req, res) => { this.controller.deleteUser(req, res); });
-    }
-}
+router.get('/user', (req, res) => { userController.getAllUser(req, res) });
+router.get('/user/:idUser', (req, res) => { userController.getUserById(req, res) });
+router.put('/user/modifyPass/:idUser', (req, res) => { userController.modifyPassword(req, res); });
+router.put('/user/:idUser', (req, res, next) => [middleware.userValidator(req, res, next)], (req, res) => { userController.modifyUser(req, res); });
+router.post('/user', (req, res, next) => [middleware.userValidator(req, res, next)], (req, res) => { userController.createUser(req, res); });
+router.post('/user/verifyEmail', (req, res) => { userController.verifyEmail(req, res); });
+router.post('/user/verifyUsername', (req, res) => { userController.verifyUsername(req, res); });
+router.delete('/user/:idUser', middleware.passAuth("jwt"), (req, res, next) => [middleware.checkAdminRole(req, res, next)], (req, res) => { userController.deleteUser(req, res); });
+
+export const UserRouter = router;
