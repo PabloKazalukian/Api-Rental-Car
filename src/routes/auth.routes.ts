@@ -8,7 +8,6 @@ const router = Router();
 router.post('/auth/login', middleware.passAuth("login"), (req, res) => { authController.login(req, res) });
 router.get('/auth/google', (req, res, next) => {
     const redirectUri = req.query.redirectUri as string;
-    console.log('redirectUri', redirectUri);
     if (redirectUri) {
         res.cookie('redirectUri', redirectUri, {
             httpOnly: false, // solo se necesita para redirección del navegador

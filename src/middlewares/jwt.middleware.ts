@@ -8,10 +8,6 @@ import { UserRole } from "../dtos/user.dto";
 export class JwtMiddleware {
     constructor(public httResponse: HttpResponse = new HttpResponse()) { }
 
-    // jwtMiddleware(req: Request, res: Response, next: NextFunction) {
-
-    // }
-
     passAuth(type: string, options = {}) {
         return (req: Request, res: Response, next: NextFunction) => {
             passport.authenticate(type, { session: false, ...options })(req, res, next);

@@ -16,8 +16,9 @@ export class AuthController {
 
     async login(req: Request, res: Response) {
         try {
-            // console.log('post')
+
             const userEncode = req.user as UserEntity;
+            // console.log(userEncode)
             const encode = await this.authService.generateJWT(userEncode);
             if (!encode) {
                 return this.httpResponse.Unauthorized(res, 'Token invalido');

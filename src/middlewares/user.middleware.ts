@@ -26,12 +26,12 @@ export class UserMiddleware extends JwtMiddleware {
         }
     }
     userValidator(req: Request, res: Response, next: NextFunction) {
-        const { username, password1, password2, email, role } = req.body;
+        const { username, password, confirmPassword, email, role } = req.body;
         const valid = new UserDTO();
 
         valid.username = username;
-        if (password1 === password2) {
-            valid.password = password1;
+        if (password === confirmPassword) {
+            valid.password = password;
         }
         valid.email = email;
         if (!role) {

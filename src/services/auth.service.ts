@@ -25,6 +25,7 @@ export class AuthService extends ConfigServer {
         const userByUsername: UserEntity | null = await this.userService.findUserByUsername(identifier);
         const userByEmail: UserEntity | null = await this.userService.findUserByEmail(identifier);
 
+        console.log(userByEmail, userByUsername)
         // Validar contraseña si se encontró usuario por nombre de usuario
         if (userByUsername) {
             const passwordMatches = await bcryptjs.compare(plainPassword, userByUsername.password);

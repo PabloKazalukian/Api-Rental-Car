@@ -14,7 +14,7 @@ export class UserController {
             const data: UserEntity[] = await this.userService.findAllUser();
             return this.httpResponse.Ok(res, data);
         } catch (err) {
-            return this.httpResponse.Error(res, 'Ocurrio un error');
+            return this.httpResponse.Error(res, 'Ocurrio un error all');
         }
     };
 
@@ -24,23 +24,24 @@ export class UserController {
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, instanceToPlain(data));
         } catch (err) {
-            return this.httpResponse.Error(res, 'Ocurrio un error');
+            return this.httpResponse.Error(res, 'Ocurrio un error al buscar por id');
         }
     }
 
     async createUser(req: Request, res: Response): Promise<Response> {
         try {
-            // console.log(req.body);
 
             const userExist = await this.userService.findUserByEmail(req.body.email);
             if (userExist) return this.httpResponse.Error(res, 'El email ya está en uso');
             const userExistUsername = await this.userService.findUserByUsername(req.body.username);
             if (userExistUsername) return this.httpResponse.Error(res, 'El nombre de usuario ya está en uso');
 
+            console.log('creador de usuario', req.body);
             const data = await this.userService.createUser(req.body);
+            console.log('yo ando hasta ca', data)
             return this.httpResponse.Created(res, data);
         } catch (err) {
-            return this.httpResponse.Error(res, 'Ocurrio un error');
+            return this.httpResponse.Error(res, 'Ocurrio un error al crear un usuario');
         }
     };
 
@@ -74,6 +75,8 @@ export class UserController {
                     return this.httpResponse.Conflict(res, 'La nueva contraseña no puede ser igual a la anterior.');
                 }
             }
+
+            console.log(req.body)
             let pass = await hashPassword(req.body.password);
 
             const userNew = new UserDTO();

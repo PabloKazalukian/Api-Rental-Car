@@ -2,7 +2,6 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../config/base.service";
 import { UserDTO } from "../dtos/user.dto";
 import { UserEntity, UserRole } from "../entities/user.entity";
-import bcryptjs from 'bcryptjs';
 import { hashPassword } from "../utils/hashPassword";
 
 export class UserService extends BaseService<UserEntity> {
@@ -29,7 +28,7 @@ export class UserService extends BaseService<UserEntity> {
 
         // Hash password before saving to database
         const newUser = await this.createUserEntity(body);
-
+        console.log('entidad: ', newUser)
         const repo = await this.execRepository();
         return repo.save(newUser)
     }
@@ -53,14 +52,14 @@ export class UserService extends BaseService<UserEntity> {
         return repo.findOneBy({ username })
     }
 
+
+
     async createUserEntity(body: UserDTO): Promise<UserEntity> {
-        const repo = await this.execRepository();
+        const user = new UserEntity();
+        user.username = body.username;
+        user.email = body.email;
 
-        const newUser = repo.create(body);
-        if (newUser.password !== null) {
-
-            newUser.password = await hashPassword(newUser.password)
-        }
-        return newUser
+        user.password = await hashPassword(body.password);
+        return user;
     }
 }

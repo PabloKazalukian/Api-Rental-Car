@@ -2,13 +2,14 @@ import bcryptjs from 'bcryptjs';
 
 export async function hashPassword(password: string): Promise<string> {
 
-    console.log('pasiencia', password, typeof password !== 'string')
+    console.log('pasiencia', password, typeof password, typeof password !== 'string')
     if (typeof password !== 'string' || password.trim() === '') {
         throw new Error('Invalid password: must be a non-empty string');
     }
 
     try {
         const salt = await bcryptjs.genSalt(8);
+        console.log('saltit', salt)
         return await bcryptjs.hash(password, salt);
     } catch (err) {
         // Podés lanzar directamente o crear un error más claro
