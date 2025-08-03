@@ -36,9 +36,7 @@ export class UserController {
             const userExistUsername = await this.userService.findUserByUsername(req.body.username);
             if (userExistUsername) return this.httpResponse.Error(res, 'El nombre de usuario ya está en uso');
 
-            console.log('creador de usuario', req.body);
             const data = await this.userService.createUser(req.body);
-            console.log('yo ando hasta ca', data)
             return this.httpResponse.Created(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, 'Ocurrio un error al crear un usuario');

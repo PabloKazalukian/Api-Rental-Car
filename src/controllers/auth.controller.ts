@@ -18,7 +18,6 @@ export class AuthController {
         try {
 
             const userEncode = req.user as UserEntity;
-            // console.log(userEncode)
             const encode = await this.authService.generateJWT(userEncode);
             if (!encode) {
                 return this.httpResponse.Unauthorized(res, 'Token invalido');
@@ -34,7 +33,7 @@ export class AuthController {
             res.end();
 
         } catch (err) {
-            return this.httpResponse.Error(res, 'Ocurrio un error');
+            return this.httpResponse.Error(res, 'Ocurrio un error por aca');
         }
     }
 

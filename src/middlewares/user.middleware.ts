@@ -29,6 +29,7 @@ export class UserMiddleware extends JwtMiddleware {
         const { username, password, confirmPassword, email, role } = req.body;
         const valid = new UserDTO();
 
+        console.log(username)
         valid.username = username;
         if (password === confirmPassword) {
             valid.password = password;
