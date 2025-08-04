@@ -4,18 +4,14 @@ import { CarService } from "../services/car.service";
 import { CarEntity } from "../entities/car.entity";
 import { RequestDTO } from "../dtos/request.dto";
 import { HttpResponse } from "../shared/http.response";
-// import { PaymentService } from "../services/payment.service";
-// import { Automatic, PaymentDTO } from "../dto/payment.dto";
 import { StateCar } from "../entities/request.entity";
-import moment from 'moment';
-import { error } from "console";
+import { getDays } from "../utils/date.utils";
 
 export class RequestController {
     constructor(
-        private readonly requestSvc: RequestService = new RequestService(),
-        private readonly carSvc: CarService = new CarService(),
-        // private readonly paymentSvc: PaymentService = new PaymentService(),
-        private readonly httpResponse: HttpResponse = new HttpResponse()
+        private readonly requestSvc: RequestService,
+        private readonly carSvc: CarService,
+        private readonly httpResponse: HttpResponse
     ) { }
 
     async getAllRequest(req: Request, res: Response): Promise<Response> {
@@ -64,6 +60,7 @@ export class RequestController {
             return this.httpResponse.Error(res, err);
         }
     }
+
     async cancelRequest(req: Request, res: Response): Promise<Response> {
         try {
             const { requestId } = req.body; // Obtener el ID de la request desde la URL
@@ -144,7 +141,7 @@ export class RequestController {
                 data = await this.carSvc.findPriceCarById(request.car_id);
                 if (data !== null) {
 
-                    let days: number = this.getDays(request.initialDate, request.finalDate);
+                    let days: number = getDays(request.initialDate, request.finalDate);
                     let amount: number = days * data.price;
 
                     return amount;
@@ -156,18 +153,5 @@ export class RequestController {
             console.error('Error en getAmountCarById:', err);
             throw err;
         }
-    };
-
-    private getDays = (date1: Date, date2: Date): number => {
-
-        const format: string = 'D/M/YYYY'
-        const momentDate1 = moment(date1, format);
-        const momentDate2 = moment(date2, format);
-
-        if (momentDate2.isAfter(momentDate1)) {
-            throw new Error('datos invalidos');
-        }
-
-        return momentDate1.diff(momentDate2, 'days');
     };
 }

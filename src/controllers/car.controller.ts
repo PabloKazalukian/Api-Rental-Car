@@ -3,7 +3,7 @@ import { CarService } from "../services/car.service";
 import { HttpResponse } from "../shared/http.response";
 
 export class CarController {
-    constructor(private readonly carService: CarService = new CarService(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private readonly carService: CarService, private readonly httpResponse: HttpResponse) { }
 
     async getAllCar(req: Request, res: Response) {
         try {

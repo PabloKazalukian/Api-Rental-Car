@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
-import { DataSource, DataSourceOptions } from "typeorm";
-import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { DataSource } from "typeorm";
 import { AppDataSource } from "./data.source";
 
 export abstract class ConfigServer {
@@ -17,9 +16,13 @@ export abstract class ConfigServer {
     }
 
     get initConnect(): Promise<DataSource> {
-        if (AppDataSource.isInitialized) {
-            return Promise.resolve(AppDataSource); // Ya está conectado
+        try {
+            if (AppDataSource.isInitialized) {
+                return Promise.resolve(AppDataSource); // Ya está conectado
+            }
+            return AppDataSource.initialize(); // Lo conecta si aún no lo está
+        } catch (error: any) {
+            throw new Error(`Failed to initialize repository: ${error.message}`);
         }
-        return AppDataSource.initialize(); // Lo conecta si aún no lo está
     }
 }

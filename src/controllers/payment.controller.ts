@@ -3,7 +3,7 @@ import { HttpResponse } from "../shared/http.response";
 import { PaymentService } from "../services/payment.service";
 
 export class PaymentController {
-    constructor(private readonly paymentSvc: PaymentService = new PaymentService(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private readonly paymentSvc: PaymentService, private readonly httpResponse: HttpResponse) { }
 
     async getAllPayment(req: Request, res: Response) {
         try {

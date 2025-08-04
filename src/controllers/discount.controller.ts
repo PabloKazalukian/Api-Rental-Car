@@ -3,7 +3,7 @@ import { HttpResponse } from "../shared/http.response";
 import { DiscountService } from "../services/discount.service";
 
 export class DiscountController {
-    constructor(private readonly discountSvc: DiscountService = new DiscountService(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private readonly discountSvc: DiscountService, private readonly httpResponse: HttpResponse) { }
 
     async getAllDiscount(req: Request, res: Response) {
         try {

@@ -7,7 +7,7 @@ import { UserDTO } from "../dtos/user.dto";
 import { instanceToPlain } from "class-transformer";
 
 export class UserController {
-    constructor(private readonly userService: UserService = new UserService(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private readonly userService: UserService, private readonly httpResponse: HttpResponse) { }
 
     async getAllUser(req: Request, res: Response): Promise<Response> {
         try {

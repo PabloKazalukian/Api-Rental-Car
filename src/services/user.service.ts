@@ -52,8 +52,6 @@ export class UserService extends BaseService<UserEntity> {
         return repo.findOneBy({ username })
     }
 
-
-
     async createUserEntity(body: UserDTO): Promise<UserEntity> {
         const user = new UserEntity();
         user.username = body.username;

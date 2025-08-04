@@ -2,7 +2,6 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../config/base.service";
 import { CarEntity } from "../entities/car.entity";
 import { CarDTO } from "../dtos/car.dto";
-import { UserEntity } from "../entities/user.entity";
 
 export class CarService extends BaseService<CarEntity> {
     constructor() {

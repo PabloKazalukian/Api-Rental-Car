@@ -5,12 +5,13 @@ import { UserEntity } from "../entities/user.entity";
 import { UserService } from "../services/user.service";
 import { UserDTO, UserRole } from "../dtos/user.dto";
 import { JwtPayload } from "jsonwebtoken";
+import { clearCookies } from "../utils/cookie.utils";
 
 export class AuthController {
     constructor(
         private readonly userService: UserService,
         private readonly authService: AuthService,
-        private readonly httpResponse: HttpResponse = new HttpResponse()
+        private readonly httpResponse: HttpResponse
     ) { }
 
 
@@ -99,7 +100,7 @@ export class AuthController {
                 sameSite: 'lax',
                 path: '/',
             });
-            this.clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
+            clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
 
             res.cookie('accessToken', encode.accessToken, {
@@ -121,7 +122,7 @@ export class AuthController {
     logout(req: Request, res: Response) {
         try {
             console.log('oy estoy funcionando.')
-            this.clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
+            clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
             return this.httpResponse.Ok(res, 'Logout exitoso');
 
@@ -130,15 +131,6 @@ export class AuthController {
         }
     }
 
-    async clearCookies(res: Response, names: string[]) {
-        for (const name of names) {
-            res.clearCookie(name, {
-                httpOnly: true,
-                sameSite: "strict",
-                secure: true,
-                path: "/",
-            });
-        }
-    }
+
 
 }
