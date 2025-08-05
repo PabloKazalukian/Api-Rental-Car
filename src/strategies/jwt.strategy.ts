@@ -1,6 +1,6 @@
 import { AuthService } from "../services/auth.service";
 import { Strategy as JwtStr, StrategyOptions, ExtractJwt, StrategyOptionsWithSecret } from "passport-jwt";
-import { PayloadToken } from "../interfaces/auth.interface";
+import { PayloadToken } from "../interfaces/models/auth.interface";
 import { PassportUse } from "../utils/passport.use";
 
 export class JwtStrategy extends AuthService {

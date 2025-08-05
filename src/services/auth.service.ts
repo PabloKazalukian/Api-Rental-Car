@@ -3,12 +3,13 @@ import { UserService } from './user.service';
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
 import { UserEntity } from "../entities/user.entity";
-import { PayloadToken } from "../interfaces/auth.interface";
+import { PayloadToken } from "../interfaces/models/auth.interface";
+import { IAuthService } from "../interfaces/auth.interface";
 
 /**
  * Servicio de autenticación que maneja validación de usuarios y generación de tokens JWT.
  */
-export class AuthService extends ConfigServer {
+export class AuthService extends ConfigServer implements IAuthService {
     constructor(
         private readonly userService: UserService,
         private readonly jwtInstance = jwt

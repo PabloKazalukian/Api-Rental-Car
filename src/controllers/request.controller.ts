@@ -59,7 +59,7 @@ export class RequestController {
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 
     async cancelRequest(req: Request, res: Response): Promise<Response> {
         try {
@@ -89,7 +89,7 @@ export class RequestController {
             console.error("Error al cancelar la solicitud:", error);
             return res.status(500).json({ message: "Error interno del servidor" });
         }
-    }
+    };
 
     async confirmRequest(req: Request, res: Response): Promise<Response> {
         try {
@@ -115,7 +115,8 @@ export class RequestController {
             console.error("Error al cancelar la solicitud:", error);
             return res.status(500).json({ message: "Error interno del servidor" });
         }
-    }
+    };
+
     async createRequest(req: Request, res: Response): Promise<Response> {
         try {
             let data = await this.requestSvc.createRequest(req.body);
@@ -137,6 +138,7 @@ export class RequestController {
                 data = await this.carSvc.findPriceCarById(request.car_id);
                 if (data !== null) {
 
+                    console.log(typeof request.initialDate, typeof request.finalDate)
                     let days: number = getDays(request.initialDate, request.finalDate);
                     let amount: number = days * data.price;
 
