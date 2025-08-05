@@ -4,13 +4,12 @@ import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
 
 export class RequestMiddleware {
-    constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private httpResponse: HttpResponse) { }
 
     requestValidator(req: Request, res: Response, next: NextFunction) {
         const { amount, initialDate, finalDate, state, user_id, car_id } = req.body;
         const valid = new RequestDTO()
 
-        console.log(typeof initialDate, typeof finalDate);
         valid.amount = amount;
         valid.car_id = car_id;
         valid.finalDate = new Date(finalDate);

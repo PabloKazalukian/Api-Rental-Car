@@ -1,26 +1,21 @@
 import { Router } from 'express';
 import { authController } from '../controllers/index.controller';
-import { JwtMiddleware } from '../middlewares/jwt.middleware';
+import { jwtMiddleware } from '../middlewares/index.middleware';
+import { setReedirectGoogleCookie } from '../utils/cookie.utils';
 
-const middleware = new JwtMiddleware();
+// const middleware = new JwtMiddleware();
 const router = Router();
 
-router.post('/auth/login', middleware.passAuth("login"), (req, res) => { authController.login(req, res) });
+router.post('/auth/login', jwtMiddleware.passAuth("login"), (req, res) => { authController.login(req, res) });
 router.get('/auth/google', (req, res, next) => {
     const redirectUri = req.query.redirectUri as string;
-    if (redirectUri) {
-        res.cookie('redirectUri', redirectUri, {
-            httpOnly: false, // solo se necesita para redirección del navegador
-            maxAge: 5 * 60 * 1000,
-            sameSite: 'lax',
-            secure: process.env.NODE_ENV === 'production',
-        });
-    }
-    middleware.passAuth("google", { scope: ['profile', 'email'] })(req, res, next);
+    if (redirectUri) setReedirectGoogleCookie(res, redirectUri);
+
+    jwtMiddleware.passAuth("google", { scope: ['profile', 'email'] })(req, res, next);
 });
-router.get('/auth/google/callback', middleware.passAuth("google"), (req, res) => authController.loginGoogle(req, res));
-router.post('/auth/refresh', middleware.passAuth('jwt', { session: false }), (req, res) => authController.refresh(req, res));
-router.get('/auth/me', middleware.passAuth('jwt', { session: false }), (req, res) => { res.json(req.cookies.accessToken); });
-router.get('/auth/logout', middleware.passAuth('jwt', { session: false }), (req, res) => { authController.logout(req, res) });
+router.get('/auth/google/callback', jwtMiddleware.passAuth("google"), (req, res) => authController.loginGoogle(req, res));
+router.post('/auth/refresh', jwtMiddleware.passAuth('jwt', { session: false }), (req, res) => authController.refresh(req, res));
+router.get('/auth/me', jwtMiddleware.passAuth('jwt', { session: false }), (req, res) => { res.json(req.cookies.access_token); });
+router.get('/auth/logout', jwtMiddleware.passAuth('jwt', { session: false }), (req, res) => { authController.logout(req, res) });
 
 export const AuthRouter = router;

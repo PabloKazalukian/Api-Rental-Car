@@ -8,7 +8,6 @@ export class EmailController {
 
     async createEmail(req: Request, res: Response) {
         try {
-            console.log("Datos recibidos:", req.body);
             const result = await emailService.send(req.body);
             return res.status(201).json({ message: "Email enviado!", result });
         } catch (error) {

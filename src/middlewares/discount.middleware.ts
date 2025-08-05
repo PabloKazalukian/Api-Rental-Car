@@ -4,7 +4,7 @@ import { HttpResponse } from "../shared/http.response";
 import { DiscountDTO } from "../dtos/discount.dto";
 
 export class DiscountMiddleware {
-    constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private httpResponse: HttpResponse) { }
 
     discountValidator(req: Request, res: Response, next: NextFunction) {
         const { codeDiscount, initialDate, expirationDate, percentage, status, users, request_id } = req.body;

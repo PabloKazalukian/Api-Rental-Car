@@ -5,7 +5,7 @@ import { UserEntity } from "../entities/user.entity";
 import { UserService } from "../services/user.service";
 import { UserDTO, UserRole } from "../dtos/user.dto";
 import { JwtPayload } from "jsonwebtoken";
-import { clearCookies } from "../utils/cookie.utils";
+import { clearCookies, setAuthGoogleCookie } from "../utils/cookie.utils";
 
 export class AuthController {
     constructor(
@@ -24,8 +24,9 @@ export class AuthController {
                 return this.httpResponse.Unauthorized(res, 'Token invalido');
             }
             res.header('Content-Type', 'application/json');
-            res.cookie("accessToken", encode.accessToken, {
-                maxAge: 60000 * 60, httpOnly: true,
+            res.cookie("access_token", encode.accessToken, {
+                maxAge: 60000 * 60,
+                httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
                 path: '/',
@@ -47,7 +48,6 @@ export class AuthController {
             googleUser.password = 'google-oauth-dummy';
             googleUser.role = UserRole.USER;
 
-
             let user = await this.userService.findUserByEmail(googleUser.email);
 
             if (!user) {
@@ -62,24 +62,14 @@ export class AuthController {
 
             res.header('Content-Type', 'application/json');
 
-            res.cookie("accessToken", encode.accessToken, {
-                maxAge: 60000 * 60,
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                path: '/',
-                // sameSite: 'None', // 🔥 para que funcione cross-origin
-                // maxAge: 3600 * 1000
-            });
-
+            setAuthGoogleCookie(res, encode.accessToken);
             const redirectUri = req.cookies.redirectUri || 'http://localhost:4200/auth/callback';
+            clearCookies(res, ['redirectUri']);
 
-            res.clearCookie('redirectUri'); // limpiar la cookie después de usarla
             res.redirect(redirectUri);
             // res.redirect(`${redirectUri}/callback`);
 
         } catch (err) {
-            console.log(err);
             return this.httpResponse.Error(res, 'Ocurrio un error');
         }
     }
@@ -94,21 +84,14 @@ export class AuthController {
 
             const encode = await this.authService.generateJWT(foundUser);
 
-            res.clearCookie('accessToken', {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                path: '/',
-            });
-            clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
+            clearCookies(res, ["access_token", "accessToken", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
-
-            res.cookie('accessToken', encode.accessToken, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax',
-                path: '/',
+            res.cookie('access_token', encode.accessToken, {
                 maxAge: 60 * 60 * 1000,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
+                path: '/',
             });
 
             return res.json(encode);
@@ -118,11 +101,9 @@ export class AuthController {
         }
     }
 
-
     logout(req: Request, res: Response) {
         try {
-            console.log('oy estoy funcionando.')
-            clearCookies(res, ["access_token", "refresh_token", "jwtAccessToken", "googleAccessToken"]);
+            clearCookies(res, ["access_token", 'accessToken', "refresh_token", "jwtAccessToken", "googleAccessToken"]);
 
             return this.httpResponse.Ok(res, 'Logout exitoso');
 
@@ -130,7 +111,4 @@ export class AuthController {
             return this.httpResponse.Error(res, 'Ocurrio un error');
         }
     }
-
-
-
 }

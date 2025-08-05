@@ -1,16 +1,16 @@
 import { Router } from "express";
 
-export class Routes<T, U> {
+export abstract class Routes<T, U> {
     public router: Router;
-    public controller: T;
-    public middleware: U;
+    protected controller: T;
+    protected middleware: U;
 
-    constructor(TController: { new(): T }, UMiddleware: { new(): U }) {
+    constructor(controller: T, middleware: U) {
         this.router = Router();
-        this.controller = new TController();
-        this.middleware = new UMiddleware();
+        this.controller = controller;
+        this.middleware = middleware;
         this.routes();
     }
 
-    routes() { }
+    protected abstract routes(): void;
 }

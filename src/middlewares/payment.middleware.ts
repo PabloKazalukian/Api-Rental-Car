@@ -4,7 +4,7 @@ import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
 
 export class PaymentMiddleware {
-    constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private httpResponse: HttpResponse) { }
 
     paymentValidator(req: Request, res: Response, next: NextFunction) {
         const { paid_date, created_time, automatic, request_id } = req.body;

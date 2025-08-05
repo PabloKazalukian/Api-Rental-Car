@@ -96,7 +96,6 @@ export class RequestController {
             const { requestId } = req.body; // Obtener el ID de la request desde la URL
 
             // Buscar la solicitud en la base de datos
-            console.log(requestId)
             const request = await this.requestSvc.findById(requestId);
 
             if (request === null) {
@@ -119,16 +118,13 @@ export class RequestController {
     }
     async createRequest(req: Request, res: Response): Promise<Response> {
         try {
-            console.log('Request data received:', req.body);
             let data = await this.requestSvc.createRequest(req.body);
-            console.log('Request created:', data);
             let amount = await this.getAmountCarById(res, req.body);
 
             if (amount == 0) { return this.httpResponse.NotFound(res); }
 
             return this.httpResponse.Created(res, data);
         } catch (err) {
-            // console.log(err)
             return this.httpResponse.Error(res, err);
         }
     };

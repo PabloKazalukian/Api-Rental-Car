@@ -74,7 +74,6 @@ export class UserController {
                 }
             }
 
-            console.log(req.body)
             let pass = await hashPassword(req.body.password);
 
             const userNew = new UserDTO();
@@ -92,7 +91,6 @@ export class UserController {
 
     async modifyUser(req: Request, res: Response): Promise<Response> {
         try {
-            console.log(req.params.idUser, req.body)
             const data = await this.userService.updateUser(req.params.idUser, req.body);
             if (!data.affected) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);

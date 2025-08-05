@@ -6,7 +6,7 @@ import { UserRole } from "../dtos/user.dto";
 // import { Response } from "@sendgrid/helpers/classes";
 
 export class JwtMiddleware {
-    constructor(public httResponse: HttpResponse = new HttpResponse()) { }
+    constructor(public httResponse: HttpResponse) { }
 
     passAuth(type: string, options = {}) {
         return (req: Request, res: Response, next: NextFunction) => {

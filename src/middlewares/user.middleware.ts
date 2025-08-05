@@ -7,10 +7,10 @@ import { UserService } from "../services/user.service";
 
 export class UserMiddleware extends JwtMiddleware {
     constructor(
-        private httpResponse: HttpResponse = new HttpResponse(),
+        private httpResponse: HttpResponse,
         private userService: UserService = new UserService()
     ) {
-        super();
+        super(httpResponse);
     }
 
     async mergeUser(req: Request, res: Response, next: NextFunction) {
@@ -25,18 +25,17 @@ export class UserMiddleware extends JwtMiddleware {
             return this.httpResponse.Error(res, "Error interno al fusionar usuario");
         }
     }
+
     userValidator(req: Request, res: Response, next: NextFunction) {
         const { username, password, confirmPassword, email, role } = req.body;
         const valid = new UserDTO();
 
-        console.log(username)
         valid.username = username;
         if (password === confirmPassword) {
             valid.password = password;
         }
         valid.email = email;
         if (!role) {
-            console.log(req.body);
             valid.role = UserRole.USER;
         } else {
             valid.role = role;

@@ -4,7 +4,7 @@ import { HttpResponse } from '../shared/http.response';
 import { CarDTO } from "../dtos/car.dto";
 
 export class CarMiddleware {
-    constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private httpResponse: HttpResponse) { }
     carValidator(req: Request, res: Response, next: NextFunction) {
         const { image, brand, model, year, price, specifications_car } = req.body;
         const valid = new CarDTO();

@@ -4,7 +4,7 @@ import { HttpResponse } from "../shared/http.response";
 import { EmailDTO } from "../dtos/email.dto";
 
 export class EmailMiddleware {
-    constructor(private httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private httpResponse: HttpResponse) { }
 
     emailValidator(req: Request, res: Response, next: NextFunction) {
 

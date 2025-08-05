@@ -25,7 +25,7 @@ export class JwtStrategy extends AuthService {
                 jwtFromRequest: ExtractJwt.fromExtractors([
                     (req) => {
                         if (req && req.cookies) {
-                            return req.cookies['accessToken'];
+                            return req.cookies['access_token'];
                         }
                         return null;
                     }
