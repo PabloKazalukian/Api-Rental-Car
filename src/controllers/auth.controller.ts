@@ -4,6 +4,7 @@ import { clearCookies, setAuthCookie, setAuthGoogleCookie } from "../utils/cooki
 import { LoginUseCase } from "../use-case/auth/login.use-case";
 import { GoogleLoginUseCase } from "../use-case/auth/google-login.use-case";
 import { RefreshTokenUseCase } from "../use-case/auth/refresh-token.use-case";
+import { catchError } from "../shared/exeptions/catch-error.util";
 
 export class AuthController {
     constructor(
@@ -27,8 +28,7 @@ export class AuthController {
             res.end();
 
         } catch (err) {
-            console.log(err)
-            return this.httpResponse.Error(res, 'Ocurrio un error por aca');
+            return catchError(err, res, this.httpResponse);
         }
     }
 
@@ -38,9 +38,7 @@ export class AuthController {
             const user = await this.googleLoginUseCase.execute(req.user as any)
 
             const encode = await this.loginUseCase.execute(user);
-            if (!encode) {
-                return this.httpResponse.Unauthorized(res, 'Token invalido');
-            }
+            if (!encode) return this.httpResponse.Unauthorized(res, 'Token invalido');
 
             res.header('Content-Type', 'application/json');
             setAuthGoogleCookie(res, encode.accessToken);
@@ -62,15 +60,12 @@ export class AuthController {
 
             const encode = await this.loginUseCase.execute(foundUser);
 
-
             clearCookies(res, ["access_token"]);
             setAuthCookie(res, encode.accessToken);
 
             return res.json(encode);
         } catch (err) {
-
-            console.error('[REFRESH ERROR]', err);
-            return this.httpResponse.Error(res, 'Ocurrió un error');
+            return catchError(err, res, this.httpResponse);
         }
     }
 
@@ -81,7 +76,7 @@ export class AuthController {
             return this.httpResponse.Ok(res, 'Logout exitoso');
 
         } catch (err) {
-            return this.httpResponse.Error(res, 'Ocurrio un error');
+            return catchError(err, res, this.httpResponse);
         }
     }
 }

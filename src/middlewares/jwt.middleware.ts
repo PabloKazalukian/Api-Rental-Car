@@ -10,7 +10,19 @@ export class JwtMiddleware {
 
     passAuth(type: string, options = {}) {
         return (req: Request, res: Response, next: NextFunction) => {
-            passport.authenticate(type, { session: false, ...options })(req, res, next);
+            passport.authenticate(type, { session: false, ...options }, (err: any, user: any, info: any) => {
+                if (err) {
+                    return this.httResponse.Error(res, 'Error en autenticación');
+                }
+
+                if (!user) {
+                    const message = info?.message || 'Credenciales inválidas';
+                    return this.httResponse.Unauthorized(res, message);
+                }
+
+                req.user = user;
+                return next();
+            })(req, res, next);
         };
     }
 

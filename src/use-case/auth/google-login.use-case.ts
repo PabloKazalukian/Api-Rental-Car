@@ -1,6 +1,9 @@
 import { UserDTO, UserRole } from "../../dtos/user.dto";
 import { UserEntity } from "../../entities/user.entity";
-import { IAuthService, IUserService } from "../../interfaces/auth.interface";
+import { IUserService } from "../../interfaces/auth.interface";
+import { AuthErrorMessages } from "../../shared/constants/error-messages.enum";
+import { HttpStatus } from "../../shared/constants/http-status.enum";
+import { HttpException } from "../../shared/exeptions/http.exeption";
 
 interface UserGoogle {
     id: string
@@ -16,7 +19,7 @@ export class GoogleLoginUseCase {
 
     async execute(user: UserGoogle | undefined): Promise<UserEntity> {
 
-        if (user === undefined) throw new Error('Invalid credentials');
+        if (user === undefined) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.INVALID_CREDENTIALS)
         let googleUser = new UserDTO();
         googleUser.username = user.name;
         googleUser.email = user.email;
@@ -28,9 +31,7 @@ export class GoogleLoginUseCase {
             // 👌 No existe, lo registramos
             return await this.userService.createUser(googleUser);
         }
-        if (userGoogle === null) throw new Error('Invalid credentials');
+        if (userGoogle === null) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.USER_NOT_FOUND);
         return userGoogle
-
-        // return this.authService.generateJWT(user);
     }
 }

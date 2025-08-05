@@ -8,6 +8,7 @@ import { authService } from "../services/index.service";
 
 export class LoginStrategy {
     async validate(username: string, passport: string, done: any): Promise<UserEntity> {
+        console.log('username name me ', username)
         const user = await authService.validateUser(username, passport)
         if (!user) {
             return done(null, false, { message: 'Incorrect username or password' });

@@ -13,13 +13,14 @@ import { GoogleLoginUseCase } from '../use-case/auth/google-login.use-case';
 import { RefreshTokenUseCase } from "../use-case/auth/refresh-token.use-case";
 
 const httpResponse = new HttpResponse();
+
 const loginUseCase = new LoginUseCase(authService);
-const googleLoginUseCase = new GoogleLoginUseCase(userService)
-const refreshTokenUseCase = new RefreshTokenUseCase(userService)
+const googleLoginUseCase = new GoogleLoginUseCase(userService);
+const refreshTokenUseCase = new RefreshTokenUseCase(userService);
+export const authController = new AuthController(loginUseCase, googleLoginUseCase, refreshTokenUseCase, httpResponse);
 
 export const requestController = new RequestController(requestService, carService, httpResponse);
 export const userController = new UserController(userService, httpResponse);
-export const authController = new AuthController(loginUseCase, googleLoginUseCase, refreshTokenUseCase, httpResponse);
 export const paymentController = new PaymentController(paymentService, httpResponse);
 export const discountController = new DiscountController(discountService, httpResponse);
 export const carController = new CarController(carService, httpResponse);
