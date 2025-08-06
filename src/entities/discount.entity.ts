@@ -3,6 +3,11 @@ import { RequestEntity } from "./request.entity";
 import { BaseEntity } from "../config/base.entity";
 import { UserEntity } from "./user.entity";
 
+export enum DiscountType {
+    PERCENTAGE = 'percentage',
+    FIXED = 'fixed',
+}
+
 @Entity({ name: "discount" })
 export class DiscountEntity extends BaseEntity {
 
@@ -15,8 +20,14 @@ export class DiscountEntity extends BaseEntity {
     @Column()
     expirationDate!: Date;
 
-    @Column()
-    percentage!: number;
+    @Column({ type: 'enum', enum: DiscountType })
+    type!: DiscountType;
+
+    @Column({ type: 'float', nullable: true })
+    percentage?: number;
+
+    @Column({ type: 'float', nullable: true })
+    amount?: number;
 
     @Column()
     status!: boolean;

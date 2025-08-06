@@ -1,6 +1,7 @@
-import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { BaseDTO } from "../config/base.dto";
 import { Unique } from "typeorm";
+import { UserType } from "../entities/user.entity";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -12,8 +13,12 @@ export class UserDTO extends BaseDTO {
     @IsNotEmpty()
     username!: string;
 
-    // @IsNotEmpty()
+    @IsNotEmpty()
     password!: string;
+
+    @IsOptional()
+    @IsEnum(UserType)
+    type?: UserType;
 
     @IsEmail()
     @IsNotEmpty()

@@ -22,7 +22,7 @@ export class CarController {
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 
     async createCar(req: Request, res: Response) {
         try {
@@ -31,7 +31,7 @@ export class CarController {
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 
     async getPriceById(req: Request, res: Response) {
         try {
@@ -41,5 +41,5 @@ export class CarController {
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 }

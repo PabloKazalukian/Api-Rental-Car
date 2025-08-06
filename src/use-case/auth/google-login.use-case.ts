@@ -1,5 +1,5 @@
 import { UserDTO, UserRole } from "../../dtos/user.dto";
-import { UserEntity } from "../../entities/user.entity";
+import { UserEntity, UserType } from "../../entities/user.entity";
 import { IUserService } from "../../interfaces/auth.interface";
 import { AuthErrorMessages } from "../../shared/constants/error-messages.enum";
 import { HttpStatus } from "../../shared/constants/http-status.enum";
@@ -25,6 +25,7 @@ export class GoogleLoginUseCase {
         googleUser.email = user.email;
         googleUser.password = 'google-oauth-dummy';
         googleUser.role = UserRole.USER;
+        googleUser.type = UserType.GOOGLE;
 
         let userGoogle = await this.userService.findUserByEmail(googleUser.email);
         if (!user) {

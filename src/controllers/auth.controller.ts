@@ -48,9 +48,9 @@ export class AuthController {
             res.redirect(redirectUri);
 
         } catch (err) {
-            return this.httpResponse.Error(res, 'Ocurrio un error');
+            return catchError(err, res, this.httpResponse);
         }
-    }
+    };
 
     async refresh(req: Request, res: Response) {
         try {

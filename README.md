@@ -4,58 +4,170 @@ Este proyecto es una aplicación web para gestionar alquileres de coches.
 
 ## 🧵UML Rental Car System
 
-| Car                        | User                      | Request                    | Payment                   |
-|----------------------------|---------------------------|----------------------------|---------------------------|
-| - id_car: INT              | - id_user: INT            | - id_request: INT          | - id_payment: INT         |
-| - image: VARCHAR           | - username: VARCHAR       | - initial_date: DATE       | - amount: INT             |
-| - brand: VARCHAR           | - password: VARCHAR       | - final_date: DATE         | - paid_date: DATE         |
-| - model: VARCHAR           | - email: VARCHAR          | - created_by: INT          | - automatic: VARCHAR      |
-| - year: INT                | - role: VARCHAR           | - rented_car: INT          | - paid_request: INT       |
-| - price: INT               | - created_at: TIMESTAMP   | - state: VARCHAR           | - create_time: TIMESTAMP  |
-| - engine: VARCHAR          |                           | - create_time: TIMESTAMP   |                           |
-| - power: VARCHAR           |                           |                            |                           |
-| - torque: VARCHAR          |                           |                            |                           |
-| - weight: VARCHAR          |                           |                            |                           |
-| - max_speed: VARCHAR       |                           |                            |                           |
-| - acceleration: VARCHAR    |                           |                            |                           |
-| - consumption: VARCHAR     |                           |                            |                           |
-| - created_at: TIMESTAMP    |                           |                            |                           |
+| Car                        | User                      | Request                    | Payment                   | Discount                   |
+|----------------------------|---------------------------|----------------------------|---------------------------|----------------------------|
+| - id: INT                  | - id: INT                 | - id: INT                  | - id: INT                 | - id: INT                  |
+| - image: VARCHAR           | - username: VARCHAR       | - amount: FLOAT            | - paidDate: DATE          | - codeDiscount: VARCHAR    |
+| - brand: VARCHAR           | - password: VARCHAR       | - initialDate: DATE        | - createdTime: TIMESTAMP   | - initialDate: DATE        |
+| - model: VARCHAR           | - email: VARCHAR          | - finalDate: DATE          | - automatic: ENUM('YES', 'NO') | - expirationDate: DATE     |
+| - year: INT                | - type: ENUM('LOCAL', 'GOOGLE', 'GITHUB', 'MICROSOFT') | - state: ENUM('REQUEST', 'CONFIRM', 'CANCEL') | - request_id: INT          | - type: ENUM('PERCENTAGE', 'FIXED') |
+| - price: FLOAT             | - role: ENUM('ADMIN', 'USER') | - user_id: INT             | - createdAt: TIMESTAMP     | - percentage: FLOAT         |
+| - engine: VARCHAR          | - createdAt: TIMESTAMP    | - car_id: INT              | - updatedAt: TIMESTAMP     | - amount: FLOAT            |
+| - power: VARCHAR           | - updatedAt: TIMESTAMP    | - createdAt: TIMESTAMP     |                           | - status: BOOLEAN          |
+| - torque: VARCHAR          |                           | - updatedAt: TIMESTAMP     |                           | - request_id: INT          |
+| - weight: VARCHAR          |                           |                            |                           | - createdAt: TIMESTAMP     |
+| - max_speed: VARCHAR       |                           |                            |                           | - updatedAt: TIMESTAMP     |
+| - acceleration: VARCHAR    |                           |                            |                           |                            |
+| - consumption: VARCHAR     |                           |                            |                           |                            |
+| - createdAt: TIMESTAMP     |                           |                            |                           |                            |
+| - updatedAt: TIMESTAMP     |                           |                            |                           |                            |
 
-![Diagrama del Proyecto](assets/Database-Schema.png)
+## 🪡Diagrama de Entidades
 
-## Recorrido de un pedido a la Api
+![Diagrama del Proyecto](assets/UML_entities.png)
+
+## 🛣️ Recorrido de un pedido a la Api
 
     ejemplo solicitud de todos los usuarios a la ruta api/user
-    index.ts --> routes/user.ts --> controller/user.controller.ts --> services/user.service.ts --> entities/user.entity.ts(configuracion de la base de datos)
+    index.ts --> routes/user.ts --> controller/user.controller.ts --> (opcional) use-case/login.use-case.ts -->services/user.service.ts --> entities/user.entity.ts(configuracion de la base de datos)
 
 Initially appeared on
 [gist](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2). But the page cannot open anymore so that is why I have moved it here.
 
-## Getting Started
+## 🚀 Instrucciones para Empezar
 
-These instructions will give you a copy of the project up and running on
-your local machine for development and testing purposes. See deployment
-for notes on deploying the project on a live system.
+Estas instrucciones te guiarán para obtener una copia del proyecto y ejecutarlo en tu máquina local con fines de desarrollo y pruebas. Consulta la sección de despliegue para más detalles sobre cómo implementar el proyecto en un sistema en producción.
+Este proyecto está estructurado siguiendo una arquitectura de capas inspirada en Clean Architecture, respetando los principios SOLID. Esto garantiza una separación clara de responsabilidades, facilidad de mantenimiento y escalabilidad. A continuación, te detallo los pasos necesarios para ponerlo en marcha.
 
-## Estructura de Carpetas
+Estas instrucciones te guiarán para obtener una copia del proyecto y ejecutarlo en tu máquina local con fines de **desarrollo** y **pruebas**. Consulta la sección de **despliegue** para más detalles sobre cómo implementar el proyecto en un sistema en producción.
 
-#### db
+Este proyecto está estructurado siguiendo una **arquitectura de capas** inspirada en **Clean Architecture**, respetando los **principios SOLID**. Esto garantiza una separación clara de responsabilidades, facilidad de mantenimiento y escalabilidad. A continuación, te detallo los pasos necesarios para ponerlo en marcha.
 
-- `db.sql`: ejemplo del diseño de la base de datos.
+### 📋 Requisitos Previos
 
-#### src
+Asegúrate de tener instalados los siguientes componentes en tu máquina:
 
-- `/config`: Configuracion de la api (entity,dto,services,config), base de datos (data.source.ts) y control de los registros (logging.ts) .
-- `/controllers`: Manejo de entrada de datos, logica de negocio .
-- `/dto`: Definicion de la estructura de datos.
-- `/interfaces`: ejemplo del diseño de la base de datos.
-- `/middlewares`: ejemplo del diseño de la base de datos.
-- `/migration`: ejemplo del diseño de la base de datos.
-- `/routes`: ejemplo del diseño de la base de datos.
-- `/services`: ejemplo del diseño de la base de datos.
-- `/shared`: ejemplo del diseño de la base de datos.
-- `/strategies`: ejemplo del diseño de la base de datos.
-- `/utils`: ejemplo del diseño de la base de datos.
+- **Node.js** (versión 14.x o superior)
+- **npm** (versión 6.x o superior)
+- **MySQL** (versión 5.7 o superior) u otro sistema de gestión de bases de datos compatible con **TypeORM**
+
+### 🛠️ Pasos para la Instalación
+
+1. **Clonar el Repositorio**
+
+   ```bash
+   git clone https://github.com/tu-usuario/tu-repositorio.git
+   cd tu-repositorio
+   ```
+
+2. **Instalar Dependencias**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configurar la Base de Datos**
+
+   - Crea una base de datos en **MySQL**:
+
+     ```sql
+     CREATE DATABASE car_rental;
+     ```
+
+   - Configura las variables de entorno en un archivo `.env` basado en el archivo `.env.example` que debería estar incluido en el proyecto. Ejemplo:
+
+     ```
+     DB_HOST=localhost
+     DB_PORT=3306
+     DB_USERNAME=tu_usuario
+     DB_PASSWORD=tu_contraseña
+     DB_DATABASE=car_rental
+     ```
+
+4. **Ejecutar Migraciones**
+
+   - Este proyecto utiliza **TypeORM** para la gestión de la base de datos, incluyendo **migraciones** para mantener el esquema actualizado:
+
+     ```bash
+     npm run typeorm migration:run
+     ```
+
+5. **Ejecutar Seeds (Opcional)**
+
+   - Si deseas poblar la base de datos con datos de prueba, usa los **seeds** proporcionados:
+
+     ```bash
+     npm run seed:run
+     ```
+
+6. **Iniciar el Servidor**
+
+   - Inicia el servidor en modo **desarrollo**:
+
+     ```bash
+     npm run start:dev
+     ```
+     
+     
+
+7. **Crear una migración (Opcional)**
+
+   - Si necesitas crear una **migration**, podes crearla atravez del siguiente comando:
+
+     ```bash
+     pm run m:generate -- src/migration/nombreSeed
+     ```
+
+    - Se Alcamenara en la carpeta `src/migration` junto con las demas migraciones.
+
+8. **Acceder a la API**
+
+   - La **API** estará disponible en `http://localhost:3000/api`   
+
+
+
+## 🌟 Características del Proyecto
+
+- **Arquitectura de Capas y Clean Architecture**: El proyecto está diseñado con una estructura modular que separa las responsabilidades en capas, siguiendo los principios de **Clean Architecture** y **SOLID**.
+- **TypeORM**: Implementa una base de datos relacional con soporte para **migraciones**, **seeds** y **entidades** definidas en la carpeta `entities`.
+- **DTOs**: Utiliza objetos de transferencia de datos (ubicados en `dto`) para validar y estructurar la información enviada y recibida.
+- **Autenticación con Passport**: La autenticación está implementada con **Passport.js**, utilizando estrategias como **JWT** para proteger las rutas de la API.
+- **Estructura de Respuesta HTTP**: Define un formato consistente para las respuestas **HTTP**, facilitando la integración con clientes frontend.
+- **Manejo de Errores**: Incluye un sistema centralizado para manejar **errores** y devolver respuestas **HTTP** claras y útiles.
+
+## 📂Estructura de Carpetas
+
+#### /db
+- `db.sql`: Dump o esquema inicial de la base de datos (estructura de tablas, relaciones, seeds, etc.).
+
+#### /src
+
+- `/config`: Configuración general del proyecto (entorno, base de datos, logging, DTOs de configuración).
+- `/controllers`: Encapsulan la lógica de entrada/salida HTTP. Orquestan servicios y formatean la respuesta.
+- `/dto`: Definición de Data Transfer Objects para validación y tipado de datos entrantes.
+- `/entities`: Mapeo de entidades ORM que representan las tablas de la base de datos.
+- `/interfaces`: Definición de contratos (TypeScript interfaces) usados para inyectar servicios en los use-cases, garantizando el cumplimiento de métodos esperados y favoreciendo el desacoplamiento entre capas.
+- `/middlewares`: Funciones que interceptan las requests/responses (auth, errores, validaciones).
+- `/providers`: Servicios externos o recursos reutilizables (ej: adapters de email, cache, storage).
+- `/migration`: Scripts de migración de la base de datos (versión actual, historial).
+- `/routes`: Definición y agrupación de rutas de la API (importa y conecta controladores).
+- `/seeds`: Scripts para poblar la base de datos con datos iniciales o de prueba.
+- `/services`: Contienen la lógica de negocio central y acceso a datos (reutilizados por controllers).
+- `/shared`: Utilidades, clases base o módulos comunes compartidos en distintos contextos.
+- `/strategies`: Estrategias específicas (ej: Passport, JWT, OAuth) para autenticación o autorización.
+- `/use-case`: Implementación explícita de casos de uso según la lógica del dominio.
+- `/utils`: Funciones auxiliares y helpers puros reutilizables en el proyecto.
+- `index.ts`: Punto de entrada principal. Inicializa y lanza la aplicación (servidor, middlewares, rutas).
+
+### 🧩 Estructura y Arquitectura
+
+El proyecto sigue una arquitectura por capas inspirada en principios de Clean Architecture. Se separan responsabilidades de forma clara:
+
+- **Controllers**: gestionan la entrada/salida HTTP. No contienen lógica de negocio.
+- **Use-cases**: encapsulan la lógica de aplicación. Orquestan múltiples servicios, controlan errores y determinan qué respuesta se debe emitir.
+- **Services**: acceden a fuentes de datos (ej. base de datos) y devuelven resultados puros, sin lógica HTTP.
+- **Interfaces**: definen contratos de los servicios y otros componentes para favorecer la inversión de dependencias, la flexibilidad y el testeo.
+
 
 # 🚀 CLI Generador de Features y Entidades
 
