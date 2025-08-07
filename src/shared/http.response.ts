@@ -50,10 +50,18 @@ export class HttpResponse {
         });
     }
 
-    Error(res: Response, data?: any): Response {
+    ErrorServer(res: Response, data?: any): Response {
         return res.status(HttpStatus.SERVER_ERROR).json({
             status: HttpStatus.SERVER_ERROR,
             statusMsg: "Internal Server Error",
+            message: data
+        });
+    }
+
+    Error(res: Response, data?: any): Response {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+            status: HttpStatus.BAD_REQUEST,
+            statusMsg: "Bad Request",
             message: data
         });
     }

@@ -7,20 +7,25 @@ export class DiscountMiddleware {
     constructor(private httpResponse: HttpResponse) { }
 
     discountValidator(req: Request, res: Response, next: NextFunction) {
-        const { codeDiscount, initialDate, expirationDate, percentage, status, users, request_id } = req.body;
+        const { codeDiscount, initialDate, expirationDate, percentage, status, users, request_id, type } = req.body;
         const valid = new DiscountDTO();
 
         valid.codeDiscount = codeDiscount;
-        valid.initialDate = initialDate;
-        valid.expirationDate = expirationDate;
+        valid.initialDate = new Date(initialDate);
+        valid.expirationDate = new Date(expirationDate);
         valid.percentage = percentage;
         valid.status = status;
         valid.users = users;
         valid.request_id = request_id;
+        valid.type = type;
 
         validate(valid).then((err) => {
             if (err.length > 0) {
-                return this.httpResponse.Error(res, err);
+                const formattedErrors = err.map(errs => ({
+                    property: errs.property,
+                    messages: Object.values(errs.constraints || {})
+                }));
+                return this.httpResponse.Error(res, formattedErrors);
             } else {
                 next();
             }

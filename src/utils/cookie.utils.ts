@@ -9,7 +9,6 @@ type CookieOptions = {
 
 export function setAuthGoogleCookie(res: Response, token: string, options?: CookieOptions) {
     res.cookie("access_token", token, {
-        maxAge: 60 * 60 * 1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
@@ -20,7 +19,6 @@ export function setAuthGoogleCookie(res: Response, token: string, options?: Cook
 
 export function setAuthCookie(res: Response, token: string, options?: CookieOptions) {
     res.cookie("access_token", token, {
-        maxAge: 60000 * 60,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
@@ -32,7 +30,6 @@ export function setAuthCookie(res: Response, token: string, options?: CookieOpti
 
 export function setReedirectGoogleCookie(res: Response, redirectUri: string, options?: CookieOptions) {
     res.cookie('redirectUri', redirectUri, {
-        maxAge: 5 * 60 * 1000,
         httpOnly: false, // solo se necesita para redirección del navegador
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',

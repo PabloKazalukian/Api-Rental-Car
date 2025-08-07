@@ -1,9 +1,10 @@
-import cors from 'cors';
 import "reflect-metadata";
 import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import logging from './config/logging';
-import { ConfigServer } from './config/config';
 import morgan from 'morgan';
+import { ConfigServer } from './config/config';
 import { UserRouter } from './routes/user.routes';
 import { DataSource } from 'typeorm';
 import { CarRouter } from './routes/car.routes';
@@ -11,7 +12,6 @@ import { LoginStrategy } from './strategies/login.strategy';
 import { DiscountRouter } from './routes/discount.routes';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GoogleOAuthStrategy } from './strategies/google.strategy';
-import cookieParser from 'cookie-parser';
 import { AuthRouter } from './routes/auth.routes';
 import { RequestRouter } from './routes/request.routes';
 import { PaymentRouter } from './routes/payment.routes';
@@ -29,6 +29,8 @@ class Server extends ConfigServer {
         this.configureApp();
         this.listen();
     }
+
+    //Prueba de si funcionan las variables de entorno.
     debug(): void {
         console.log(
             process.env.DB_HOST,
@@ -37,7 +39,7 @@ class Server extends ConfigServer {
             process.env.DB_PASSWORD ? "✅ Present" : "❌ Vacía",)
     };
 
-
+    //Conexion de la base de datos.
     async dbConnect(): Promise<DataSource | void> {
         return this.initConnect
             .then(() => {
@@ -48,6 +50,7 @@ class Server extends ConfigServer {
             });
     }
 
+    //Configuraciones del servidor.
     public configureApp(): void {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
@@ -83,10 +86,12 @@ class Server extends ConfigServer {
         logging.info('Server', 'Express server is running on port ' + this.port);
     }
 
+    //Ruteo
     public routers(): Array<express.Router> {
         return [UserRouter, AuthRouter, CarRouter, RequestRouter, PaymentRouter, DiscountRouter, EmailRouter];
     }
 
+    //Configuracion de las estrategias implementadas para autenticacion con passport
     passportUse() {
         new LoginStrategy().use;
         new JwtStrategy().use;
@@ -104,7 +109,6 @@ class Server extends ConfigServer {
             })
         })
     }
-
 
     public listen() {
         this.app.listen(this.port, () => {

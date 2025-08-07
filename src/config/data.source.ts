@@ -3,8 +3,9 @@ import * as dotenv from "dotenv";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 dotenv.config({
-    path: process.env.NODE_ENV !== undefined ? `/${process.env.NODE_ENV.trim()}` : `.env`
+    path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
 });
+
 
 const Config: DataSourceOptions = {
     type: "postgres", // Cambiar de "mysql" a "postgres"
@@ -25,4 +26,18 @@ const Config: DataSourceOptions = {
     namingStrategy: new SnakeNamingStrategy()
 };
 
-export const AppDataSource: DataSource = new DataSource(Config)
+const ConfigTest: DataSourceOptions = {
+    type: 'postgres',
+    host: 'localhost',
+    port: 5432,
+    username: 'postgres',
+    password: 'postgres',
+    database: 'rental-car__test',
+    synchronize: true,
+    dropSchema: true,  // limpia la DB en cada ejecución de tests
+    entities: [__dirname + '/../**/*.entity.{ts,js}'],
+};
+
+export const AppDataSource = new DataSource(
+    process.env.NODE_ENV === 'test' ? ConfigTest : Config
+);
