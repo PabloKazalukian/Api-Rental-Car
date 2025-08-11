@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { RequestDTO } from "../dtos/request.dto";
 import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
+import { formatValidationErrors } from "../shared/validators/error-formatter";
 
 export class RequestMiddleware {
     constructor(private httpResponse: HttpResponse) { }
@@ -20,7 +21,7 @@ export class RequestMiddleware {
 
         validate(valid).then((err) => {
             if (err.length > 0) {
-                return this.httpResponse.Error(res, err)
+                return this.httpResponse.Error(res, formatValidationErrors(err))
             } else {
                 next();
             }

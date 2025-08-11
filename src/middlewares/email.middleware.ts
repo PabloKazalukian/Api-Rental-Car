@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
 import { EmailDTO } from "../dtos/email.dto";
+import { formatValidationErrors } from "../shared/validators/error-formatter";
 
 export class EmailMiddleware {
     constructor(private httpResponse: HttpResponse) { }
@@ -19,7 +20,7 @@ export class EmailMiddleware {
         validate(valid).then(errors => {
             if (errors.length > 0) {
                 res.status(400).json({ message: errors[0].constraints });
-                return this.httpResponse.Error(res, errors);
+                return this.httpResponse.Error(res, formatValidationErrors(errors));
             } else {
                 next();
             }

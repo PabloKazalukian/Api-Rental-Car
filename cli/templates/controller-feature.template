@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { HttpResponse } from "../shared/http.response";
 
 export class __Name__Controller {
-    constructor(private readonly httpResponse: HttpResponse = new HttpResponse()) {}
+    constructor(private readonly httpResponse) {}
 
     async getAll__Name__(req: Request, res: Response) {
         try {

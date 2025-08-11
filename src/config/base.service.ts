@@ -12,7 +12,6 @@ export class BaseService<T extends BaseEntity> extends ConfigServer {
     protected async execRepository(): Promise<Repository<T>> {
         if (!this.repository) {
             try {
-                console.log('aqui en exerepository.')
                 const conn = await this.initConnect;
                 this.repository = conn.getRepository(this.getEntity);
             } catch (error: any) {

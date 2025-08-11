@@ -28,7 +28,6 @@ export class UserService extends BaseService<UserEntity> {
 
         // Hash password before saving to database
         const newUser = await this.createUserEntity(body);
-        console.log('entidad: ', newUser)
         const repo = await this.execRepository();
         return repo.save(newUser)
     }

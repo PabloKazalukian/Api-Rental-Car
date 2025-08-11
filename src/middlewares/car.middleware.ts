@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
 import { HttpResponse } from '../shared/http.response';
 import { CarDTO } from "../dtos/car.dto";
+import { formatValidationErrors } from "../shared/validators/error-formatter";
 
 export class CarMiddleware {
     constructor(private httpResponse: HttpResponse) { }
@@ -19,7 +20,7 @@ export class CarMiddleware {
         validate(valid).then((err) => {
             if (err.length > 0) {
                 res.status(400).json({ message: err[0].constraints });
-                return this.httpResponse.Error(res, err);
+                return this.httpResponse.Error(res, formatValidationErrors(err));
             } else {
                 next();
             }

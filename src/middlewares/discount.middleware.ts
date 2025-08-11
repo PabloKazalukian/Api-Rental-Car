@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
 import { DiscountDTO } from "../dtos/discount.dto";
+import { formatValidationErrors } from "../shared/validators/error-formatter";
 
 export class DiscountMiddleware {
     constructor(private httpResponse: HttpResponse) { }
@@ -21,11 +22,7 @@ export class DiscountMiddleware {
 
         validate(valid).then((err) => {
             if (err.length > 0) {
-                const formattedErrors = err.map(errs => ({
-                    property: errs.property,
-                    messages: Object.values(errs.constraints || {})
-                }));
-                return this.httpResponse.Error(res, formattedErrors);
+                return this.httpResponse.Error(res, formatValidationErrors(err));
             } else {
                 next();
             }

@@ -4,6 +4,7 @@ import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
 import { JwtMiddleware } from "./jwt.middleware";
 import { UserService } from "../services/user.service";
+import { formatValidationErrors } from "../shared/validators/error-formatter";
 
 export class UserMiddleware extends JwtMiddleware {
     constructor(
@@ -44,7 +45,7 @@ export class UserMiddleware extends JwtMiddleware {
 
         validate(valid).then((err) => {
             if (err.length > 0) {
-                return this.httpResponse.Error(res, err);
+                return this.httpResponse.Error(res, formatValidationErrors(err));
             } else {
                 next();
             }

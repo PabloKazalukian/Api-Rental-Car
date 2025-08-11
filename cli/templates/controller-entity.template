@@ -3,7 +3,7 @@ import { __Name__Service } from "../services/__name__.service";
 import { HttpResponse } from "../shared/http.response";
 
 export class __Name__Controller {
-    constructor(private readonly __name__Service: __Name__Service = new __Name__Service(), private readonly httpResponse: HttpResponse = new HttpResponse()) { }
+    constructor(private readonly __name__Service: __Name__Service, private readonly httpResponse) { }
 
     async getAll__Name__(req: Request, res: Response) {
         try {

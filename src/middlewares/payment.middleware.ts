@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { PaymentDTO } from "../dtos/payment.dto";
 import { validate } from "class-validator";
 import { HttpResponse } from "../shared/http.response";
+import { formatValidationErrors } from "../shared/validators/error-formatter";
 
 export class PaymentMiddleware {
     constructor(private httpResponse: HttpResponse) { }
@@ -17,7 +18,7 @@ export class PaymentMiddleware {
 
         validate(valid).then((err) => {
             if (err.length > 0) {
-                return this.httpResponse.Error(res, err);
+                return this.httpResponse.Error(res, formatValidationErrors(err));
             } else {
                 next();
             }
