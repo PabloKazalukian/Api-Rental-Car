@@ -1,7 +1,7 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../config/base.service";
-import { DiscountEntity } from "../entities/discount.entity";
-import { DiscountDTO } from "../dtos/discount.dto";
+import { DiscountEntity } from "../domain/entities/discount.entity";
+import { DiscountDTO } from "../application/dtos/discount.dto";
 
 export class DiscountService extends BaseService<DiscountEntity> {
     constructor() {

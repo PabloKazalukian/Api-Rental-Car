@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from "typeorm";
 import { RequestEntity } from "./request.entity";
-import { BaseEntity } from "../config/base.entity";
+import { BaseEntity } from "../../config/base.entity";
 import { UserEntity } from "./user.entity";
 
 export enum DiscountType {

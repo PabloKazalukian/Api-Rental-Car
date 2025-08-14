@@ -1,7 +1,7 @@
 // import { UserController } from "../controllers/user.controller";
 import { Router } from "express";
 import { paymentController } from "../controllers/index.controller";
-import { paymentMiddleware } from "../middlewares/index.middleware";
+import { paymentMiddleware } from "../application/middlewares/index.middleware";
 
 
 const router = Router();

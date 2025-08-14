@@ -1,9 +1,10 @@
-import { UserDTO, UserRole } from "../../dtos/user.dto";
-import { UserEntity, UserType } from "../../entities/user.entity";
-import { IUserService } from "../../interfaces/auth.interface";
-import { AuthErrorMessages } from "../../shared/constants/error-messages.enum";
-import { HttpStatus } from "../../shared/constants/http-status.enum";
-import { HttpException } from "../../shared/exeptions/http.exeption";
+import { UserEntity, UserRole, UserType } from "../../../domain/entities/user.entity";
+import { IUserService } from "../../../interfaces/auth.interface";
+import { AuthErrorMessages } from "../../../shared/constants/error-messages.enum";
+import { HttpStatus } from "../../../shared/constants/http-status.enum";
+import { HttpException } from "../../../shared/exeptions/http.exeption";
+import { UserDTO } from "../../dtos/user.dto";
+
 
 interface UserGoogle {
     id: string

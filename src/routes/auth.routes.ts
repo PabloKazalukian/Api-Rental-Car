@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authController } from '../controllers/index.controller';
-import { jwtMiddleware } from '../middlewares/index.middleware';
+import { jwtMiddleware } from '../application/middlewares/index.middleware';
 import { setReedirectGoogleCookie } from '../utils/cookie.utils';
 
 // const middleware = new JwtMiddleware();

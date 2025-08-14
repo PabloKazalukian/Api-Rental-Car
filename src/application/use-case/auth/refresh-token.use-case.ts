@@ -1,9 +1,9 @@
 import { JwtPayload } from "jsonwebtoken";
-import { IUserService } from "../../interfaces/auth.interface";
-import { UserEntity } from '../../entities/user.entity';
-import { HttpException } from "../../shared/exeptions/http.exeption";
-import { HttpStatus } from "../../shared/constants/http-status.enum";
-import { AuthErrorMessages } from "../../shared/constants/error-messages.enum";
+import { IUserService } from "../../../interfaces/auth.interface";
+import { HttpException } from "../../../shared/exeptions/http.exeption";
+import { HttpStatus } from "../../../shared/constants/http-status.enum";
+import { AuthErrorMessages } from "../../../shared/constants/error-messages.enum";
+import { UserEntity } from "../../../domain/entities/user.entity";
 
 
 export class RefreshTokenUseCase {

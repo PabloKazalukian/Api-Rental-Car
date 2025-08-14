@@ -1,7 +1,7 @@
 // import { CarController } from "../controllers/car.controller";
 import { Router } from "express";
 import { requestController } from "../controllers/index.controller";
-import { requestMiddleware } from "../middlewares/index.middleware";
+import { requestMiddleware } from "../application/middlewares/index.middleware";
 
 
 const router = Router();

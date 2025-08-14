@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import { HttpResponse } from '../shared/http.response';
-import { UserEntity } from "../entities/user.entity";
 import { hashPassword, isSamePassword } from "../utils/hashPassword";
-import { UserDTO } from "../dtos/user.dto";
 import { instanceToPlain } from "class-transformer";
+import { UserEntity } from "../domain/entities/user.entity";
+import { UserDTO } from "../application/dtos/user.dto";
 
 export class UserController {
     constructor(private readonly userService: UserService, private readonly httpResponse: HttpResponse) { }

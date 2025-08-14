@@ -1,5 +1,5 @@
 import { BaseService } from "../config/base.service";
-import { __Name__Entity } from "../entities/__name__.entity";
+import { __Name__Entity } from "../domain/entities/__name__.entity";
 import { __Name__DTO } from "../dtos/__name__.dto";
 
 export class __Name__Service extends BaseService<__Name__Entity> {

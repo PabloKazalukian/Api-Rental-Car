@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { PaymentDTO } from "../dtos/payment.dto";
 import { validate } from "class-validator";
-import { HttpResponse } from "../shared/http.response";
-import { formatValidationErrors } from "../shared/validators/error-formatter";
+import { HttpResponse } from "../../shared/http.response";
+import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { PaymentDTO } from "../dtos/payment.dto";
 
 export class PaymentMiddleware {
     constructor(private httpResponse: HttpResponse) { }

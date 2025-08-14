@@ -2,7 +2,7 @@ import { ConfigServer } from "../config/config";
 import { UserService } from './user.service';
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
-import { UserEntity } from "../entities/user.entity";
+import { UserEntity } from "../domain/entities/user.entity";
 import { PayloadToken } from "../interfaces/models/auth.interface";
 import { IAuthService } from "../interfaces/auth.interface";
 

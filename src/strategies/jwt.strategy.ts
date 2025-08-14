@@ -3,10 +3,7 @@ import { Strategy as JwtStr, StrategyOptions, ExtractJwt, StrategyOptionsWithSec
 import { PayloadToken } from "../interfaces/models/auth.interface";
 import { PassportUse } from "../utils/passport.use";
 
-export class JwtStrategy extends AuthService {
-    constructor() {
-        super();
-    }
+export class JwtStrategy {
 
     async validate(payload: PayloadToken, done: any) {
         return done(null, payload);

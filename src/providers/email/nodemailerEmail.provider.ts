@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { EmailDTO } from "../../dtos/email.dto";
+import { EmailDTO } from "../../application/dtos/email.dto";
 import { BaseEmailProvider } from "./baseEmail.provider";
 
 export class NodemailerEmailProvider extends BaseEmailProvider {

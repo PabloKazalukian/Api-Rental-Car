@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { RequestService } from "../services/request.service";
 import { CarService } from "../services/car.service";
-import { CarEntity } from "../entities/car.entity";
-import { RequestDTO } from "../dtos/request.dto";
+import { CarEntity } from "../domain/entities/car.entity";
+import { RequestDTO } from "../application/dtos/request.dto";
 import { HttpResponse } from "../shared/http.response";
-import { StateCar } from "../entities/request.entity";
+import { StateCar } from "../domain/entities/request.entity";
 import { getDays } from "../utils/date.utils";
 
 export class RequestController {

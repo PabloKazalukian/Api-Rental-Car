@@ -8,9 +8,9 @@ import { EmailController } from "./email.controller";
 import { PaymentController } from "./payment.controller";
 import { UserController } from "./user.controller";
 import { RequestController } from "./request.controller";
-import { LoginUseCase } from "../use-case/auth/login.use-case";
-import { GoogleLoginUseCase } from '../use-case/auth/google-login.use-case';
-import { RefreshTokenUseCase } from "../use-case/auth/refresh-token.use-case";
+import { RefreshTokenUseCase } from "../application/use-case/auth/refresh-token.use-case";
+import { GoogleLoginUseCase } from "../application/use-case/auth/google-login.use-case";
+import { LoginUseCase } from "../application/use-case/auth/login.use-case";
 
 const httpResponse = new HttpResponse();
 

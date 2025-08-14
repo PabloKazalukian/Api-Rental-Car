@@ -1,7 +1,6 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import { BaseDTO } from "../config/base.dto";
-import { Unique } from "typeorm";
-import { UserType } from "../entities/user.entity";
+import { BaseDTO } from "../../config/base.dto";
+import { UserType } from "../../domain/entities/user.entity";
 
 export enum UserRole {
     ADMIN = "admin",

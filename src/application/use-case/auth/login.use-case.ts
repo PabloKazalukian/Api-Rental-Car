@@ -1,8 +1,8 @@
-import { UserEntity } from "../../entities/user.entity";
-import { IAuthService } from "../../interfaces/auth.interface";
-import { AuthErrorMessages } from "../../shared/constants/error-messages.enum";
-import { HttpStatus } from "../../shared/constants/http-status.enum";
-import { HttpException } from "../../shared/exeptions/http.exeption";
+import { HttpException } from "../../../shared/exeptions/http.exeption";
+import { UserEntity } from "../../../domain/entities/user.entity";
+import { IAuthService } from "../../../interfaces/auth.interface";
+import { AuthErrorMessages } from "../../../shared/constants/error-messages.enum";
+import { HttpStatus } from "../../../shared/constants/http-status.enum";
 
 export class LoginUseCase {
     constructor(

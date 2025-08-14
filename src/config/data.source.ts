@@ -18,7 +18,7 @@ const Config: DataSourceOptions = {
         rejectUnauthorized: false
     },
     connectTimeoutMS: 20000, // PostgreSQL usa 'connectTimeoutMS' en lugar de 'connectTimeout'
-    entities: [__dirname + "/../entities/*.entity{.ts,.js}"],
+    entities: [__dirname + "/../domain/entities/*.entity{.ts,.js}"],
     migrations: [__dirname + "/../migration/*{.ts,.js}"],
     synchronize: false,
     migrationsRun: false,

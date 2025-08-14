@@ -1,8 +1,8 @@
 import { AppDataSource } from "../../src/config/data.source";
 import { DiscountService } from "../../src/services/discount.service";
-import { DiscountDTO } from "../../src/dtos/discount.dto";
-import { DiscountEntity, DiscountType } from "../../src/entities/discount.entity";
+import { DiscountEntity, DiscountType } from "../../src/domain/entities/discount.entity";
 import { UserService } from "../../src/services/user.service";
+import { DiscountDTO } from "../../src/application/dtos/discount.dto";
 
 describe('DiscountService', () => {
     let service: DiscountService = new DiscountService();

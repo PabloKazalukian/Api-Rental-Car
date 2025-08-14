@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { UserDTO, UserRole } from "../dtos/user.dto";
 import { validate } from "class-validator";
-import { HttpResponse } from "../shared/http.response";
+import { HttpResponse } from "../../shared/http.response";
 import { JwtMiddleware } from "./jwt.middleware";
-import { UserService } from "../services/user.service";
-import { formatValidationErrors } from "../shared/validators/error-formatter";
+import { UserService } from "../../services/user.service";
+import { formatValidationErrors } from "../../shared/validators/error-formatter";
 
 export class UserMiddleware extends JwtMiddleware {
     constructor(

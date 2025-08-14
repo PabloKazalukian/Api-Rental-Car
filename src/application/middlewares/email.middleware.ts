@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { validate } from "class-validator";
-import { HttpResponse } from "../shared/http.response";
+import { HttpResponse } from "../../shared/http.response";
 import { EmailDTO } from "../dtos/email.dto";
-import { formatValidationErrors } from "../shared/validators/error-formatter";
+import { formatValidationErrors } from "../../shared/validators/error-formatter";
 
 export class EmailMiddleware {
     constructor(private httpResponse: HttpResponse) { }

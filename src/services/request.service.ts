@@ -1,7 +1,7 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../config/base.service";
-import { RequestEntity } from "../entities/request.entity";
-import { RequestDTO } from "../dtos/request.dto";
+import { RequestEntity } from "../domain/entities/request.entity";
+import { RequestDTO } from "../application/dtos/request.dto";
 
 export class RequestService extends BaseService<RequestEntity> {
 

@@ -1,4 +1,4 @@
-import { HttpResponse } from "../shared/http.response";
+import { HttpResponse } from "../../shared/http.response";
 import { CarMiddleware } from "./car.middleware";
 import { DiscountMiddleware } from "./discount.middleware";
 import { EmailMiddleware } from "./email.middleware";

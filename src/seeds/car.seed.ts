@@ -1,5 +1,5 @@
 import carsData from "../../db/db.json";
-import { CarDTO } from "../dtos/car.dto";
+import { CarDTO } from "../application/dtos/car.dto";
 import { CarService } from "../services/car.service";
 
 export class CarSeeder {

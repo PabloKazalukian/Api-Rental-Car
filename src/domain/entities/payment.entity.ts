@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, Timestamp } from "typeorm";
-import { BaseEntity } from "../config/base.entity";
 import { RequestEntity } from "./request.entity";
+import { BaseEntity } from "../../config/base.entity";
 
 export enum Automatic {
     YES = "yes",

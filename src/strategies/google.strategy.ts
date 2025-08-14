@@ -2,10 +2,8 @@ import { Strategy as GoogleStrategy, Profile } from 'passport-google-oauth20';
 import { PassportUse } from '../utils/passport.use';
 import { AuthService } from '../services/auth.service';
 
-export class GoogleOAuthStrategy extends AuthService {
-    constructor() {
-        super();
-    }
+export class GoogleOAuthStrategy   {
+    
 
     async validate(
         req: any,

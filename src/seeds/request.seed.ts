@@ -1,8 +1,8 @@
-import { UserDTO, UserRole } from "../dtos/user.dto";
-import { UserType, UserEntity } from "../entities/user.entity";
+import { UserDTO, UserRole } from "../application/dtos/user.dto";
+import { UserType, UserEntity } from "../domain/entities/user.entity";
 import { RequestService } from "../services/request.service";
 import { UserService } from "../services/user.service";
-import { RequestDTO, StateCar } from "../dtos/request.dto";
+import { RequestDTO, StateCar } from "../application/dtos/request.dto";
 import { CarService } from "../services/car.service";
 
 export class RequestSeeder {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { discountController } from "../controllers/index.controller";
-import { discountMiddleware } from "../middlewares/index.middleware";
+import { discountMiddleware } from "../application/middlewares/index.middleware";
 
 
 const router = Router();

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { HttpResponse } from "../shared/http.response";
 import { clearCookies, setAuthCookie, setAuthGoogleCookie } from "../utils/cookie.utils";
-import { LoginUseCase } from "../use-case/auth/login.use-case";
-import { GoogleLoginUseCase } from "../use-case/auth/google-login.use-case";
-import { RefreshTokenUseCase } from "../use-case/auth/refresh-token.use-case";
+import { LoginUseCase } from "../application/use-case/auth/login.use-case";
+import { GoogleLoginUseCase } from "../application/use-case/auth/google-login.use-case";
+import { RefreshTokenUseCase } from "../application/use-case/auth/refresh-token.use-case";
 import { catchError } from "../shared/exeptions/catch-error.util";
 
 export class AuthController {

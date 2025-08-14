@@ -1,4 +1,4 @@
-import { EmailDTO } from "../dtos/email.dto";
+import { EmailDTO } from "../application/dtos/email.dto";
 import { IEmailProvider } from "../providers/email/IEamilProvider";
 
 export class EmailService {

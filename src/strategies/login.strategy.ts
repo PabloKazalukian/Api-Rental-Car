@@ -1,5 +1,5 @@
 import { Strategy as LocalStrategy, VerifyFunction } from "passport-local";
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../domain/entities/user.entity';
 import { PassportUse } from '../utils/passport.use';
 import { authService } from "../services/index.service";
 

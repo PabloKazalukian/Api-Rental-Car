@@ -1,7 +1,7 @@
-import { BaseDTO } from "../config/base.dto";
+import { BaseDTO } from "../../config/base.dto";
 import { IsEnum, IsNotEmpty } from "class-validator";
-import { UserEntity } from "../entities/user.entity";
-import { CarEntity } from "../entities/car.entity";
+import { UserEntity } from "../../domain/entities/user.entity";
+import { CarEntity } from "../../domain/entities/car.entity";
 
 export enum StateCar {
     REQUEST = "req",

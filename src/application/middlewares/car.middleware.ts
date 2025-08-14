@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
-import { HttpResponse } from '../shared/http.response';
+import { HttpResponse } from '../../shared/http.response';
 import { CarDTO } from "../dtos/car.dto";
-import { formatValidationErrors } from "../shared/validators/error-formatter";
+import { formatValidationErrors } from "../../shared/validators/error-formatter";
 
 export class CarMiddleware {
     constructor(private httpResponse: HttpResponse) { }

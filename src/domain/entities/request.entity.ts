@@ -1,9 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { BaseEntity } from "../config/base.entity";
+import {  Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { PaymentEntity } from "./payment.entity";
 import { CarEntity } from "./car.entity";
 import { DiscountEntity } from "./discount.entity";
+import { BaseEntity } from "../../config/base.entity";
 
 export enum StateCar {
     REQUEST = "req",

@@ -1,8 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, Timestamp } from "typeorm";
-import { BaseEntity } from "../config/base.entity";
-import { BaseDTO } from "../config/base.dto";
+import { BaseEntity } from "../../config/base.entity";
+import { BaseDTO } from "../../config/base.dto";
 import { IsEnum, IsNotEmpty } from "class-validator";
-import { RequestEntity } from "../entities/request.entity";
+import { RequestEntity } from "../../domain/entities/request.entity";
 
 export enum Automatic {
     YES = "yes",

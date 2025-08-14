@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { carController } from "../controllers/index.controller";
-import { carMiddleware } from "../middlewares/index.middleware";
+import { carMiddleware } from "../application/middlewares/index.middleware";
 
 const router = Router();
 

@@ -1,4 +1,4 @@
-import { UserDTO, UserRole } from "../dtos/user.dto";
+import { UserDTO, UserRole } from "../application/dtos/user.dto";
 import { UserService } from "../services/user.service";
 
 export class UserSeeder {
