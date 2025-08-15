@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 import { RequestEntity } from "./request.entity";
 import { Exclude } from "class-transformer";
 import { DiscountEntity } from "./discount.entity";
-import { BaseEntity } from "../../config/base.entity";
+import { BaseEntity } from "../../infrastructure/config/base.entity";
 
 export enum UserRole {
     ADMIN = "admin",

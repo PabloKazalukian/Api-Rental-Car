@@ -3,7 +3,7 @@ import { UserEntity } from "./user.entity";
 import { PaymentEntity } from "./payment.entity";
 import { CarEntity } from "./car.entity";
 import { DiscountEntity } from "./discount.entity";
-import { BaseEntity } from "../../config/base.entity";
+import { BaseEntity } from "../../infrastructure/config/base.entity";
 
 export enum StateCar {
     REQUEST = "req",

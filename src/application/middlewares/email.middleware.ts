@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { validate } from "class-validator";
-import { HttpResponse } from "../../shared/http.response";
+import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { EmailDTO } from "../dtos/email.dto";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
 

@@ -2,7 +2,7 @@ import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional } from "class-validato
 import { DiscountType } from "../../domain/entities/discount.entity";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { RequestEntity } from "../../domain/entities/request.entity";
-import { BaseDTO } from "../../config/base.dto";
+import { BaseDTO } from "../../infrastructure/config/base.dto";
 
 export class DiscountDTO extends BaseDTO {
 

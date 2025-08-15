@@ -1,7 +1,7 @@
-import { HttpResponse } from '../http.response';
 import { Response } from 'express';
 import { HttpException } from './http.exeption';
 import { statusToMethod } from './status-mapper.util';
+import { HttpResponse } from '../../infrastructure/gateways/response/http.response';
 
 export function catchError(err: unknown, res: Response, http: HttpResponse) {
 

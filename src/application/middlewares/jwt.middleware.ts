@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { HttpResponse } from "../../shared/http.response";
+import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { UserRole } from "../dtos/user.dto";
 // import { Response } from "@sendgrid/helpers/classes";

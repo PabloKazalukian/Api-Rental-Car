@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
-import { HttpResponse } from '../../shared/http.response';
+import { HttpResponse } from '../../infrastructure/gateways/response/http.response';
 import { CarDTO } from "../dtos/car.dto";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
 

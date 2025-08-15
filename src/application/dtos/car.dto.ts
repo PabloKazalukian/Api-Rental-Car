@@ -1,4 +1,4 @@
-import { BaseDTO } from "../../config/base.dto";
+import { BaseDTO } from "../../infrastructure/config/base.dto";
 import { IsNotEmpty, ValidateNested } from "class-validator";
 import { SpecificationsCarDTO } from "./carSpecifications.dto";
 

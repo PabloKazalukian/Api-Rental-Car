@@ -1,5 +1,5 @@
+import { HttpResponse } from "../../src/infrastructure/gateways/response/http.response";
 import { DiscountController } from "../../src/controllers/discount.controller";
-import { HttpResponse } from "../../src/shared/http.response";
 import { Request, Response } from "express";
 
 // helpers para mocks

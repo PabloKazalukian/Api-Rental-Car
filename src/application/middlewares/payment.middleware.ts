@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
-import { HttpResponse } from "../../shared/http.response";
+import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
 import { PaymentDTO } from "../dtos/payment.dto";
 

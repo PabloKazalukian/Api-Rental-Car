@@ -1,12 +1,12 @@
 import { AppDataSource } from "../../src/config/data.source";
-import { DiscountService } from "../../src/services/discount.service";
 import { DiscountEntity, DiscountType } from "../../src/domain/entities/discount.entity";
-import { UserService } from "../../src/services/user.service";
 import { DiscountDTO } from "../../src/application/dtos/discount.dto";
+import { UserRepository } from "../../src/infrastructure/gateways/repositories/user.repository";
+import { DiscountRepository } from "../../src/infrastructure/gateways/repositories/discount.repository";
 
 describe('DiscountService', () => {
-    let service: DiscountService = new DiscountService();
-    let userService: UserService = new UserService();
+    let service: DiscountRepository = new DiscountRepository();
+    let userService: UserRepository = new UserRepository();
     let createdDiscount: DiscountEntity;
 
     beforeAll(async () => {
@@ -14,15 +14,15 @@ describe('DiscountService', () => {
         // await AppDataSource.synchronize(true); // limpia y crea
 
         // Asegurarse de que existan relaciones necesarias
-        const { UserSeeder } = await import("../../src/seeds/user.seed");
-        const { CarSeeder } = await import("../../src/seeds/car.seed");
-        const { RequestSeeder } = await import("../../src/seeds/request.seed");
+        const { UserSeeder } = await import("../../src/infrastructure/db/seeds/user.seed");
+        const { CarSeeder } = await import("../../src/infrastructure/db/seeds/car.seed");
+        const { RequestSeeder } = await import("../../src/infrastructure/db/seeds/request.seed");
 
         await new UserSeeder().run();
         await new CarSeeder().run();
         await new RequestSeeder().run();
 
-        service = new DiscountService();
+        service = new DiscountRepository();
     });
 
     afterAll(async () => {

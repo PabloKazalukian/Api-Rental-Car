@@ -1,4 +1,4 @@
-import { BaseDTO } from "../../config/base.dto";
+import { BaseDTO } from "../../infrastructure/config/base.dto";
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { UserEntity } from "../../domain/entities/user.entity";
 import { CarEntity } from "../../domain/entities/car.entity";

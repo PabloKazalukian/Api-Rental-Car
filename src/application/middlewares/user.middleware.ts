@@ -1,22 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import { UserDTO, UserRole } from "../dtos/user.dto";
 import { validate } from "class-validator";
-import { HttpResponse } from "../../shared/http.response";
+import { UserDTO, UserRole } from "../dtos/user.dto";
+import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { JwtMiddleware } from "./jwt.middleware";
-import { UserService } from "../../services/user.service";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { UserRepository } from "../../infrastructure/gateways/repositories/user.repository";
 
 export class UserMiddleware extends JwtMiddleware {
     constructor(
         private httpResponse: HttpResponse,
-        private userService: UserService = new UserService()
+        private userRepository : UserRepository = new UserRepository()
     ) {
         super(httpResponse);
     }
 
     async mergeUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const user = await this.userService.findById(req.params.idUser);
+            console.log(req.params.idUser);
+            const user = await this.userRepository.findById(req.params.idUser);
             if (!user)
                 return this.httpResponse.NotFound(res, "Usuario no encontrado");
 

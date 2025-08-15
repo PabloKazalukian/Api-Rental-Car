@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { BaseEntity } from "../../config/base.entity";
+import { BaseEntity } from "../../infrastructure/config/base.entity";
 import { SpecificationsCar } from "./specificationsCar";
 import { RequestEntity } from "./request.entity";
 

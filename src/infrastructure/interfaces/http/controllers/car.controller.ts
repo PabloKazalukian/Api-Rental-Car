@@ -1,0 +1,45 @@
+import { Request, Response } from "express";
+import { HttpResponse } from "../../../gateways/response/http.response";
+import { CarRepository } from "../../../gateways/repositories/car.repository";
+
+export class CarController {
+    constructor(private readonly carService: CarRepository, private readonly httpResponse: HttpResponse) { }
+
+    async getAllCar(req: Request, res: Response) {
+        try {
+            const data = await this.carService.findAllCar();
+            return this.httpResponse.Ok(res, data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    };
+
+    async getCarById(req: Request, res: Response) {
+        try {
+            const data = await this.carService.findById(req.params.id);
+            if (!data) return res.status(404).json({ message: "Car not found" });
+            return this.httpResponse.Ok(res, data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    };
+
+    async createCar(req: Request, res: Response) {
+        try {
+            const data = await this.carService.createCar(req.body);
+            res.status(201).json(data)
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    };
+
+    async getPriceById(req: Request, res: Response) {
+        try {
+            const data = await this.carService.findPriceCarById(req.params.id);
+            if (!data) return res.status(404).json({ message: "Car not found" });
+            res.status(200).json(data)
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    };
+}

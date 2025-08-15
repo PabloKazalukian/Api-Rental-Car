@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
-import { BaseDTO } from "../../config/base.dto";
+import { BaseDTO } from "../../infrastructure/config/base.dto";
 import { UserType } from "../../domain/entities/user.entity";
 
 export enum UserRole {
