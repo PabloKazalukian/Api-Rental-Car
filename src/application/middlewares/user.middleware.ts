@@ -9,7 +9,7 @@ import { UserRepository } from "../../infrastructure/gateways/repositories/user.
 export class UserMiddleware extends JwtMiddleware {
     constructor(
         private httpResponse: HttpResponse,
-        private userRepository : UserRepository = new UserRepository()
+        private userRepository : UserRepository
     ) {
         super(httpResponse);
     }

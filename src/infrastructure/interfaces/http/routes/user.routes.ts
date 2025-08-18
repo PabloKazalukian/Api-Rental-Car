@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { userController } from "../controllers/index.controller"
-import { userMiddleware } from "../../../../application/middlewares/index.middleware";
+import { MiddlewareFactory } from "../../../../application/factories/middleware.factory";
 
 
 const router = Router();
+const userMiddleware = MiddlewareFactory.createUserMiddleware();
 
 router.get('/user', (req, res) => { userController.getAllUser(req, res) });
 router.get('/user/:idUser', (req, res) => { userController.getUserById(req, res) });

@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { authController } from '../controllers/index.controller';
-import { jwtMiddleware } from '../../../../application/middlewares/index.middleware';
 import { setReedirectGoogleCookie } from '../../../utils/cookie.utils';
+import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
 
-// const middleware = new JwtMiddleware();
+const jwtMiddleware = MiddlewareFactory.createJwtMiddleware();
 const router = Router();
 
 router.post('/auth/login', jwtMiddleware.passAuth("login"), (req, res) => { authController.login(req, res) });

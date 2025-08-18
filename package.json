@@ -8,10 +8,10 @@
         "test:watch": "jest --watch",
         "start": "node build/index.js",
         "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-        "typeorm": "typeorm-ts-node-commonjs -d ./src/config/data.source.ts",
+        "typeorm": "typeorm-ts-node-commonjs -d ./src/infrastructure/db/config/data.source.ts",
         "m:generate": "npm run typeorm migration:generate",
         "m:run": "npm run typeorm migration:run",
-        "seed": "ts-node ./src/seeds/seed.ts",
+        "seed": "ts-node ./src/infrastructure/db/seeds/seed.ts",
         "cli:generate": "node cli/cli-generators.js generate",
         "open:feature": "node cli/open-features.js",
         "build": "tsc -p tsconfig.json"

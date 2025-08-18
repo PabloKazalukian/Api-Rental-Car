@@ -1,9 +1,10 @@
 import { Router } from "express";
+import { MiddlewareFactory } from "../../../../application/factories/middleware.factory";
 import { discountController } from "../controllers/index.controller";
-import { discountMiddleware } from "../../../../application/middlewares/index.middleware";
 
 
 const router = Router();
+const  discountMiddleware= MiddlewareFactory.createDiscountMiddleware();
 
 router.get('/discount', (req, res) => { discountController.getAllDiscount(req, res); });
 router.get('/discount/:id', (req, res) => { discountController.getDiscountById(req, res); });

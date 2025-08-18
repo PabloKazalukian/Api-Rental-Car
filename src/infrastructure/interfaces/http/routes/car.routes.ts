@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { carController } from "../controllers/index.controller";
-import { carMiddleware } from "../../../../application/middlewares/index.middleware";
+import { MiddlewareFactory } from "../../../../application/factories/middleware.factory";
 
 const router = Router();
+const carMiddleware = MiddlewareFactory.createCarMiddleware();
+
 
 router.get('/car', (req, res) => { carController.getAllCar(req, res) });
 router.get('/car/:id', (req, res) => { carController.getCarById(req, res); });

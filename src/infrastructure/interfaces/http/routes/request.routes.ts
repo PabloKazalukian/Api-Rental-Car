@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { requestController } from "../controllers/index.controller";
-import { requestMiddleware } from "../../../../application/middlewares/index.middleware";
+import { MiddlewareFactory } from "../../../../application/factories/middleware.factory";
 
 
 const router = Router();
+const requestMiddleware = MiddlewareFactory.createRequestMiddleware();
 
 router.get('/request', (req, res) => { requestController.getAllRequest(req, res) });
 router.get('/request/:id', (req, res) => { requestController.getRequestById(req, res); });
