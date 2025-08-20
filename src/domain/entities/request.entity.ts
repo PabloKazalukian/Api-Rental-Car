@@ -1,8 +1,7 @@
-import {  Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {  Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { PaymentEntity } from "./payment.entity";
 import { CarEntity } from "./car.entity";
-import { DiscountEntity } from "./discount.entity";
 import { BaseEntity } from "../../infrastructure/config/base.entity";
 
 export enum StateCar {
@@ -18,9 +17,11 @@ export class RequestEntity extends BaseEntity {
     amount!: number;
 
     @Column()
+    @Index()
     initialDate!: Date;
 
     @Column()
+    @Index()
     finalDate!: Date;
 
     @Column({
@@ -39,9 +40,5 @@ export class RequestEntity extends BaseEntity {
 
     @OneToMany(() => PaymentEntity, (payment) => payment.request_id, { nullable: true })
     requestPayment!: PaymentEntity[];
-
-    @OneToMany(() => DiscountEntity, (discount) => discount.request_id, { nullable: true })
-    @JoinColumn({ name: "discount_id" })
-    discount_id!: DiscountEntity;
 
 }

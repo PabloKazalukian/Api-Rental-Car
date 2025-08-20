@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { BaseEmailProvider } from "./baseEmail.provider";
-import { EmailDTO } from "../../application/dtos/email.dto";
+import { EmailDTO } from "../../../application/dtos/email.dto";
 
 export class ResendEmailProvider extends BaseEmailProvider {
     private readonly resend = new Resend(process.env.RESEND_API_KEY);

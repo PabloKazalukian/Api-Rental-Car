@@ -5,6 +5,7 @@ import { GoogleLoginUseCase } from "../../../../application/use-case/auth/google
 import { RefreshTokenUseCase } from "../../../../application/use-case/auth/refresh-token.use-case";
 import { catchError } from "../../../../shared/exeptions/catch-error.util";
 import { HttpResponse } from "../../../gateways/response/http.response";
+import { UserEntity } from "../../../../domain/entities/user.entity";
 
 export class AuthController {
     constructor(
@@ -18,7 +19,7 @@ export class AuthController {
     async login(req: Request, res: Response) {
         try {
 
-            const encode = await this.loginUseCase.execute(req.user);
+            const encode = await this.loginUseCase.execute(req.user as UserEntity);
             if (!encode) return this.httpResponse.Unauthorized(res, 'Token invalido');
 
             res.header('Content-Type', 'application/json');

@@ -3,6 +3,7 @@ import { RequestEntity } from "./request.entity";
 import { Exclude } from "class-transformer";
 import { DiscountEntity } from "./discount.entity";
 import { BaseEntity } from "../../infrastructure/config/base.entity";
+import { UserDiscountEntity } from "./user-discount.entity";
 
 export enum UserRole {
     ADMIN = "admin",
@@ -38,7 +39,7 @@ export class UserEntity extends BaseEntity {
     @OneToMany(() => RequestEntity, (request) => request.user_id)
     requests!: RequestEntity[];
 
-    @ManyToMany(() => DiscountEntity, (discount) => discount.users)
-    discounts!: DiscountEntity[];
+    @OneToMany(() => UserDiscountEntity, (userDiscount) => userDiscount.user)
+    discounts!: UserDiscountEntity[];
 
 }

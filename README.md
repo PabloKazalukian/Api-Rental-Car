@@ -115,10 +115,10 @@ Asegúrate de tener instalados los siguientes componentes en tu máquina:
    - Si necesitas crear una **migration**, podes crearla atravez del siguiente comando:
 
      ```bash
-     pm run m:generate -- src/migration/nombreSeed
+     npm run m:generate -- src/infrastructure/db/migration/nombreDeMigracion
      ```
 
-    - Se Alcamenara en la carpeta `src/migration` junto con las demas migraciones.
+    - Se Alcamenara en la carpeta `src/infrastructure/db/migration` junto con las demas migraciones.
 
 8. **Acceder a la API**
 

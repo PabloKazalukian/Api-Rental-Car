@@ -1,4 +1,4 @@
-import { ResendEmailProvider } from '../../../providers/email/resend.provider';
+import { ResendEmailProvider } from '../email/resend.provider';
 import { AuthService } from './auth.service';
 import { CarRepository } from './car.repository';
 import { DiscountRepository } from './discount.repository';

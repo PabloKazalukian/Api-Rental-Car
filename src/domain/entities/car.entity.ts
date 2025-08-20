@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "../../infrastructure/config/base.entity";
-import { SpecificationsCar } from "./specificationsCar";
+import { SpecificationsCar } from "./specifications-car";
 import { RequestEntity } from "./request.entity";
 
 @Entity({ name: "car" })

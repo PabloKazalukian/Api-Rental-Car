@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, Timestamp } from "typeorm";
 import { RequestEntity } from "./request.entity";
 import { BaseEntity } from "../../infrastructure/config/base.entity";
+import { UserDiscountEntity } from "./user-discount.entity";
 
 export enum Automatic {
     YES = "yes",
@@ -14,7 +15,7 @@ export class PaymentEntity extends BaseEntity {
     paidDate!: Date;
 
     @Column()
-    createdTime!: Date;
+    createdDate!: Date;
 
     @Column({
         type: "enum",
@@ -28,5 +29,7 @@ export class PaymentEntity extends BaseEntity {
     @ManyToOne(() => RequestEntity, (request) => request.requestPayment, { nullable: false })
     @JoinColumn({ name: "request_id" })
     request_id!: RequestEntity;
-
+    
+    @OneToOne(() => UserDiscountEntity, (userDiscount) => userDiscount.payment, { nullable: true })
+    userDiscount!: UserDiscountEntity | null;
 }

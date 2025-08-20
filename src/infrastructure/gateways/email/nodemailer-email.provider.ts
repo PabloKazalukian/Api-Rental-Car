@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
-import { EmailDTO } from "../../application/dtos/email.dto";
 import { BaseEmailProvider } from "./baseEmail.provider";
+import { EmailDTO } from "../../../application/dtos/email.dto";
 
 export class NodemailerEmailProvider extends BaseEmailProvider {
     private transporter = nodemailer.createTransport({

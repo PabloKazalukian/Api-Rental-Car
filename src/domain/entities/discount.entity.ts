@@ -1,7 +1,9 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { RequestEntity } from "./request.entity";
 import { BaseEntity } from "../../infrastructure/config/base.entity";
 import { UserEntity } from "./user.entity";
+import { PaymentEntity } from "./payment.entity";
+import { UserDiscountEntity } from "./user-discount.entity";
 
 export enum DiscountType {
     PERCENTAGE = 'percentage',
@@ -12,6 +14,7 @@ export enum DiscountType {
 export class DiscountEntity extends BaseEntity {
 
     @Column()
+    @Index()
     codeDiscount!: string;
 
     @Column()
@@ -32,12 +35,8 @@ export class DiscountEntity extends BaseEntity {
     @Column()
     status!: boolean;
 
-    @ManyToMany(() => UserEntity, (user) => user.discounts)
-    @JoinTable()
-    users!: UserEntity[]
+    @OneToMany(() => UserDiscountEntity, (userDiscount) => userDiscount.discount)
+    userDiscounts!: UserDiscountEntity[];
 
-    @ManyToOne(() => RequestEntity, (request) => request.discount_id, { nullable: true })
-    @JoinColumn({ name: "request_id" })
-    request_id!: RequestEntity;
 
 }
