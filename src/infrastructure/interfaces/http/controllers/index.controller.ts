@@ -1,5 +1,5 @@
 // controllers/index.ts
-import { authService, carRepository, discountRepository, paymentRepository, requestRepository, userRepository} from "../../../gateways/repositories/index.service";
+import { authService, carRepository, discountRepository, paymentRepository, requestRepository, userDiscountRepository, userRepository } from "../../../gateways/repositories/index.service";
 import { HttpResponse } from '../../../gateways/response/http.response';
 import { AuthController } from "./auth.controller";
 import { CarController } from "./car.controller";
@@ -11,6 +11,7 @@ import { RequestController } from "./request.controller";
 import { RefreshTokenUseCase } from "../../../../application/use-case/auth/refresh-token.use-case";
 import { GoogleLoginUseCase } from "../../../../application/use-case/auth/google-login.use-case";
 import { LoginUseCase } from "../../../../application/use-case/auth/login.use-case";
+import { UserDiscountController } from "./user-discount.controller";
 
 const httpResponse = new HttpResponse();
 
@@ -25,3 +26,4 @@ export const paymentController = new PaymentController(paymentRepository, httpRe
 export const discountController = new DiscountController(discountRepository, httpResponse);
 export const carController = new CarController(carRepository, httpResponse);
 export const emailController = new EmailController(httpResponse);
+export const userDiscountController = new UserDiscountController(userDiscountRepository, httpResponse)

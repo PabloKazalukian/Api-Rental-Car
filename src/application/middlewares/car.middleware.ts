@@ -19,7 +19,6 @@ export class CarMiddleware {
 
         validate(valid).then((err) => {
             if (err.length > 0) {
-                res.status(400).json({ message: err[0].constraints });
                 return this.httpResponse.Error(res, formatValidationErrors(err));
             } else {
                 next();

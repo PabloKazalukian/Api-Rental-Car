@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { HttpResponse } from "../../../gateways/response/http.response";
-import { emailRepository } from "../../../gateways/repositories/index.service"; 
+import { emailRepository } from "../../../gateways/repositories/index.service";
 
 export class EmailController {
     constructor(private readonly httpResponse: HttpResponse) { }
@@ -12,6 +12,7 @@ export class EmailController {
         } catch (error) {
             return this.httpResponse.Error(res, error);
         }
-    }
+    };
+
 }
 

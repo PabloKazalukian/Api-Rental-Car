@@ -31,7 +31,7 @@ export class AuthController {
         } catch (err) {
             return catchError(err, res, this.httpResponse);
         }
-    }
+    };
 
     async loginGoogle(req: Request, res: Response) {
         try {
@@ -68,7 +68,7 @@ export class AuthController {
         } catch (err) {
             return catchError(err, res, this.httpResponse);
         }
-    }
+    };
 
     logout(req: Request, res: Response) {
         try {
@@ -79,5 +79,6 @@ export class AuthController {
         } catch (err) {
             return catchError(err, res, this.httpResponse);
         }
-    }
+    };
+
 }

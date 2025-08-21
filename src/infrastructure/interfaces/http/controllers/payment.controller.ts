@@ -22,7 +22,7 @@ export class PaymentController {
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 
     async createPayment(req: Request, res: Response) {
         try {
@@ -36,5 +36,5 @@ export class PaymentController {
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
-    }
+    };
 }

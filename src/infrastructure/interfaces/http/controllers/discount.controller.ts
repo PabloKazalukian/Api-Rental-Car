@@ -33,4 +33,5 @@ export class DiscountController {
             return this.httpResponse.Error(res, err);
         }
     }
+
 }

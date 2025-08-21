@@ -32,6 +32,7 @@ export class UserController {
         try {
 
             const userExist = await this.userService.findUserByEmail(req.body.email);
+
             if (userExist) return this.httpResponse.Error(res, 'El email ya está en uso');
             const userExistUsername = await this.userService.findUserByUsername(req.body.username);
             if (userExistUsername) return this.httpResponse.Error(res, 'El nombre de usuario ya está en uso');
@@ -46,7 +47,7 @@ export class UserController {
     async verifyEmail(req: Request, res: Response): Promise<Response> {
         try {
             const data = await this.userService.findUserByEmail(req.body.email);
-            console.log('daton:',data)
+
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);
         } catch (err) {
@@ -93,7 +94,7 @@ export class UserController {
     async modifyUser(req: Request, res: Response): Promise<Response> {
         try {
             const data = await this.userService.updateUser(req.params.idUser, req.body);
-            console.log('loco',req.body)
+            console.log('loco', req.body)
             if (!data.affected) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
             return this.httpResponse.Ok(res, data);
 

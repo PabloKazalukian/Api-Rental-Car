@@ -3,13 +3,16 @@ import { RequestDTO } from "../dtos/request.dto";
 import { validate } from "class-validator";
 import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { JwtMiddleware } from "./jwt.middleware";
 
-export class RequestMiddleware {
-    constructor(private httpResponse: HttpResponse) { }
+export class RequestMiddleware extends JwtMiddleware {
+    constructor(private httpResponse: HttpResponse) {
+        super(httpResponse)
+    }
 
     requestValidator(req: Request, res: Response, next: NextFunction) {
         const { amount, initialDate, finalDate, state, user_id, car_id } = req.body;
-        const valid = new RequestDTO()
+        const valid = new RequestDTO();
 
         valid.amount = amount;
         valid.car_id = car_id;

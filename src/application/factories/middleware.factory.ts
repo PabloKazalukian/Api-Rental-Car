@@ -6,6 +6,7 @@ import { EmailMiddleware } from "../middlewares/email.middleware";
 import { JwtMiddleware } from "../middlewares/jwt.middleware";
 import { PaymentMiddleware } from "../middlewares/payment.middleware";
 import { RequestMiddleware } from "../middlewares/request.middleware";
+import { UserDiscountMiddleware } from "../middlewares/user-discount.middleware";
 import { UserMiddleware } from "../middlewares/user.middleware";
 
 export class MiddlewareFactory {
@@ -17,8 +18,8 @@ export class MiddlewareFactory {
   static createDiscountMiddleware() {
     return new DiscountMiddleware(new HttpResponse());
   }
-  
-  static createEmailMiddleware(){
+
+  static createEmailMiddleware() {
     return new EmailMiddleware(new HttpResponse());
   }
 
@@ -35,7 +36,11 @@ export class MiddlewareFactory {
   }
 
   static createUserMiddleware() {
-    return new UserMiddleware(new HttpResponse(),new UserRepository());
+    return new UserMiddleware(new HttpResponse(), new UserRepository());
+  }
+
+  static createUserDiscountMiddleware() {
+    return new UserDiscountMiddleware(new HttpResponse)
   }
 
 }
