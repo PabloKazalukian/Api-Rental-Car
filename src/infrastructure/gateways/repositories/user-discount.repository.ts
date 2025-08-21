@@ -1,5 +1,5 @@
 import { DeleteResult, UpdateResult } from "typeorm";
-import { UserDiscountEntity } from "../../../domain/entities/user-discount.entity";
+import { UserDiscountEntity } from "../../db/entities/user-discount.entity";
 import { BaseService } from "../../base.service";
 import { UserDiscountDTO } from "../../../application/dtos/user-discount.dto";
 

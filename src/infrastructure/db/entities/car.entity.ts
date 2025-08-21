@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import { BaseEntity } from "../../infrastructure/config/base.entity";
 import { SpecificationsCar } from "./specifications-car";
 import { RequestEntity } from "./request.entity";
+import { BaseEntity } from "../../config/base.entity";
 
 @Entity({ name: "car" })
 export class CarEntity extends BaseEntity {

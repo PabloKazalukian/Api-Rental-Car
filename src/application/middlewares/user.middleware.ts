@@ -1,22 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
-import { UserDTO, UserRole } from "../dtos/user.dto";
+import { CreateUserDTO, UserDTO, UserRole } from "../dtos/user.dto";
 import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { JwtMiddleware } from "./jwt.middleware";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
 import { UserRepository } from "../../infrastructure/gateways/repositories/user.repository";
+import { EntityValidator } from "../../infrastructure/utils/entity-validator";
+import { User } from "../../domain/entities/user";
 
 export class UserMiddleware extends JwtMiddleware {
     constructor(
         private httpResponse: HttpResponse,
-        private userRepository : UserRepository
+        private userRepository: UserRepository
     ) {
         super(httpResponse);
     }
 
     async mergeUser(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log(req.params.idUser);
             const user = await this.userRepository.findById(req.params.idUser);
             if (!user)
                 return this.httpResponse.NotFound(res, "Usuario no encontrado");
@@ -28,28 +29,23 @@ export class UserMiddleware extends JwtMiddleware {
         }
     }
 
-    userValidator(req: Request, res: Response, next: NextFunction) {
-        const { username, password, confirmPassword, email, role } = req.body;
-        const valid = new UserDTO();
+    async userValidator(req: Request, res: Response, next: NextFunction) {
+        try {
 
-        valid.username = username;
-        if (password === confirmPassword) {
-            valid.password = password;
-        }
-        valid.email = email;
-        if (!role) {
-            valid.role = UserRole.USER;
-        } else {
-            valid.role = role;
-        }
-        req.body = valid;
-
-        validate(valid).then((err) => {
-            if (err.length > 0) {
-                return this.httpResponse.Error(res, formatValidationErrors(err));
-            } else {
-                next();
+            const userDomain: User = req.body;
+            if (!userDomain.role) {
+                userDomain.role = UserRole.USER;
             }
-        });
+
+            const validator = new EntityValidator<User, CreateUserDTO>(CreateUserDTO);
+            const validatedDTO = await validator.validate(userDomain);
+
+            req.body = validatedDTO;
+
+            next();
+
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
     }
 }

@@ -1,8 +1,8 @@
 import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
-import { DiscountType } from "../../domain/entities/discount.entity";
-import { UserEntity } from "../../domain/entities/user.entity";
-import { RequestEntity } from "../../domain/entities/request.entity";
 import { BaseDTO } from "../../infrastructure/config/base.dto";
+import { DiscountType } from "../../infrastructure/db/entities/discount.entity";
+import { UserEntity } from "../../infrastructure/db/entities/user.entity";
+import { RequestEntity } from "../../infrastructure/db/entities/request.entity";
 
 export class DiscountDTO extends BaseDTO {
 

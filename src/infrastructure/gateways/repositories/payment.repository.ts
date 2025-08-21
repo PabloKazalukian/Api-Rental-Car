@@ -1,7 +1,7 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../../base.service";
-import { PaymentEntity } from "../../../domain/entities/payment.entity";
 import { PaymentDTO } from "../../../application/dtos/payment.dto";
+import { PaymentEntity } from "../../db/entities/payment.entity";
 
 export class PaymentRepository extends BaseService<PaymentEntity> {
     constructor() {

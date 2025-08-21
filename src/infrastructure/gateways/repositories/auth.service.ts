@@ -1,10 +1,10 @@
 import { ConfigServer } from "../../config/config";
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
-import { UserEntity } from "../../../domain/entities/user.entity";
 import { PayloadToken } from "../../../interfaces/models/auth.interface";
-import { IAuthService } from "../../../interfaces/auth.interface";
 import { UserRepository } from "./user.repository";
+import { IAuthService } from "../../../domain/repositories/auth.interface";
+import { UserEntity } from "../../db/entities/user.entity";
 
 /**
  * Servicio de autenticación que maneja validación de usuarios y generación de tokens JWT.

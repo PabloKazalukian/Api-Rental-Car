@@ -1,9 +1,10 @@
 import { JwtPayload } from "jsonwebtoken";
-import { IUserService } from "../../../interfaces/auth.interface";
 import { HttpException } from "../../../shared/exeptions/http.exeption";
 import { HttpStatus } from "../../../shared/constants/http-status.enum";
 import { AuthErrorMessages } from "../../../shared/constants/error-messages.enum";
-import { UserEntity } from "../../../domain/entities/user.entity";
+import { IUserService } from "../../../domain/repositories/auth.interface";
+import { UserMapper } from "../../mappers/user.mappers";
+import { User } from "../../../domain/entities/user";
 
 
 export class RefreshTokenUseCase {
@@ -11,9 +12,13 @@ export class RefreshTokenUseCase {
         private readonly userService: IUserService
     ) { }
 
-    async execute(user: JwtPayload | undefined): Promise<UserEntity | null> {
+    async execute(user: JwtPayload | undefined): Promise<User> {
 
         if (user === undefined || user.sub === undefined) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.TOKEN_INVALID);
-        return await this.userService.findById(user.sub);
+        const userEntity = await this.userService.findById(user.sub);
+
+        if (userEntity === null) throw new HttpException(HttpStatus.BAD_REQUEST, AuthErrorMessages.USER_NOT_FOUND)
+
+        return UserMapper.toDomain(userEntity)
     }
 }

@@ -1,9 +1,6 @@
-import { Column, Entity, Index, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
-import { RequestEntity } from "./request.entity";
-import { BaseEntity } from "../../infrastructure/config/base.entity";
-import { UserEntity } from "./user.entity";
-import { PaymentEntity } from "./payment.entity";
+import { Column, Entity, Index, OneToMany } from "typeorm";
 import { UserDiscountEntity } from "./user-discount.entity";
+import { BaseEntity } from "../../config/base.entity";
 
 export enum DiscountType {
     PERCENTAGE = 'percentage',

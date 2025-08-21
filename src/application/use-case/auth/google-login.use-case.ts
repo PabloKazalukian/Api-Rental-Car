@@ -1,12 +1,14 @@
-import { UserEntity, UserRole, UserType } from "../../../domain/entities/user.entity";
-import { IUserService } from "../../../interfaces/auth.interface";
+import { User } from "../../../domain/entities/user";
+import { IUserService } from "../../../domain/repositories/auth.interface";
+import { UserEntity, UserType } from "../../../infrastructure/db/entities/user.entity";
 import { AuthErrorMessages } from "../../../shared/constants/error-messages.enum";
 import { HttpStatus } from "../../../shared/constants/http-status.enum";
 import { HttpException } from "../../../shared/exeptions/http.exeption";
-import { UserDTO } from "../../dtos/user.dto";
+import { UserRole } from "../../dtos/user.dto";
+import { UserMapper } from "../../mappers/user.mappers";
 
 
-interface UserGoogle {
+export interface UserGoogle {
     id: string
     email: string
     name: string,
@@ -14,26 +16,31 @@ interface UserGoogle {
 }
 
 export class GoogleLoginUseCase {
-    constructor(
-        private readonly userService: IUserService
-    ) { }
+    constructor(private readonly userService: IUserService) { }
 
-    async execute(user: UserGoogle | undefined): Promise<UserEntity> {
+    async execute(user: UserGoogle | undefined): Promise<User> {
+        if (!user) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.INVALID_CREDENTIALS);
 
-        if (user === undefined) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.INVALID_CREDENTIALS)
-        let googleUser = new UserDTO();
-        googleUser.username = user.name;
-        googleUser.email = user.email;
-        googleUser.password = 'google-oauth-dummy';
-        googleUser.role = UserRole.USER;
-        googleUser.type = UserType.GOOGLE;
+        // Crear la entidad de dominio directamente
+        const domainUser = new User(
+            crypto.randomUUID(),
+            user.name,
+            user.email,
+            "google-oauth-dummy",
+            UserRole.USER,
+            UserType.GOOGLE
+        );
 
-        let userGoogle = await this.userService.findUserByEmail(googleUser.email);
-        if (!user) {
-            // 👌 No existe, lo registramos
-            return await this.userService.createUser(googleUser);
+        // Buscar si ya existe
+        const existingUserEntity = await this.userService.findUserByEmail(domainUser.email);
+
+        if (!existingUserEntity) {
+            // Mapear a DB y guardar
+            const userEntity: UserEntity = UserMapper.toPersistence(domainUser);
+            const savedEntity: UserEntity = await this.userService.createUser(userEntity);
+            return UserMapper.toDomain(savedEntity);
         }
-        if (userGoogle === null) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.USER_NOT_FOUND);
-        return userGoogle
+
+        return UserMapper.toDomain(existingUserEntity);
     }
 }

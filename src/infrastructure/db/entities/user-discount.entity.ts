@@ -1,9 +1,9 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from "typeorm";
-import { BaseEntity } from "../../infrastructure/config/base.entity";
 import { UserEntity } from "./user.entity";
 import { DiscountEntity } from "./discount.entity";
 import { PaymentEntity } from "./payment.entity";
 import { IsDate, IsNotEmpty } from "class-validator";
+import { BaseEntity } from "../../config/base.entity";
 
 export enum UserDiscountStatus {
     AVAILABLE = "available",

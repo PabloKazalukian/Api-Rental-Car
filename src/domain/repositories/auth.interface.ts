@@ -1,5 +1,5 @@
-import { UserDTO, UserRole } from "../application/dtos/user.dto";
-import { UserEntity } from "../domain/entities/user.entity";
+import { UserDTO, UserRole } from "../../application/dtos/user.dto";
+import { UserEntity } from "../../infrastructure/db/entities/user.entity";
 
 export interface IUserService {
     findUserByEmail(email: string): Promise<UserEntity | null>;

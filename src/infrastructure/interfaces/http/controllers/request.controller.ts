@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { RequestRepository } from "../../../gateways/repositories/request.repository";
 import { CarRepository } from "../../../gateways/repositories/car.repository";
-import { CarEntity } from "../../../../domain/entities/car.entity";
 import { RequestDTO } from "../../../../application/dtos/request.dto";
 import { HttpResponse } from "../../../gateways/response/http.response";
-import { StateCar } from "../../../../domain/entities/request.entity";
 import { getDays } from "../../../utils/date.utils";
+import { StateCar } from "../../../db/entities/request.entity";
+import { CarEntity } from "../../../db/entities/car.entity";
 
 export class RequestController {
     constructor(

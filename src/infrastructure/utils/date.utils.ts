@@ -17,3 +17,15 @@ export function getDays(start: Date | string, end: Date | string): number {
 
     return Math.ceil(diff / msPerDay);
 }
+
+export function parseDateOrThrow(input: string | Date): Date {
+    const date = new Date(input);
+
+    // Si no es válida => getTime() devuelve NaN
+    if (isNaN(date.getTime())) {
+        throw new Error(`Invalid date: ${input}`);
+    }
+
+    return date;
+}
+

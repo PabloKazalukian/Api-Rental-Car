@@ -1,33 +1,30 @@
 import { NextFunction, Request, Response } from "express";
-import { RequestDTO } from "../dtos/request.dto";
-import { validate } from "class-validator";
+import { CreateRequestDTO } from "../dtos/request.dto";
+import { Request as RequestDomain } from "../../domain/entities/request";
 import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
-import { formatValidationErrors } from "../../shared/validators/error-formatter";
 import { JwtMiddleware } from "./jwt.middleware";
+import { parseDateOrThrow } from "../../infrastructure/utils/date.utils";
+import { EntityValidator } from "../../infrastructure/utils/entity-validator";
 
 export class RequestMiddleware extends JwtMiddleware {
     constructor(private httpResponse: HttpResponse) {
         super(httpResponse)
     }
 
-    requestValidator(req: Request, res: Response, next: NextFunction) {
-        const { amount, initialDate, finalDate, state, user_id, car_id } = req.body;
-        const valid = new RequestDTO();
+    async requestValidator(req: Request, res: Response, next: NextFunction) {
+        try {
+            const requestDomain: RequestDomain = req.body;
 
-        valid.amount = amount;
-        valid.car_id = car_id;
-        valid.finalDate = new Date(finalDate);
-        valid.initialDate = new Date(initialDate);
-        valid.state = state;
-        valid.user_id = user_id;
+            requestDomain.finalDate = parseDateOrThrow(requestDomain.finalDate);
+            requestDomain.initialDate = parseDateOrThrow(requestDomain.initialDate);
 
+            const validator = new EntityValidator<RequestDomain, CreateRequestDTO>(CreateRequestDTO);
+            const validatedDTO = await validator.validate(requestDomain);
 
-        validate(valid).then((err) => {
-            if (err.length > 0) {
-                return this.httpResponse.Error(res, formatValidationErrors(err))
-            } else {
-                next();
-            }
-        });
+            req.body = validatedDTO;
+
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
     }
 }

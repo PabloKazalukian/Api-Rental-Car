@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { clearCookies, setAuthCookie, setAuthGoogleCookie } from "../../../utils/cookie.utils";
 import { LoginUseCase } from "../../../../application/use-case/auth/login.use-case";
-import { GoogleLoginUseCase } from "../../../../application/use-case/auth/google-login.use-case";
+import { GoogleLoginUseCase, UserGoogle } from "../../../../application/use-case/auth/google-login.use-case";
 import { RefreshTokenUseCase } from "../../../../application/use-case/auth/refresh-token.use-case";
 import { catchError } from "../../../../shared/exeptions/catch-error.util";
 import { HttpResponse } from "../../../gateways/response/http.response";
-import { UserEntity } from "../../../../domain/entities/user.entity";
+import { User } from "../../../../domain/entities/user";
 
 export class AuthController {
     constructor(
@@ -19,7 +19,7 @@ export class AuthController {
     async login(req: Request, res: Response) {
         try {
 
-            const encode = await this.loginUseCase.execute(req.user as UserEntity);
+            const encode = await this.loginUseCase.execute(req.user as User);
             if (!encode) return this.httpResponse.Unauthorized(res, 'Token invalido');
 
             res.header('Content-Type', 'application/json');
@@ -36,7 +36,7 @@ export class AuthController {
     async loginGoogle(req: Request, res: Response) {
         try {
 
-            const user = await this.googleLoginUseCase.execute(req.user as any)
+            const user: User = await this.googleLoginUseCase.execute(req.user as UserGoogle)
 
             const encode = await this.loginUseCase.execute(user);
             if (!encode) return this.httpResponse.Unauthorized(res, 'Token invalido');
@@ -56,7 +56,7 @@ export class AuthController {
     async refresh(req: Request, res: Response) {
         try {
 
-            const foundUser = await this.refreshTokenUseCase.execute(req.user);
+            const foundUser: User = await this.refreshTokenUseCase.execute(req.user);
             if (!foundUser) return this.httpResponse.Unauthorized(res, 'Usuario no encontrado');
 
             const encode = await this.loginUseCase.execute(foundUser);
