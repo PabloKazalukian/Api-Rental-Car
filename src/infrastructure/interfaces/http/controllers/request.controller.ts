@@ -4,8 +4,8 @@ import { CarRepository } from "../../../gateways/repositories/car.repository";
 import { RequestDTO } from "../../../../application/dtos/request.dto";
 import { HttpResponse } from "../../../gateways/response/http.response";
 import { getDays } from "../../../utils/date.utils";
-import { StateCar } from "../../../db/entities/request.entity";
 import { CarEntity } from "../../../db/entities/car.entity";
+import { StateCar } from "../../../../domain/entities/request";
 
 export class RequestController {
     constructor(

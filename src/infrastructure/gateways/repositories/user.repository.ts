@@ -1,8 +1,9 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { BaseService } from "../../base.service";
-import { UserDTO, UserRole } from "../../../application/dtos/user.dto";
+import { UserDTO } from "../../../application/dtos/user.dto";
 import { hashPassword } from "../../utils/hashPassword";
 import { UserEntity } from "../../db/entities/user.entity";
+import { UserRole } from "../../../domain/entities/user";
 
 export class UserRepository extends BaseService<UserEntity> {
     constructor() {

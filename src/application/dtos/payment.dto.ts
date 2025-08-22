@@ -1,4 +1,3 @@
-import { BaseEntity } from "../../infrastructure/config/base.entity";
 import { BaseDTO } from "../../infrastructure/config/base.dto";
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { RequestEntity } from "../../infrastructure/db/entities/request.entity";

@@ -1,6 +1,5 @@
-import { User } from "../../domain/entities/user";
-import { UserEntity, UserType, UserRole } from "../../infrastructure/db/entities/user.entity";
-// import { UserRole } from "../dtos/user.dto";
+import { User, UserRole, UserType } from "../../domain/entities/user";
+import { UserEntity } from "../../infrastructure/db/entities/user.entity";
 
 export class UserMapper {
     static toPersistence(user: User): UserEntity {

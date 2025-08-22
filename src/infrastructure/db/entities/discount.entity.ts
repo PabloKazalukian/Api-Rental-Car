@@ -1,11 +1,9 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
 import { UserDiscountEntity } from "./user-discount.entity";
 import { BaseEntity } from "../../config/base.entity";
+import { DiscountType } from "../../../domain/entities/discount";
 
-export enum DiscountType {
-    PERCENTAGE = 'percentage',
-    FIXED = 'fixed',
-}
+
 
 @Entity({ name: "discount" })
 export class DiscountEntity extends BaseEntity {

@@ -1,9 +1,11 @@
-import { UserDTO, UserRole } from "../../../application/dtos/user.dto";
-import { UserType, UserEntity } from "../../../domain/entities/user.entity";
+import { UserDTO } from "../../../application/dtos/user.dto";
 import { RequestRepository } from "../../gateways/repositories/request.repository";
 import { UserRepository } from "../../gateways/repositories/user.repository";
-import { RequestDTO, StateCar } from "../../../application/dtos/request.dto";
+import { RequestDTO, } from "../../../application/dtos/request.dto";
 import { CarRepository } from "../../gateways/repositories/car.repository";
+import { StateCar } from "../../../domain/entities/request";
+import { UserEntity } from "../entities/user.entity";
+import { UserRole, UserType } from "../../../domain/entities/user";
 
 export class RequestSeeder {
     private userService = new UserRepository();

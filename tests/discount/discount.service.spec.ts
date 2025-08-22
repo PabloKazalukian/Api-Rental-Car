@@ -1,8 +1,9 @@
-import { DiscountEntity, DiscountType } from "../../src/domain/entities/discount.entity";
 import { DiscountDTO } from "../../src/application/dtos/discount.dto";
 import { UserRepository } from "../../src/infrastructure/gateways/repositories/user.repository";
 import { DiscountRepository } from "../../src/infrastructure/gateways/repositories/discount.repository";
 import { AppDataSource } from "../../src/infrastructure/db/config/data.source";
+import { DiscountEntity } from "../../src/infrastructure/db/entities/discount.entity";
+import { DiscountType } from "../../src/domain/entities/discount";
 
 describe('DiscountService', () => {
     let service: DiscountRepository = new DiscountRepository();

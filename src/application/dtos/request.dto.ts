@@ -2,12 +2,8 @@ import { BaseDTO } from "../../infrastructure/config/base.dto";
 import { IsEnum, IsNotEmpty } from "class-validator";
 import { CarEntity } from "../../infrastructure/db/entities/car.entity";
 import { UserEntity } from "../../infrastructure/db/entities/user.entity";
+import { StateCar } from "../../domain/entities/request";
 
-export enum StateCar {
-    REQUEST = "req",
-    CONFIRM = "con",
-    CANCEL = "can"
-}
 
 export class RequestDTO extends BaseDTO {
 

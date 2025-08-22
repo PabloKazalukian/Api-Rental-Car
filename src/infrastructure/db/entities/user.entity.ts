@@ -3,18 +3,8 @@ import { RequestEntity } from "./request.entity";
 import { Exclude } from "class-transformer";
 import { BaseEntity } from "../../config/base.entity";
 import { UserDiscountEntity } from "./user-discount.entity";
+import { UserRole, UserType } from "../../../domain/entities/user";
 
-export enum UserRole {
-    ADMIN = "admin",
-    USER = "user",
-}
-
-export enum UserType {
-    LOCAL = "local",
-    GOOGLE = "google",
-    GITHUB = "github",
-    MICROSOFT = "microsoft"
-}
 
 @Entity({ name: "user" })
 export class UserEntity extends BaseEntity {

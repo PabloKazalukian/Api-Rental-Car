@@ -1,19 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import { validate } from "class-validator";
-import { CreateUserDTO, UserDTO, UserRole } from "../dtos/user.dto";
+import { CreateUserDTO } from "../dtos/user.dto";
 import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { JwtMiddleware } from "./jwt.middleware";
-import { formatValidationErrors } from "../../shared/validators/error-formatter";
 import { UserRepository } from "../../infrastructure/gateways/repositories/user.repository";
 import { EntityValidator } from "../../infrastructure/utils/entity-validator";
-import { User } from "../../domain/entities/user";
+import { User, UserRole } from "../../domain/entities/user";
+import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
 
 export class UserMiddleware extends JwtMiddleware {
     constructor(
-        private httpResponse: HttpResponse,
         private userRepository: UserRepository
     ) {
-        super(httpResponse);
+        super(HttpResponseSingleton.getInstance());;
     }
 
     async mergeUser(req: Request, res: Response, next: NextFunction) {

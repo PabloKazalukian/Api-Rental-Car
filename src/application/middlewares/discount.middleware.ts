@@ -1,11 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { validate } from "class-validator";
-import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { DiscountDTO } from "../dtos/discount.dto";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { JwtMiddleware } from "./jwt.middleware";
+import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
 
-export class DiscountMiddleware {
-    constructor(private httpResponse: HttpResponse) { }
+export class DiscountMiddleware extends JwtMiddleware {
+    constructor() {
+        super(HttpResponseSingleton.getInstance())
+    }
 
     discountValidator(req: Request, res: Response, next: NextFunction) {
         const { codeDiscount, initialDate, expirationDate, percentage, status, users, request_id, type } = req.body;

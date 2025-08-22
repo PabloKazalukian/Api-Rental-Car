@@ -1,5 +1,5 @@
 import { UserRepository } from "../../infrastructure/gateways/repositories/user.repository";
-import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
+import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
 import { CarMiddleware } from "../middlewares/car.middleware";
 import { DiscountMiddleware } from "../middlewares/discount.middleware";
 import { EmailMiddleware } from "../middlewares/email.middleware";
@@ -12,35 +12,35 @@ import { UserMiddleware } from "../middlewares/user.middleware";
 export class MiddlewareFactory {
 
   static createCarMiddleware() {
-    return new CarMiddleware(new HttpResponse());
+    return new CarMiddleware(HttpResponseSingleton.getInstance());
   }
 
   static createDiscountMiddleware() {
-    return new DiscountMiddleware(new HttpResponse());
+    return new DiscountMiddleware();
   }
 
   static createEmailMiddleware() {
-    return new EmailMiddleware(new HttpResponse());
+    return new EmailMiddleware(HttpResponseSingleton.getInstance());
   }
 
   static createJwtMiddleware() {
-    return new JwtMiddleware(new HttpResponse());
+    return new JwtMiddleware(HttpResponseSingleton.getInstance());
   }
 
   static createpaymentMiddleware() {
-    return new PaymentMiddleware(new HttpResponse());
+    return new PaymentMiddleware(HttpResponseSingleton.getInstance());
   }
 
   static createRequestMiddleware() {
-    return new RequestMiddleware(new HttpResponse());
+    return new RequestMiddleware();
   }
 
   static createUserMiddleware() {
-    return new UserMiddleware(new HttpResponse(), new UserRepository());
+    return new UserMiddleware(new UserRepository());
   }
 
   static createUserDiscountMiddleware() {
-    return new UserDiscountMiddleware(new HttpResponse)
+    return new UserDiscountMiddleware()
   }
 
 }

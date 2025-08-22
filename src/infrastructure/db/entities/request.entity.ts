@@ -3,12 +3,9 @@ import { UserEntity } from "./user.entity";
 import { PaymentEntity } from "./payment.entity";
 import { CarEntity } from "./car.entity";
 import { BaseEntity } from "../../config/base.entity";
+import { StateCar } from "../../../domain/entities/request";
 
-export enum StateCar {
-    REQUEST = "req",
-    CONFIRM = "con",
-    CANCEL = "can"
-}
+
 
 @Entity({ name: "request" })
 export class RequestEntity extends BaseEntity {

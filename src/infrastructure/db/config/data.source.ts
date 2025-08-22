@@ -18,7 +18,7 @@ const Config: DataSourceOptions = {
         rejectUnauthorized: false
     },
     connectTimeoutMS: 20000, // PostgreSQL usa 'connectTimeoutMS' en lugar de 'connectTimeout'
-    entities: [__dirname + "/../../../domain/entities/*.entity{.ts,.js}"],
+    entities: [__dirname + "/../entities/*.entity{.ts,.js}"],
     migrations: [__dirname + "/../migration/*{.ts,.js}"],
     synchronize: false,
     migrationsRun: false,
@@ -35,7 +35,7 @@ const ConfigTest: DataSourceOptions = {
     database: 'rental-car__test',
     synchronize: true,
     dropSchema: true,  // limpia la DB en cada ejecución de tests
-    entities: [__dirname + "/../../../domain/entities/*.entity{.ts,.js}"],
+    entities: [__dirname + "/../entities/*.entity{.ts,.js}"],
 };
 
 export const AppDataSource = new DataSource(

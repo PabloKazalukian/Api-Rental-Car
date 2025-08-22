@@ -22,11 +22,9 @@ export class AuthController {
             const encode = await this.loginUseCase.execute(req.user as User);
             if (!encode) return this.httpResponse.Unauthorized(res, 'Token invalido');
 
-            res.header('Content-Type', 'application/json');
             setAuthCookie(res, encode.accessToken);
+            return res.json(encode);
 
-            res.write(JSON.stringify(encode));
-            res.end();
 
         } catch (err) {
             return catchError(err, res, this.httpResponse);

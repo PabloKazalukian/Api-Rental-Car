@@ -1,4 +1,5 @@
-import { UserDTO, UserRole } from "../../../application/dtos/user.dto";
+import { UserDTO } from "../../../application/dtos/user.dto";
+import { UserRole } from "../../../domain/entities/user";
 import { UserRepository } from "../../gateways/repositories/user.repository";
 
 export class UserSeeder {

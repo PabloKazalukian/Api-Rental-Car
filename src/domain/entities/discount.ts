@@ -1,5 +1,9 @@
-import { DiscountType } from "../../infrastructure/db/entities/discount.entity";
 import { UserDiscount } from "./user-discount";
+
+export enum DiscountType {
+    PERCENTAGE = 'percentage',
+    FIXED = 'fixed',
+}
 
 export class Discount {
 
