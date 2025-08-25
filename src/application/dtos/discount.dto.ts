@@ -1,18 +1,20 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
 import { BaseDTO } from "../../infrastructure/config/base.dto";
-import { UserEntity } from "../../infrastructure/db/entities/user.entity";
-import { RequestEntity } from "../../infrastructure/db/entities/request.entity";
 import { DiscountType } from "../../domain/entities/discount";
+import { UserDiscountEntity } from "../../infrastructure/db/entities/user-discount.entity";
 
 export class DiscountDTO extends BaseDTO {
+
 
     @IsNotEmpty()
     codeDiscount!: string;
 
     @IsNotEmpty()
+    @IsDate()
     initialDate!: Date;
 
     @IsNotEmpty()
+    @IsDate()
     expirationDate!: Date;
 
     @IsNotEmpty()
@@ -20,19 +22,50 @@ export class DiscountDTO extends BaseDTO {
     type!: DiscountType;
 
     @IsOptional()
-    @IsNumber()
-    percentage!: number;
+    percentage?: number;
 
     @IsOptional()
     @IsNumber()
-    amount!: number;
+    amount?: number;
 
     @IsNotEmpty()
+    @IsBoolean()
     status!: boolean;
 
     @IsNotEmpty()
-    users!: UserEntity[] // o number[], si usás id numérico
+    userDiscounts!: UserDiscountEntity[];
+}
+
+
+export class CreateDiscountDTO {
+
+    @IsNotEmpty()
+    codeDiscount!: string;
+
+    @IsNotEmpty()
+    @IsDate()
+    initialDate!: Date;
+
+    @IsNotEmpty()
+    @IsDate()
+    expirationDate!: Date;
+
+    @IsNotEmpty()
+    @IsEnum(DiscountType)
+    type!: DiscountType;
 
     @IsOptional()
-    request_id!: RequestEntity; // o number
+    percentage?: number;
+
+    @IsOptional()
+    @IsNumber()
+    amount?: number;
+
+    @IsNotEmpty()
+    @IsBoolean()
+    status!: boolean;
+
+    @IsOptional()
+    userDiscounts!: UserDiscountEntity[];
+
 }

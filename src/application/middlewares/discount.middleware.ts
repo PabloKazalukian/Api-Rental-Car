@@ -1,34 +1,53 @@
 import { NextFunction, Request, Response } from "express";
-import { validate } from "class-validator";
-import { DiscountDTO } from "../dtos/discount.dto";
-import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { CreateDiscountDTO } from "../dtos/discount.dto";
 import { JwtMiddleware } from "./jwt.middleware";
 import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
+import { Discount, DiscountType } from "../../domain/entities/discount";
+import { EntityValidator } from "../../infrastructure/utils/entity-validator";
+import { DiscountErrorMessages } from "../../shared/constants/error-messages.enum";
+import { parseDateOrThrow } from "../../infrastructure/utils/date.utils";
 
 export class DiscountMiddleware extends JwtMiddleware {
     constructor() {
         super(HttpResponseSingleton.getInstance())
     }
 
-    discountValidator(req: Request, res: Response, next: NextFunction) {
-        const { codeDiscount, initialDate, expirationDate, percentage, status, users, request_id, type } = req.body;
-        const valid = new DiscountDTO();
+    async discountValidator(req: Request, res: Response, next: NextFunction) {
+        try {
+            const discountDomain: Discount = req.body;
 
-        valid.codeDiscount = codeDiscount;
-        valid.initialDate = new Date(initialDate);
-        valid.expirationDate = new Date(expirationDate);
-        valid.percentage = percentage;
-        valid.status = status;
-        valid.users = users;
-        valid.request_id = request_id;
-        valid.type = type;
+            this.validateDiscountDates(discountDomain);
 
-        validate(valid).then((err) => {
-            if (err.length > 0) {
-                return this.httpResponse.Error(res, formatValidationErrors(err));
-            } else {
-                next();
+            const validator = new EntityValidator<Discount, CreateDiscountDTO>(CreateDiscountDTO);
+            const validatorDTO = await validator.validate(discountDomain);
+
+            this.validateDiscountType(discountDomain);
+
+            req.body = validatorDTO;
+
+            next();
+
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
+    }
+
+    private validateDiscountType(discountDomain: Discount) {
+
+        if (discountDomain.type === DiscountType.FIXED) {
+            if (discountDomain.amount === null) {
+                throw new Error(DiscountErrorMessages.INVALID_TYPE);
             }
-        });
+        } else {
+            if (discountDomain.type === DiscountType.PERCENTAGE && discountDomain.percentage === null) {
+                throw new Error(DiscountErrorMessages.INVALID_TYPE);
+            }
+        }
+
+    }
+
+    private validateDiscountDates(discount: Discount) {
+        discount.initialDate = parseDateOrThrow(discount.initialDate);
+        discount.expirationDate = parseDateOrThrow(discount.expirationDate);
     }
 }

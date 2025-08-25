@@ -1,4 +1,4 @@
-import {  EntityTarget, Repository } from "typeorm";
+import { EntityTarget, Repository } from "typeorm";
 import { ConfigServer } from "./config/config";
 import { BaseEntity } from "./config/base.entity";
 
@@ -11,6 +11,7 @@ export class BaseService<T extends BaseEntity> extends ConfigServer {
 
     protected async execRepository(): Promise<Repository<T>> {
         if (!this.repository) {
+            console.log("para")
             try {
                 const conn = await this.initConnect;
                 this.repository = conn.getRepository(this.getEntity);

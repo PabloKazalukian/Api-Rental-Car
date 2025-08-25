@@ -25,7 +25,7 @@ export class GoogleLoginUseCase {
             crypto.randomUUID(),
             user.name,
             user.email,
-            "google-oauth-dummy",
+            "google-oauth",
             UserRole.USER,
             UserType.GOOGLE
         );

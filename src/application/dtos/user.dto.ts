@@ -1,6 +1,7 @@
 import { IsEmail, IsEnum, IsNotEmpty, IsOptional } from "class-validator";
 import { BaseDTO } from "../../infrastructure/config/base.dto";
 import { UserRole, UserType } from "../../domain/entities/user";
+import { RequestEntity } from "../../infrastructure/db/entities/request.entity";
 
 
 export class UserDTO extends BaseDTO {
@@ -23,8 +24,8 @@ export class UserDTO extends BaseDTO {
     @IsEnum(UserRole)
     role!: UserRole;
 
-    // @OneToMany(() => RequestEntity, (request) => request.createBy)
-    // requests!: RequestEntity[];
+    @IsOptional()
+    requests!: RequestEntity;
 
 }
 
@@ -47,6 +48,9 @@ export class CreateUserDTO {
     @IsNotEmpty()
     @IsEnum(UserRole)
     role!: UserRole;
+
+    @IsOptional()
+    requests!: RequestEntity;
 
     // @OneToMany(() => RequestEntity, (request) => request.createBy)
     // requests!: RequestEntity[];

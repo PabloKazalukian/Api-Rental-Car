@@ -1,3 +1,5 @@
+import { CommonErrorMessages } from "../../shared/constants/error-messages.enum";
+
 /**
  * Devuelve la cantidad de días (incluyendo días parciales como completos)
  * entre dos fechas.
@@ -19,11 +21,16 @@ export function getDays(start: Date | string, end: Date | string): number {
 }
 
 export function parseDateOrThrow(input: string | Date): Date {
+
+    if (input === null || input === '' || input === undefined) {
+        throw new Error(CommonErrorMessages.MISSING_PARAMETERS);
+    }
+
     const date = new Date(input);
 
     // Si no es válida => getTime() devuelve NaN
     if (isNaN(date.getTime())) {
-        throw new Error(`Invalid date: ${input}`);
+        throw new Error(CommonErrorMessages.INVALID_DATE);
     }
 
     return date;

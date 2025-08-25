@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateUserDTO } from "../dtos/user.dto";
-import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
 import { JwtMiddleware } from "./jwt.middleware";
 import { UserRepository } from "../../infrastructure/gateways/repositories/user.repository";
 import { EntityValidator } from "../../infrastructure/utils/entity-validator";

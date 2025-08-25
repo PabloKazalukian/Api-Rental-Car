@@ -26,10 +26,11 @@ export class PaymentEntity extends BaseEntity {
     })
     automatic!: Automatic;
 
-    @ManyToOne(() => RequestEntity, (request) => request.requestPayment, { nullable: false })
+    @OneToOne(() => RequestEntity, (request) => request.requestPayment, { nullable: false })
     @JoinColumn({ name: "request_id" })
     request_id!: RequestEntity;
 
     @OneToOne(() => UserDiscountEntity, (userDiscount) => userDiscount.payment, { nullable: true })
+    @JoinColumn({ name: "user_discount_id" })
     userDiscount!: UserDiscountEntity | null;
 }

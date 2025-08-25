@@ -1,7 +1,8 @@
 import { DeleteResult, UpdateResult } from "typeorm";
 import { UserDiscountEntity } from "../../db/entities/user-discount.entity";
 import { BaseService } from "../../base.service";
-import { UserDiscountDTO } from "../../../application/dtos/user-discount.dto";
+import { CreateUserDiscountDTO, UserDiscountDTO } from "../../../application/dtos/user-discount.dto";
+import { UserDiscount } from "../../../domain/entities/user-discount";
 
 export class UserDiscountRepository extends BaseService<UserDiscountEntity> {
     constructor() {
@@ -18,7 +19,7 @@ export class UserDiscountRepository extends BaseService<UserDiscountEntity> {
         return repo.findOneBy({ id });
     }
 
-    async createUserDiscount(newDiscount: UserDiscountDTO): Promise<UserDiscountEntity> {
+    async createUserDiscount(newDiscount: UserDiscountEntity): Promise<UserDiscountEntity> {
         const repo = await this.execRepository();
         return repo.save(newDiscount);
     }

@@ -40,7 +40,6 @@ export function setReedirectGoogleCookie(res: Response, redirectUri: string, opt
 export function clearCookies(res: Response, names: string[]) {
     for (const name of names) {
         res.clearCookie(name, {
-            maxAge: 60 * 60 * 1000,
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',

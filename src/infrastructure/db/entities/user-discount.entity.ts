@@ -2,14 +2,9 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from "typeorm"
 import { UserEntity } from "./user.entity";
 import { DiscountEntity } from "./discount.entity";
 import { PaymentEntity } from "./payment.entity";
-import { IsDate, IsNotEmpty } from "class-validator";
 import { BaseEntity } from "../../config/base.entity";
+import { UserDiscountStatus } from "../../../domain/entities/user-discount";
 
-export enum UserDiscountStatus {
-    AVAILABLE = "available",
-    USED = "used",
-    EXPIRED = "expired"
-}
 
 @Entity({ name: "user_discount" })
 export class UserDiscountEntity extends BaseEntity {

@@ -8,6 +8,7 @@ export enum DiscountType {
 export class Discount {
 
     constructor(
+        public id: string,
         public codeDiscount: string,
         public initialDate: Date,
         public expirationDate: Date,

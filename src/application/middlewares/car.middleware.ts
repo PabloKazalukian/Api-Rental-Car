@@ -3,9 +3,13 @@ import { validate } from "class-validator";
 import { HttpResponse } from '../../infrastructure/gateways/response/http.response';
 import { CarDTO } from "../dtos/car.dto";
 import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { JwtMiddleware } from "./jwt.middleware";
+import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
 
-export class CarMiddleware {
-    constructor(private httpResponse: HttpResponse) { }
+export class CarMiddleware extends JwtMiddleware {
+    constructor() {
+        super(HttpResponseSingleton.getInstance());
+    }
     carValidator(req: Request, res: Response, next: NextFunction) {
         const { image, brand, model, year, price, specifications_car } = req.body;
         const valid = new CarDTO();

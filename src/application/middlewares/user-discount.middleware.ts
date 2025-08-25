@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { formatValidationErrors } from "../../shared/validators/error-formatter";
-import { validate } from "class-validator";
-import { UserDiscountDTO } from "../dtos/user-discount.dto";
+import { CreateUserDiscountDTO, UserDiscountDTO } from "../dtos/user-discount.dto";
 import { JwtMiddleware } from "./jwt.middleware";
 import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
+import { UserDiscount } from "../../domain/entities/user-discount";
+import { EntityValidator } from "../../infrastructure/utils/entity-validator";
+import { parseDateOrThrow } from "../../infrastructure/utils/date.utils";
 
 
 export class UserDiscountMiddleware extends JwtMiddleware {
@@ -11,45 +12,46 @@ export class UserDiscountMiddleware extends JwtMiddleware {
         super(HttpResponseSingleton.getInstance());
     }
 
-    discountCreateValidator(req: Request, res: Response, next: NextFunction) {
-        const { issueDate, requestedDate, status, user, discount } = req.body;
-        const valid = new UserDiscountDTO();
+    async discountCreateValidator(req: Request, res: Response, next: NextFunction) {
+        try {
 
-        valid.issueDate = new Date(issueDate);
-        valid.requestedDate = new Date(requestedDate);
-        valid.status = status;
-        valid.user = user;
-        valid.discount = discount;
+            const userDiscountDomain: UserDiscount = req.body;
+            this.validateUserDiscountDates(userDiscountDomain);
 
+            const validator = new EntityValidator<UserDiscount, CreateUserDiscountDTO>(CreateUserDiscountDTO);
+            const validatorDTO = await validator.validate(userDiscountDomain);
 
-        validate(valid).then((err) => {
-            if (err.length > 0) {
-                return this.httpResponse.Error(res, formatValidationErrors(err))
-            } else {
-                next();
-            }
-        });
+            req.body = validatorDTO;
+
+            next();
+
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
     }
 
-    discountConfirmValidator(req: Request, res: Response, next: NextFunction) {
-        const { issueDate, requestedDate, status, user, discount, payment } = req.body;
-        const valid = new UserDiscountDTO();
+    async discountConfirmValidator(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userDiscountDomain: UserDiscount = req.body;
 
-        valid.issueDate = new Date(issueDate);
-        valid.requestedDate = new Date(requestedDate);
-        valid.status = status;
-        valid.user = user;
-        valid.discount = discount;
-        valid.payment = payment;
+            this.validateUserDiscountDates(userDiscountDomain);
 
 
-        validate(valid).then((err) => {
-            if (err.length > 0) {
-                return this.httpResponse.Error(res, formatValidationErrors(err))
-            } else {
-                next();
-            }
-        });
-    }
+            const validator = new EntityValidator<UserDiscount, CreateUserDiscountDTO>(CreateUserDiscountDTO);
+            const validatorDTO = await validator.validate(userDiscountDomain);
+
+            req.body = validatorDTO;
+
+            next();
+
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
+    };
+
+    private validateUserDiscountDates(discount: UserDiscount) {
+        discount.issueDate = parseDateOrThrow(discount.issueDate);
+        discount.requestedDate = parseDateOrThrow(discount.requestedDate);
+    };
 
 }

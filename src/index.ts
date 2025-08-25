@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import logging from './infrastructure/config/logging';
@@ -16,6 +16,7 @@ import { RequestRouter } from "./infrastructure/interfaces/http/routes/request.r
 import { PaymentRouter } from "./infrastructure/interfaces/http/routes/payment.routes";
 import { DiscountRouter } from "./infrastructure/interfaces/http/routes/discount.routes";
 import { EmailRouter } from "./infrastructure/interfaces/http/routes/email.routes";
+import { UserDiscountRouter } from "./infrastructure/interfaces/http/routes/user-discount.route";
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -65,6 +66,17 @@ class Server extends ConfigServer {
             credentials: true,
         }));
 
+        this.app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+            if (err instanceof SyntaxError && "body" in err) {
+                return res.status(400).json({
+                    error: "JSON inválido",
+                    detail: err.message, // opcional, podés sacarlo si no querés dar tanta info
+                });
+            }
+
+            next(err);
+        });
+
         /** Log the request */
         this.app.use((req, res, next) => {
 
@@ -88,7 +100,7 @@ class Server extends ConfigServer {
 
     //Ruteo
     public routers(): Array<express.Router> {
-        return [UserRouter, AuthRouter, CarRouter, RequestRouter, PaymentRouter, DiscountRouter, EmailRouter];
+        return [UserRouter, AuthRouter, CarRouter, RequestRouter, PaymentRouter, DiscountRouter, EmailRouter, UserDiscountRouter];
     }
 
     //Configuracion de las estrategias implementadas para autenticacion con passport

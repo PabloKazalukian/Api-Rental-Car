@@ -24,7 +24,6 @@ export class EntityValidator<TDomain, TDTO> {
 
         if (errors.length > 0) {
             const formatted = formatValidationErrors(errors);
-            console.log(formatted)
             throw new Error(JSON.stringify(formatted));
         }
 

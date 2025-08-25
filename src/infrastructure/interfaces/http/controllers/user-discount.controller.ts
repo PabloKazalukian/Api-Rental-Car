@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 import { HttpResponse } from "../../../gateways/response/http.response";
 import { UserDiscountRepository } from "../../../gateways/repositories/user-discount.repository";
+import { CreateUserDiscountUseCase } from "../../../../application/use-case/user-discount/create.user-case";
 
 export class UserDiscountController {
-    constructor(private readonly userDiscountSvc: UserDiscountRepository, private readonly httpResponse: HttpResponse) { }
+    constructor(
+        private readonly createUDiscUseCase: CreateUserDiscountUseCase,
+        private readonly userDiscountSvc: UserDiscountRepository,
+        private readonly httpResponse: HttpResponse
+    ) { }
 
     async getAllUserDiscount(req: Request, res: Response) {
         try {
@@ -26,7 +31,8 @@ export class UserDiscountController {
 
     async createUserDiscount(req: Request, res: Response) {
         try {
-            let data = await this.userDiscountSvc.createUserDiscount(req.body)
+
+            let data = await this.createUDiscUseCase.execute(req.body);
 
             return this.httpResponse.Created(res, data);
         } catch (err) {

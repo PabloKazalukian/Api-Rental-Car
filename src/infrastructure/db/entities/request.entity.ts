@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { PaymentEntity } from "./payment.entity";
 import { CarEntity } from "./car.entity";
@@ -35,7 +35,7 @@ export class RequestEntity extends BaseEntity {
     @JoinColumn({ name: "car_id" })
     car_id!: CarEntity;
 
-    @OneToMany(() => PaymentEntity, (payment) => payment.request_id, { nullable: true })
-    requestPayment!: PaymentEntity[];
+    @OneToOne(() => PaymentEntity, (payment) => payment.request_id, { nullable: true })
+    requestPayment!: PaymentEntity;
 
 }

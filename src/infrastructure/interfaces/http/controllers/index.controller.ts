@@ -12,6 +12,8 @@ import { RefreshTokenUseCase } from "../../../../application/use-case/auth/refre
 import { GoogleLoginUseCase } from "../../../../application/use-case/auth/google-login.use-case";
 import { LoginUseCase } from "../../../../application/use-case/auth/login.use-case";
 import { UserDiscountController } from "./user-discount.controller";
+import { CreateDiscountUseCase } from "../../../../application/use-case/discount/create-discount.use-case";
+import { CreateUserDiscountUseCase } from "../../../../application/use-case/user-discount/create.user-case";
 
 const httpResponse = new HttpResponse();
 
@@ -20,10 +22,14 @@ const googleLoginUseCase = new GoogleLoginUseCase(userRepository);
 const refreshTokenUseCase = new RefreshTokenUseCase(userRepository);
 export const authController = new AuthController(loginUseCase, googleLoginUseCase, refreshTokenUseCase, httpResponse);
 
+const createDiscountUseCase = new CreateDiscountUseCase(discountRepository)
+export const discountController = new DiscountController(createDiscountUseCase, discountRepository, httpResponse);
+
+const createUDiscountUseCase = new CreateUserDiscountUseCase(userDiscountRepository, userRepository, discountRepository)
+export const userDiscountController = new UserDiscountController(createUDiscountUseCase, userDiscountRepository, httpResponse)
+
 export const requestController = new RequestController(requestRepository, carRepository, httpResponse);
 export const userController = new UserController(userRepository, httpResponse);
 export const paymentController = new PaymentController(paymentRepository, httpResponse);
-export const discountController = new DiscountController(discountRepository, httpResponse);
 export const carController = new CarController(carRepository, httpResponse);
 export const emailController = new EmailController(httpResponse);
-export const userDiscountController = new UserDiscountController(userDiscountRepository, httpResponse)

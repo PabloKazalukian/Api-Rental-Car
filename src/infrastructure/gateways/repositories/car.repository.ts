@@ -35,7 +35,6 @@ export class CarRepository extends BaseService<CarEntity> {
     }
 
     async findPriceCarById(id: string): Promise<CarEntity | null> {
-        console.log("id:", id)
         const repo = await this.execRepository();
         return repo.createQueryBuilder().select('car.price').from(CarEntity, 'car').where('car.id = :id', { id }).getOne();
     }

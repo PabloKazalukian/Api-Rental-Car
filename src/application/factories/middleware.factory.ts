@@ -12,7 +12,7 @@ import { UserMiddleware } from "../middlewares/user.middleware";
 export class MiddlewareFactory {
 
   static createCarMiddleware() {
-    return new CarMiddleware(HttpResponseSingleton.getInstance());
+    return new CarMiddleware();
   }
 
   static createDiscountMiddleware() {
