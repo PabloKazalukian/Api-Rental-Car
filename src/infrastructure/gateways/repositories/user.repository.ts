@@ -1,9 +1,10 @@
-import { DeleteResult, UpdateResult } from "typeorm";
-import { BaseService } from "../../base.service";
-import { UserDTO } from "../../../application/dtos/user.dto";
-import { hashPassword } from "../../utils/hashPassword";
-import { UserEntity } from "../../db/entities/user.entity";
-import { UserRole } from "../../../domain/entities/user";
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { BaseService } from '../../base.service';
+import { UserDTO } from '../../../application/dtos/user.dto';
+import { hashPassword } from '../../utils/hashPassword';
+import { UserEntity } from '../../db/entities/user.entity';
+import { User, UserRole } from '../../../domain/entities/user';
+import { UserMapper } from '../../../application/mappers/user.mappers';
 
 export class UserRepository extends BaseService<UserEntity> {
     constructor() {
@@ -17,47 +18,38 @@ export class UserRepository extends BaseService<UserEntity> {
 
     async findById(id: string): Promise<UserEntity | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ id })
+        return repo.findOneBy({ id });
     }
 
     async findUserWithRole(id: string, role: UserRole): Promise<UserEntity | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ id, role: role })
+        return repo.findOneBy({ id, role: role });
     }
 
-    async createUser(body: UserDTO): Promise<UserEntity> {
-
+    async createUser(body: User): Promise<UserEntity> {
         // Hash password before saving to database
-        const newUser = await this.createUserEntity(body);
+        const newUser = UserMapper.toPersistence(body);
         const repo = await this.execRepository();
-        return repo.save(newUser)
+        return repo.save(newUser);
     }
 
     async deleteUser(id: string): Promise<DeleteResult> {
         const repo = await this.execRepository();
-        return repo.delete({ id })
+        return repo.delete({ id });
     }
-    async updateUser(id: string, infoUpdate: UserDTO): Promise<UpdateResult> {
+
+    async updateUser(id: string, infoUpdate: UserEntity): Promise<UpdateResult> {
         const repo = await this.execRepository();
-        return repo.update(id, infoUpdate)
+        return repo.update(id, infoUpdate);
     }
 
     async findUserByEmail(email: string): Promise<UserEntity | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ email })
+        return repo.findOneBy({ email });
     }
 
     async findUserByUsername(username: string): Promise<UserEntity | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ username })
-    }
-
-    async createUserEntity(body: UserDTO): Promise<UserEntity> {
-        const user = new UserEntity();
-        user.username = body.username;
-        user.email = body.email;
-
-        user.password = await hashPassword(body.password);
-        return user;
+        return repo.findOneBy({ username });
     }
 }

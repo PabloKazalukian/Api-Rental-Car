@@ -12,8 +12,19 @@
       }
     },
     "rules": {
-       "no-underscore-dangle": 0,
-       "no-param-reassign": 0,
-       "import/no-unresolved": 0
-     }
-  }
+      "no-underscore-dangle": 0,
+      "no-param-reassign": 0,
+      "import/no-unresolved": 0,
+
+      "padding-line-between-statements": [
+          "error",
+          { "blankLine": "always", "prev": "function", "next": "function" },
+          { "blankLine": "always", "prev": "method", "next": "method" },
+          { "blankLine": "any", "prev": "*", "next": "return" }
+      ],
+      "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+
+      // 👇 Bloques obligatorios en if/else/for
+      "curly": ["error", "all"]
+   }
+}
