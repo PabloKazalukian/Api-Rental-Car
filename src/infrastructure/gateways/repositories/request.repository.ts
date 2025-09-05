@@ -1,4 +1,4 @@
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { DeleteResult, In, UpdateResult } from 'typeorm';
 import { BaseService } from '../../base.service';
 import { RequestDTO } from '../../../application/dtos/request.dto';
 import { RequestEntity } from '../../db/entities/request.entity';
@@ -21,6 +21,14 @@ export class RequestRepository extends BaseService<RequestEntity> {
     async findById(id: string): Promise<RequestEntity | null> {
         const repo = await this.execRepository();
         return repo.findOneBy({ id });
+    }
+
+    async findByIds(ids: string[]): Promise<RequestEntity[]> {
+        const repo = await this.execRepository();
+        return repo.find({
+            where: { id: In(ids) },
+            relations: ['user_id', 'car_id'] // opcional, si querés traer las relaciones
+        });
     }
 
     async findByUser(idUser: string): Promise<RequestEntity[] | null> {

@@ -1,12 +1,10 @@
-import { BaseDTO } from "../../infrastructure/config/base.dto";
-import { IsEnum, IsNotEmpty } from "class-validator";
-import { CarEntity } from "../../infrastructure/db/entities/car.entity";
-import { UserEntity } from "../../infrastructure/db/entities/user.entity";
-import { StateCar } from "../../domain/entities/request";
-
+import { BaseDTO } from '../../infrastructure/config/base.dto';
+import { ArrayNotEmpty, IsEnum, isNotEmpty, IsNotEmpty } from 'class-validator';
+import { CarEntity } from '../../infrastructure/db/entities/car.entity';
+import { UserEntity } from '../../infrastructure/db/entities/user.entity';
+import { StateCar } from '../../domain/entities/request';
 
 export class RequestDTO extends BaseDTO {
-
     @IsNotEmpty()
     amount!: number;
 
@@ -28,7 +26,6 @@ export class RequestDTO extends BaseDTO {
 }
 
 export class CreateRequestDTO {
-
     @IsNotEmpty()
     amount!: number;
 
@@ -47,4 +44,9 @@ export class CreateRequestDTO {
 
     @IsNotEmpty()
     car_id!: CarEntity;
+}
+
+export class RequestsIdsDTO {
+    @IsNotEmpty()
+    idsRequest!: string[];
 }

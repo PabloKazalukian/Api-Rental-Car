@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
-import { CreateRequestDTO } from "../dtos/request.dto";
-import { Request as RequestDomain } from "../../domain/entities/request";
-import { JwtMiddleware } from "./jwt.middleware";
-import { parseDateOrThrow } from "../../infrastructure/utils/date.utils";
-import { EntityValidator } from "../../infrastructure/utils/entity-validator";
-import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
+import { NextFunction, Request, Response } from 'express';
+import { CreateRequestDTO, RequestsIdsDTO } from '../dtos/request.dto';
+import { Request as RequestDomain } from '../../domain/entities/request';
+import { JwtMiddleware } from './jwt.middleware';
+import { parseDateOrThrow } from '../../infrastructure/utils/date.utils';
+import { EntityValidator } from '../../infrastructure/utils/entity-validator';
+import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
 
 export class RequestMiddleware extends JwtMiddleware {
     constructor() {
@@ -23,6 +23,22 @@ export class RequestMiddleware extends JwtMiddleware {
 
             req.body = validatedDTO;
 
+            next();
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
+    }
+
+    async requestIdsValidator(req: Request, res: Response, next: NextFunction) {
+        try {
+            const data: RequestsIdsDTO = req.body;
+
+            const validator = new EntityValidator<RequestsIdsDTO, RequestsIdsDTO>(RequestsIdsDTO);
+            const validatedDTO = await validator.validate(data);
+
+            req.body = validatedDTO;
+
+            next();
         } catch (err) {
             return this.httpResponse.Error(res, (err as Error).message);
         }

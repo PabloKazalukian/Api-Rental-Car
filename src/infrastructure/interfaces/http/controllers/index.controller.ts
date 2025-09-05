@@ -22,6 +22,7 @@ import { LoginUseCase } from '../../../../application/use-case/auth/login.use-ca
 import { UserDiscountController } from './user-discount.controller';
 import { CreateDiscountUseCase } from '../../../../application/use-case/discount/create-discount.use-case';
 import { CreateUserDiscountUseCase } from '../../../../application/use-case/user-discount/create.user-case';
+import { CreatePaymentUseCase } from '../../../../application/use-case/payment/payment.use-case';
 
 const httpResponse = new HttpResponse();
 
@@ -36,8 +37,9 @@ export const discountController = new DiscountController(createDiscountUseCase, 
 const createUDiscountUseCase = new CreateUserDiscountUseCase(userDiscountRepository, userRepository, discountRepository);
 export const userDiscountController = new UserDiscountController(createUDiscountUseCase, userDiscountRepository, httpResponse);
 
+const createPaymentUseCase = new CreatePaymentUseCase();
+export const paymentController = new PaymentController(createPaymentUseCase, paymentRepository, httpResponse);
 export const requestController = new RequestController(requestRepository, carRepository, httpResponse);
 export const userController = new UserController(userRepository, httpResponse);
-export const paymentController = new PaymentController(paymentRepository, httpResponse);
 export const carController = new CarController(carRepository, httpResponse);
 export const emailController = new EmailController(httpResponse);
