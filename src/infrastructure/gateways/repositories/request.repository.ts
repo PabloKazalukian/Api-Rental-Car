@@ -27,7 +27,7 @@ export class RequestRepository extends BaseService<RequestEntity> {
         const repo = await this.execRepository();
         return repo.find({
             where: { id: In(ids) },
-            relations: ['user_id', 'car_id'] // opcional, si querés traer las relaciones
+            relations: ['car_id'] // opcional, si querés traer las relaciones
         });
     }
 

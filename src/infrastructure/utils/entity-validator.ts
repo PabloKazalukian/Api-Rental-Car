@@ -20,10 +20,7 @@ export class EntityValidator<TDomain, TDTO> {
         const dto: TDTO = plainToClass(this.dtoClass, entity);
 
         // Validamos usando class-validator
-        console.log('dto:', dto);
-        console.log('entity', entity);
         const errors: ValidationError[] = await classValidate(dto as any);
-        console.log(errors);
 
         if (errors.length > 0) {
             const formatted = formatValidationErrors(errors);
