@@ -1,10 +1,10 @@
-import { ConfigServer } from "../../config/config";
+import { ConfigServer } from '../../config/config';
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
-import { PayloadToken } from "../../../interfaces/models/auth.interface";
-import { UserRepository } from "./user.repository";
-import { IAuthService } from "../../../domain/repositories/auth.interface";
-import { UserEntity } from "../../db/entities/user.entity";
+import { PayloadToken } from '../../../interfaces/models/auth.interface';
+import { UserRepository } from './user.repository';
+import { IAuthService } from '../../../domain/interface/repositories/auth.interface';
+import { UserEntity } from '../../db/entities/user.entity';
 
 /**
  * Servicio de autenticación que maneja validación de usuarios y generación de tokens JWT.
@@ -22,7 +22,6 @@ export class AuthService extends ConfigServer implements IAuthService {
      * Puede recibir como identificador un nombre de usuario o un correo electrónico.
      */
     public async validateUser(identifier: string, plainPassword: string): Promise<UserEntity | null> {
-
         const userByUsername: UserEntity | null = await this.userService.findUserByUsername(identifier);
         const userByEmail: UserEntity | null = await this.userService.findUserByEmail(identifier);
 
@@ -67,7 +66,7 @@ export class AuthService extends ConfigServer implements IAuthService {
 
         // Ocultar la contraseña del usuario en el objeto de respuesta
         if (userWithRole) {
-            user.password = "No access"; // Otra opción sería eliminar directamente el campo
+            user.password = 'No access'; // Otra opción sería eliminar directamente el campo
         }
 
         // Retornar token de acceso y datos del usuario

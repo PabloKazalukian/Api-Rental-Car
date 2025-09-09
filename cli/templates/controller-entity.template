@@ -1,13 +1,26 @@
-import { Request, Response } from "express";
-import { __Name__Service } from "../services/__name__.service";
-import { HttpResponse } from "../shared/http.response";
+import { Request, Response } from 'express';
+import { HttpResponse } from '../../../infrastructure/gateways/response/http.response';
+import { __Name__Repository } from '../../../infrastructure/gateways/repositories/__name__.repository';
 
 export class __Name__Controller {
-    constructor(private readonly __name__Service: __Name__Service, private readonly httpResponse) { }
+    constructor(
+        private readonly __name__Service: __Name__Repository,
+        private readonly httpResponse: HttpResponse
+    ) {}
 
     async getAll__Name__(req: Request, res: Response) {
         try {
             const data = await this.__name__Service.findAll__Name__();
+            return this.httpResponse.Ok(res, data);
+        } catch (err) {
+            return this.httpResponse.Error(res, err);
+        }
+    }
+
+    async get__Name__ById(req: Request, res: Response) {
+        try {
+            const data = await this.__name__Service.findById(req.params.id);
+            if (!data) return res.status(404).json({ message: '__Name__ not found' });
             return this.httpResponse.Ok(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, err);

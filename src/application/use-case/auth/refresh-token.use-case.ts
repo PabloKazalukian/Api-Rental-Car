@@ -2,7 +2,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import { HttpException } from '../../../shared/exeptions/http.exeption';
 import { HttpStatus } from '../../../shared/constants/http-status.enum';
 import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum';
-import { IUserService } from '../../../domain/repositories/auth.interface';
+import { IUserService } from '../../../domain/interface/repositories/auth.interface';
 import { UserMapper } from '../../mappers/user.mappers';
 import { User } from '../../../domain/entities/user';
 

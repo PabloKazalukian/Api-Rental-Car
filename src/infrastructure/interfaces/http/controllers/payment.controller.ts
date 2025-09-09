@@ -3,7 +3,13 @@ import { HttpResponse } from '../../../gateways/response/http.response';
 import { PaymentRepository } from '../../../gateways/repositories/payment.repository';
 import { CreatePaymentUseCase } from '../../../../application/use-case/payment/payment.use-case';
 
-export class PaymentController {
+interface IPaymentController {
+    getAllPayment(req: Request, res: Response): Promise<Response>;
+    getPaymentById(req: Request, res: Response): Promise<Response>;
+    createPayment(req: Request, res: Response): Promise<Response>;
+}
+
+export class PaymentController implements IPaymentController {
     constructor(
         private readonly createPaymentUseCase: CreatePaymentUseCase,
         private readonly paymentSvc: PaymentRepository,

@@ -12,7 +12,8 @@
         "m:generate": "npm run typeorm migration:generate",
         "m:run": "npm run typeorm migration:run",
         "seed": "ts-node ./src/infrastructure/db/seeds/seed.ts",
-        "cli:generate": "node cli/cli-generators.js generate",
+        "cli:generate:feature": "node cli/cli-generators.js generate:feature",
+        "cli:generate:entity": "node cli/cli-generators.js generate:entity",
         "open:feature": "node cli/open-features.js",
         "build": "tsc -p tsconfig.json"
     },
@@ -38,6 +39,7 @@
         "body-parser": "^1.20.0",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.1",
+        "commander": "^14.0.0",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "dotenv": "^16.4.0",

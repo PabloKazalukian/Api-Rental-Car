@@ -1,11 +1,11 @@
-import { Response } from "express";
-import { HttpStatus } from "../../../shared/constants/http-status.enum";
+import { Response } from 'express';
+import { HttpStatus } from '../../../shared/constants/http-status.enum';
 
 export class HttpResponse {
     Ok(res: Response, data?: any): Response {
         return res.status(HttpStatus.OK).json({
             status: HttpStatus.OK,
-            statusMsg: "Success",
+            statusMsg: 'Success',
             data
         });
     }
@@ -13,7 +13,7 @@ export class HttpResponse {
     Created(res: Response, data?: any): Response {
         return res.status(HttpStatus.CREATED).json({
             status: HttpStatus.CREATED,
-            statusMsg: "Created",
+            statusMsg: 'Created',
             data
         });
     }
@@ -21,7 +21,7 @@ export class HttpResponse {
     NotFound(res: Response, data?: any): Response {
         return res.status(HttpStatus.NOT_FOUND).json({
             status: HttpStatus.NOT_FOUND,
-            statusMsg: "Not Found",
+            statusMsg: 'Not Found',
             message: data
         });
     }
@@ -29,15 +29,15 @@ export class HttpResponse {
     Conflict(res: Response, data?: any): Response {
         return res.status(HttpStatus.CONFLICT).json({
             status: HttpStatus.CONFLICT,
-            statusMsg: "Conflict",
+            statusMsg: 'Conflict',
             message: data
-        })
+        });
     }
 
     Unauthorized(res: Response, data?: any): Response {
         return res.status(HttpStatus.UNAUTHORIZED).json({
             status: HttpStatus.UNAUTHORIZED,
-            statusMsg: "Unauthoraized",
+            statusMsg: 'Unauthoraized',
             message: data
         });
     }
@@ -45,7 +45,7 @@ export class HttpResponse {
     Forbidden(res: Response, data?: any): Response {
         return res.status(HttpStatus.FORBIDDEN).json({
             status: HttpStatus.FORBIDDEN,
-            statusMsg: "Forbidden",
+            statusMsg: 'Forbidden',
             message: data
         });
     }
@@ -53,7 +53,7 @@ export class HttpResponse {
     ErrorServer(res: Response, data?: any): Response {
         return res.status(HttpStatus.SERVER_ERROR).json({
             status: HttpStatus.SERVER_ERROR,
-            statusMsg: "Internal Server Error",
+            statusMsg: 'Internal Server Error',
             message: data
         });
     }
@@ -61,7 +61,7 @@ export class HttpResponse {
     Error(res: Response, data?: any): Response {
         return res.status(HttpStatus.BAD_REQUEST).json({
             status: HttpStatus.BAD_REQUEST,
-            statusMsg: "Bad Request",
+            statusMsg: 'Bad Request',
             message: data
         });
     }

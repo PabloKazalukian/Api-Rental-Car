@@ -1,11 +1,24 @@
-import { __name__Controller } from "../controllers/index.controller"
-import { __name__Middleware } from "../middlewares/index.middleware";
-import { Routes } from "./routes";
-
+import { Router } from 'express';
+import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
+import { __name__Controller } from '../controllers/index.controller';
 
 const router = Router();
+const __name__Middleware = MiddlewareFactory.create__Name__Middleware();
 
-router.get('/__name__', (req, res) => { this.controller.getAll__Name__(req, res) });
-router.post('/__name__', __name__middleware.__name__Validator.bind(__name___middleware), (req, res) => { this.controller.create__Name__(req, res); });
+router.get('/__name__', (req, res) => {
+    __name__Controller.getAll__Name__(req, res);
+});
 
-export const UserRouter = router;
+router.get('/__name__/:id', (req, res) => {
+    __name__Controller.get__Name__ById(req, res);
+});
+
+router.post(
+    '/__name__',
+    __name__Middleware.__name__Validator.bind(__name__Middleware),
+    (req, res) => {
+        __name__Controller.create__Name__(req, res);
+    }
+);
+
+export const __Name__Router = router;

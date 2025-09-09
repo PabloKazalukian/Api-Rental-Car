@@ -1,5 +1,5 @@
 import { User, UserRole, UserType } from '../../../domain/entities/user';
-import { IUserService } from '../../../domain/repositories/auth.interface';
+import { IUserService } from '../../../domain/interface/repositories/auth.interface';
 import { UserEntity } from '../../../infrastructure/db/entities/user.entity';
 import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum';
 import { HttpStatus } from '../../../shared/constants/http-status.enum';

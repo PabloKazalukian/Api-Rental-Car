@@ -1,7 +1,7 @@
 import { HttpException } from '../../../shared/exeptions/http.exeption';
 import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum';
 import { HttpStatus } from '../../../shared/constants/http-status.enum';
-import { IAuthService } from '../../../domain/repositories/auth.interface';
+import { IAuthService } from '../../../domain/interface/repositories/auth.interface';
 import { User } from '../../../domain/entities/user';
 import { UserMapper } from '../../mappers/user.mappers';
 import { UserEntity } from '../../../infrastructure/db/entities/user.entity';

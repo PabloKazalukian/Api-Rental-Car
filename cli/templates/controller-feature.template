@@ -1,12 +1,17 @@
-import { Request, Response } from "express";
-import { HttpResponse } from "../shared/http.response";
+import { Request, Response } from 'express';
+import { HttpResponse } from '../../../infrastructure/gateways/response/http.response';
+import { __Name__UseCase } from '../../../../application/use-case/__name__.use-case';
 
 export class __Name__Controller {
-    constructor(private readonly httpResponse) {}
+    constructor(
+        private readonly __name__UseCase: __Name__UseCase,
+        private readonly httpResponse: HttpResponse
+    ) {}
 
     async getAll__Name__(req: Request, res: Response) {
         try {
-            return this.httpResponse.Ok(res, { message: "getAll__Name__ works!" });
+            const data = await this.__name__UseCase.execute();
+            return this.httpResponse.Ok(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
@@ -14,7 +19,8 @@ export class __Name__Controller {
 
     async create__Name__(req: Request, res: Response) {
         try {
-            return res.status(201).json({ message: "create__Name__ works!", body: req.body });
+            const data = await this.__name__UseCase.executeCreate(req.body);
+            return res.status(201).json(data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }

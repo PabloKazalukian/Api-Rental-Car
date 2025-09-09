@@ -1,30 +1,28 @@
 #!/usr/bin/env node
+import { Command } from 'commander';
+import { generateFeature } from './generators/featur.generator.js';
+import { generateEntity } from './generators/entiti.generator.js';
 
-const { generateFeature } = require('./generators/feature.generator');
-const { generateEntity } = require('./generators/entity.generator');
+const program = new Command();
 
-const [, , command, type, name] = process.argv;
+program
+  .name('cli')
+  .description('CLI para generar features y entities en arquitectura limpia')
+  .version('1.0.0');
 
-console.log(command, type, name);
-if (!command || !type || !name) {
-    console.error('❌ Uso: node cli-generator.js generate <feature|entity> <name>');
-    process.exit(1);
-}
+program
+  .command('generate:feature <name>')
+  .description('Genera un nuevo feature sin persistencia en DB')
+  .action((name) => {
+    generateFeature(name);
+  });
 
-if (command === 'generate') {
-    switch (type) {
-        case 'feature':
-            generateFeature(name);
-            break;
-        case 'entity':
-            generateEntity(name);
-            break;
-        default:
-            console.error(`❌ Tipo no válido: ${type}`);
-            process.exit(1);
-    }
-} else {
-    console.error(`❌ Comando no reconocido: ${command}`);
-    console.log('Comando inválido. Usa "generate:entity <name>" o "generate:feature <name>"');
-    process.exit(1);
-}
+program
+  .command('generate:entity <name>')
+  .description('Genera una nueva entity con persistencia en DB')
+  .action((name) => {
+    generateEntity(name);
+  });
+
+program.parse(process.argv);
+

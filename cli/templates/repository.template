@@ -1,0 +1,13 @@
+import { __Name__Entity } from "../../db/entities/__name__.entity";
+import { __Name__DTO } from "../../../application/dtos/__name__.dto";
+
+export class __Name__Repository {
+    async findAll__Name__(): Promise<__Name__Entity[]> {
+        return (await this.execRepository).find();
+    }
+
+    async create__Name__(payload: __Name__DTO): Promise<__Name__Entity> {
+        return (await this.execRepository).save(payload);
+    }
+}
+

@@ -1,5 +1,5 @@
-import { UserEntity } from '../../infrastructure/db/entities/user.entity';
-import { User, UserRole } from '../entities/user';
+import { UserEntity } from '../../../infrastructure/db/entities/user.entity';
+import { User, UserRole } from '../../entities/user';
 
 export interface IUserService {
     findUserByEmail(email: string): Promise<UserEntity | null>;

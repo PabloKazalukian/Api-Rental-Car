@@ -1,22 +1,25 @@
-import { Request, Response, NextFunction } from "express";
-import { validate } from "class-validator";
-import { HttpResponse } from "../shared/http.response";
-import { formatValidationErrors } from "../shared/validators/error-formatter";
-import { __Name__DTO } from "../dtos/__name__.dto";
+import { NextFunction, Request, Response } from 'express';
+import { __Name__DTO } from '../dtos/__name__.dto';
+import { __Name__Entity } from '../../domain/entities/__name__';
+import { JwtMiddleware } from './jwt.middleware';
+import { EntityValidator } from '../../infrastructure/utils/entity-validator';
+import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
 
-export class __Name__Middleware {
-    constructor(private httpResponse: HttpResponse ) { }
+export class __Name__Middleware extends JwtMiddleware {
+    constructor() {
+        super(HttpResponseSingleton.getInstance());
+    }
 
-    __name__Validator(req: Request, res: Response, next: NextFunction) {
-        const valid = new __Name__DTO();
-        Object.assign(valid, req.body);
+    async __name__Validator(req: Request, res: Response, next: NextFunction) {
+        try {
+            const validator = new EntityValidator<__Name__Entity, __Name__DTO>(__Name__DTO);
+            const validatedDTO = await validator.validate(req.body);
 
-        validate(valid).then((err) => {
-            if (err.length > 0) {
-                return this.httpResponse.Error(res, formatValidationErrors(err));
-            } else {
-                next();
-            }
-        });
+            req.body = validatedDTO;
+            next();
+        } catch (err) {
+            return this.httpResponse.Error(res, (err as Error).message);
+        }
     }
 }
+
