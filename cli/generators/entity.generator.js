@@ -1,47 +1,69 @@
-const fs = require('fs');
-const path = require('path');
+import path from 'path';
+import fs from 'fs';
+import { createFile } from '../utils/file-utils.js';
+import { injectIntoFactories } from '../utils/factory-injertor.js';
 
-function generateEntity(name) {
-    if (!name) {
-        console.error('❌ Debes pasar un nombre. Ej: node cli-generators.js generate entity car');
-        process.exit(1);
+export function generateEntity(name) {
+  const baseDir = path.resolve('src');
+  const templatesDir = path.resolve('cli/templates');
+
+  const files = [
+    {
+      template: 'route.template',
+      filePath: path.join(baseDir, 'infrastructure', 'interfaces', 'http', 'routes', `${name}.route.ts`),
+    },
+    {
+      template: 'controller-entity.template',
+      filePath: path.join(baseDir, 'infrastructure', 'interfaces', 'http', 'controllers', `${name}.controller.ts`),
+    },
+    {
+      template: 'repository.template',
+      filePath: path.join(baseDir, 'infrastructure', 'gateways', 'repositories', `${name}.repository.ts`),
+    },
+    {
+      template: 'entity-db.template',
+      filePath: path.join(baseDir, 'infrastructure', 'db', 'entities', `${name}.entity.ts`),
+    },
+    {
+      template: 'middleware.template',
+      filePath: path.join(baseDir, 'application', 'middlewares', `${name}.middleware.ts`),
+    },
+    {
+      template: 'dto.template',
+      filePath: path.join(baseDir, 'application', 'dtos', `${name}.dto.ts`),
+    },
+    {
+      template: 'interface-repo.template',
+      filePath: path.join(baseDir, 'domain','interface', 'repositories', `I${capitalize(name)}Repository.interface.ts`),
+    },
+    {
+      template: 'entity-domain.template',
+      filePath: path.join(baseDir, 'domain', 'entities', `${name}.ts`),
+    },
+    {
+      template: 'mapper.template',
+      filePath: path.join(baseDir, 'application', 'mappers', `${name}.mapper.ts`),
     }
+  ];
 
-    const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+  files.forEach(({ template, filePath }) => {
+    const templateContent = fs.readFileSync(path.join(templatesDir, template), 'utf8');
+    const content = replacePlaceholders(templateContent, name);
+    createFile(filePath, content);
+  });
 
-    // 🗂️ Mapeo de carpetas correctas para Entity (persistencia en DB)
-    const templates = [
-        { type: 'routes', ext: 'routes.ts', outDir: 'infrastructure/interfaces/http/routes' },
-        { type: 'controllers', ext: 'controller.ts', outDir: 'infrastructure/interfaces/http/controllers', template: 'controller-entity.template' },
-        { type: 'middlewares', ext: 'middleware.ts', outDir: 'application/middlewares' },
-        { type: 'dtos', ext: 'dto.ts', outDir: 'application/dtos' },
-        { type: 'services', ext: 'service.ts', outDir: 'infrastructure/gateways/repositories' },
-        { type: 'entities', ext: 'entity.ts', outDir: 'infrastructure/db/entities' }
-    ];
+  injectIntoFactories(name, { controller: true, middleware: true, repository: true });
 
-    templates.forEach(({ type, ext, outDir, template }) => {
-        const templateName = template || `${type.slice(0, -1)}.template`;
-        const templatePath = path.join(__dirname, `../templates/${templateName}`);
-
-        if (!fs.existsSync(templatePath)) {
-            console.error(`❌ No se encontró template: ${templatePath}`);
-            process.exit(1);
-        }
-
-        const content = fs.readFileSync(templatePath, 'utf8')
-            .replace(/__Name__/g, capitalized)
-            .replace(/__name__/g, name);
-
-        const dir = path.join(__dirname, `../../src/${outDir}`);
-        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-
-        const filePath = path.join(dir, `${name}.${ext}`);
-        fs.writeFileSync(filePath, content, 'utf8');
-        console.log(`✅ ${outDir}/${name}.${ext} creado`);
-    });
+  console.log(`✅ Entity "${name}" generada con éxito.`);
 }
 
-module.exports = { generateEntity };
+function replacePlaceholders(template, name) {
+  const capitalized = capitalize(name);
+  return template
+    .replace(/__Name__/g, capitalized)
+    .replace(/__name__/g, name.toLowerCase());
+}
 
-
-
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

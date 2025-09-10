@@ -173,15 +173,27 @@ Este proyecto incluye un sistema de generación de archivos mediante comandos CL
 ```
 cli/
 ├── generators/
-│   ├── feature.generator.js       ← Generador para módulos comunes
-│   └── entity.generator.js        ← Generador para módulos con entidad y servicio
+│   ├── entity.generator.js        ← Generador para módulos con entidad (entity + service + repositorio)
+│   └── feature.generator.js       ← Generador para módulos comunes (controller + middleware + route)
 ├── templates/
-│   ├── controller.template
-│   ├── dto.template
-│   ├── entity.template
-│   ├── middleware.template
-│   ├── route.template
-│   └── service.template
+│   ├── controller-entity.template ← Controller orientado a entidades
+│   ├── controller-feature.template← Controller para features simples
+│   ├── dto.template               ← Plantilla de DTO
+│   ├── entity-db.template         ← Plantilla de entidad de base de datos
+│   ├── entity-domain.template     ← Plantilla de entidad de dominio
+│   ├── interface-repo.template    ← Interfaz del repositorio
+│   ├── mapper.template            ← Mapper de entidades
+│   ├── middleware.template        ← Middleware genérico
+│   ├── repository.template        ← Repositorio concreto
+│   └── route.template             ← Definición de rutas
+├── utils/
+│   ├── factory-injector.js        ← Inyección automática en factories
+│   ├── factory-utils.js           ← Funciones auxiliares para modificar factories
+│   ├── file-utils.js              ← Funciones para crear/editar archivos
+│   ├── cli-generators.js          ← Registro central de generadores CLI
+│   ├── generate.js                ← Punto de entrada CLI
+│   └── open-features.js           ← Utilidad para abrir features disponibles
+
 ```
 
 ## 🛠️ Comandos disponibles

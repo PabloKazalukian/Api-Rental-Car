@@ -1,3 +1,4 @@
+import { CartMiddleware } from '../middlewares/cart.middleware';
 import { UserRepository } from '../../infrastructure/gateways/repositories/user.repository';
 import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
 import { CarMiddleware } from '../middlewares/car.middleware';
@@ -10,6 +11,9 @@ import { UserDiscountMiddleware } from '../middlewares/user-discount.middleware'
 import { UserMiddleware } from '../middlewares/user.middleware';
 
 export class MiddlewareFactory {
+      static createCartMiddleware() {
+    return new CartMiddleware();
+  }
     static createCarMiddleware() {
         return new CarMiddleware();
     }

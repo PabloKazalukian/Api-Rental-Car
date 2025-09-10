@@ -22,55 +22,48 @@ export function injectIntoFactories(
   const capitalized = capitalize(name);
 
   if (controller) {
-    // 1) Import del controller en la factory
+    // --- Imports en ControllerFactory ---
     injectImport(
       controllerFactory,
       `import { ${capitalized}Controller } from '../../infrastructure/interfaces/http/controllers/${name}.controller';`
     );
     injectImport(
       controllerFactory,
+      `import { ${capitalized}Repository } from '../../infrastructure/gateways/repositories/${name}.repository';`
+    );
+    injectImport(
+      controllerFactory,
       `import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';`
     );
 
-    // 2) Método estático en ControllerFactory
+    // --- Método en ControllerFactory ---
     injectIntoFactory(
       controllerFactory,
       'export class ControllerFactory {',
       `  static create${capitalized}Controller() {
-    const httpResponse = HttpResponseSingleton.getInstance();
-    return new ${capitalized}Controller(httpResponse);
-  }`
+          const ${name}Repo = new ${capitalized}Repository();
+          const httpResponse = HttpResponseSingleton.getInstance();
+          return new ${capitalized}Controller(${name}Repo, httpResponse);
+      }
+          `
     );
-
-    // 3) Inyección en controllers/index.ts
-    injectImport(
-      controllersIndex,
-      `import { ControllerFactory } from '../../../../application/factories/controller.factory';`
-    );
-
-    let indexContent = fs.readFileSync(controllersIndex, 'utf8');
-    const exportLine = `export const ${name}Controller = ControllerFactory.create${capitalized}Controller();`;
-    if (!indexContent.includes(exportLine)) {
-      indexContent += '\n' + exportLine + '\n';
-      fs.writeFileSync(controllersIndex, indexContent, 'utf8');
-      console.log(`📝 Controller "${capitalized}" agregado a controllers/index.ts`);
-    }
   }
 
   if (middleware) {
-    // 1) Import del middleware
+    // --- Import en MiddlewareFactory ---
     injectImport(
       middlewareFactory,
       `import { ${capitalized}Middleware } from '../middlewares/${name}.middleware';`
     );
 
-    // 2) Método estático en MiddlewareFactory
+    // --- Método en MiddlewareFactory ---
     injectIntoFactory(
       middlewareFactory,
       'export class MiddlewareFactory {',
       `  static create${capitalized}Middleware() {
-    return new ${capitalized}Middleware();
-  }`
+        return new ${capitalized}Middleware();
+      }
+        `
     );
   }
 

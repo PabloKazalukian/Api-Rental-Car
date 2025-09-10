@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { generateFeature } from './generators/featur.generator.js';
-import { generateEntity } from './generators/entiti.generator.js';
+import { generateFeature } from './generators/feature.generator.js';
+import { generateEntity } from './generators/entity.generator.js';
 
 const program = new Command();
 

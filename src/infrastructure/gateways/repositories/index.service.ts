@@ -1,3 +1,4 @@
+import { CartRepository } from "./cart.repository";
 import { ResendEmailProvider } from "../email/resend.provider";
 import { AuthService } from "./auth.service";
 import { CarRepository } from "./car.repository";
@@ -18,3 +19,5 @@ export const paymentRepository = new PaymentRepository();
 export const discountRepository = new DiscountRepository();
 export const emailRepository = new EmailRepository(resendProvider);
 export const userDiscountRepository = new UserDiscountRepository();
+
+export const cartRepository = new CartRepository();

@@ -1,3 +1,5 @@
+import { CartRepository } from '../../infrastructure/gateways/repositories/cart.repository';
+import { CartController } from '../../infrastructure/interfaces/http/controllers/cart.controller';
 import { IAuthController } from '../../domain/interface/controllers/auth-controller.interface';
 import { IDiscountController } from '../../domain/interface/controllers/discount-controller.interface';
 import { IUserDiscountController } from '../../domain/interface/controllers/user-controller.interface';
@@ -22,6 +24,11 @@ import { CreatePaymentUseCase } from '../use-case/payment/payment.use-case';
 import { CreateUserDiscountUseCase } from '../use-case/user-discount/create.user-case';
 
 export class ControllerFactory {
+    static createCartController() {
+        const cartRepo = new CartRepository();
+        const httpResponse = HttpResponseSingleton.getInstance();
+        return new CartController(cartRepo, httpResponse);
+    }
     static createAuthController(): IAuthController {
         const userRepo = new UserRepository();
         const authService = new AuthService(userRepo);
