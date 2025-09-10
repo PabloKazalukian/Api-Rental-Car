@@ -1,13 +1,25 @@
 import { __Name__Entity } from "../../db/entities/__name__.entity";
 import { __Name__DTO } from "../../../application/dtos/__name__.dto";
+import { BaseService } from '../../base.service';
 
-export class __Name__Repository {
+export class __Name__Repository extends BaseService<__Name__Entity>{
+
+    constructor(){
+        super(__Name__Entity)
+    }
     async findAll__Name__(): Promise<__Name__Entity[]> {
-        return (await this.execRepository).find();
+        const repo = await this.execRepository();
+        return repo.find();
+    }
+
+    async findById(id: string): Promise<__Name__Entity | null> {
+        const repo = await this.execRepository();
+        return repo.findOneBy({ id });
     }
 
     async create__Name__(payload: __Name__DTO): Promise<__Name__Entity> {
-        return (await this.execRepository).save(payload);
+        const repo = await this.execRepository();
+        return repo.save(payload);
     }
 }
 

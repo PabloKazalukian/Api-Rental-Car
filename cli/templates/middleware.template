@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { __Name__DTO } from '../dtos/__name__.dto';
-import { __Name__Entity } from '../../domain/entities/__name__';
+import { __Name__Entity } from '../../infrastructure/db/entities/__name__.entity';
 import { JwtMiddleware } from './jwt.middleware';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
 import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';

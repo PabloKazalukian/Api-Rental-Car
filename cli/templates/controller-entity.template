@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { HttpResponse } from '../../../infrastructure/gateways/response/http.response';
-import { __Name__Repository } from '../../../infrastructure/gateways/repositories/__name__.repository';
+import { __Name__Repository } from '../../../gateways/repositories/__name__.repository';
+import { HttpResponse } from '../../../gateways/response/http.response';
 
 export class __Name__Controller {
     constructor(

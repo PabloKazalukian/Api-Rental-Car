@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { HttpResponse } from '../../../infrastructure/gateways/response/http.response';
+import { HttpResponse } from '../../../gateways/response/http.response';
 import { __Name__UseCase } from '../../../../application/use-case/__name__.use-case';
 
 export class __Name__Controller {

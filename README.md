@@ -4,23 +4,23 @@ Este proyecto es una aplicación web para gestionar alquileres de coches.
 
 ## 🧵UML Rental Car System
 
-| Car                        | User                      | Request                    | Payment                   | Discount                   |
-|----------------------------|---------------------------|----------------------------|---------------------------|----------------------------|
-| - id: INT                  | - id: INT                 | - id: INT                  | - id: INT                 | - id: INT                  |
-| - image: VARCHAR           | - username: VARCHAR       | - amount: FLOAT            | - paidDate: DATE          | - codeDiscount: VARCHAR    |
-| - brand: VARCHAR           | - password: VARCHAR       | - initialDate: DATE        | - createdTime: TIMESTAMP   | - initialDate: DATE        |
-| - model: VARCHAR           | - email: VARCHAR          | - finalDate: DATE          | - automatic: ENUM('YES', 'NO') | - expirationDate: DATE     |
-| - year: INT                | - type: ENUM('LOCAL', 'GOOGLE', 'GITHUB', 'MICROSOFT') | - state: ENUM('REQUEST', 'CONFIRM', 'CANCEL') | - request_id: INT          | - type: ENUM('PERCENTAGE', 'FIXED') |
-| - price: FLOAT             | - role: ENUM('ADMIN', 'USER') | - user_id: INT             | - createdAt: TIMESTAMP     | - percentage: FLOAT         |
-| - engine: VARCHAR          | - createdAt: TIMESTAMP    | - car_id: INT              | - updatedAt: TIMESTAMP     | - amount: FLOAT            |
-| - power: VARCHAR           | - updatedAt: TIMESTAMP    | - createdAt: TIMESTAMP     |                           | - status: BOOLEAN          |
-| - torque: VARCHAR          |                           | - updatedAt: TIMESTAMP     |                           | - request_id: INT          |
-| - weight: VARCHAR          |                           |                            |                           | - createdAt: TIMESTAMP     |
-| - max_speed: VARCHAR       |                           |                            |                           | - updatedAt: TIMESTAMP     |
-| - acceleration: VARCHAR    |                           |                            |                           |                            |
-| - consumption: VARCHAR     |                           |                            |                           |                            |
-| - createdAt: TIMESTAMP     |                           |                            |                           |                            |
-| - updatedAt: TIMESTAMP     |                           |                            |                           |                            |
+| Car                     | User                                                   | Request                                       | Payment                        | Discount                            |
+| ----------------------- | ------------------------------------------------------ | --------------------------------------------- | ------------------------------ | ----------------------------------- |
+| - id: INT               | - id: INT                                              | - id: INT                                     | - id: INT                      | - id: INT                           |
+| - image: VARCHAR        | - username: VARCHAR                                    | - amount: FLOAT                               | - paidDate: DATE               | - codeDiscount: VARCHAR             |
+| - brand: VARCHAR        | - password: VARCHAR                                    | - initialDate: DATE                           | - createdTime: TIMESTAMP       | - initialDate: DATE                 |
+| - model: VARCHAR        | - email: VARCHAR                                       | - finalDate: DATE                             | - automatic: ENUM('YES', 'NO') | - expirationDate: DATE              |
+| - year: INT             | - type: ENUM('LOCAL', 'GOOGLE', 'GITHUB', 'MICROSOFT') | - state: ENUM('REQUEST', 'CONFIRM', 'CANCEL') | - request_id: INT              | - type: ENUM('PERCENTAGE', 'FIXED') |
+| - price: FLOAT          | - role: ENUM('ADMIN', 'USER')                          | - user_id: INT                                | - createdAt: TIMESTAMP         | - percentage: FLOAT                 |
+| - engine: VARCHAR       | - createdAt: TIMESTAMP                                 | - car_id: INT                                 | - updatedAt: TIMESTAMP         | - amount: FLOAT                     |
+| - power: VARCHAR        | - updatedAt: TIMESTAMP                                 | - createdAt: TIMESTAMP                        |                                | - status: BOOLEAN                   |
+| - torque: VARCHAR       |                                                        | - updatedAt: TIMESTAMP                        |                                | - request_id: INT                   |
+| - weight: VARCHAR       |                                                        |                                               |                                | - createdAt: TIMESTAMP              |
+| - max_speed: VARCHAR    |                                                        |                                               |                                | - updatedAt: TIMESTAMP              |
+| - acceleration: VARCHAR |                                                        |                                               |                                |                                     |
+| - consumption: VARCHAR  |                                                        |                                               |                                |                                     |
+| - createdAt: TIMESTAMP  |                                                        |                                               |                                |                                     |
+| - updatedAt: TIMESTAMP  |                                                        |                                               |                                |                                     |
 
 ## 🪡Diagrama de Entidades
 
@@ -55,76 +55,71 @@ Asegúrate de tener instalados los siguientes componentes en tu máquina:
 
 1. **Clonar el Repositorio**
 
-   ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
-   cd tu-repositorio
-   ```
+    ```bash
+    git clone https://github.com/tu-usuario/tu-repositorio.git
+    cd tu-repositorio
+    ```
 
 2. **Instalar Dependencias**
 
-   ```bash
-   npm install
-   ```
+    ```bash
+    npm install
+    ```
 
 3. **Configurar la Base de Datos**
+    - Crea una base de datos en **MySQL**:
 
-   - Crea una base de datos en **MySQL**:
+        ```sql
+        CREATE DATABASE car_rental;
+        ```
 
-     ```sql
-     CREATE DATABASE car_rental;
-     ```
+    - Configura las variables de entorno en un archivo `.env` basado en el archivo `.env.example` que debería estar incluido en el proyecto. Ejemplo:
 
-   - Configura las variables de entorno en un archivo `.env` basado en el archivo `.env.example` que debería estar incluido en el proyecto. Ejemplo:
-
-     ```
-     DB_HOST=localhost
-     DB_PORT=3306
-     DB_USERNAME=tu_usuario
-     DB_PASSWORD=tu_contraseña
-     DB_DATABASE=car_rental
-     ```
+        ```
+        DB_HOST=localhost
+        DB_PORT=3306
+        DB_USERNAME=tu_usuario
+        DB_PASSWORD=tu_contraseña
+        DB_DATABASE=car_rental
+        ```
 
 4. **Ejecutar Migraciones**
+    - Este proyecto utiliza **TypeORM** para la gestión de la base de datos, incluyendo **migraciones** para mantener el esquema actualizado:
 
-   - Este proyecto utiliza **TypeORM** para la gestión de la base de datos, incluyendo **migraciones** para mantener el esquema actualizado:
-
-     ```bash
-     npm run typeorm migration:run
-     ```
+        ```bash
+        npm run typeorm migration:run
+        ```
 
 5. **Ejecutar Seeds (Opcional)**
+    - Si deseas poblar la base de datos con datos de prueba, usa los **seeds** proporcionados:
 
-   - Si deseas poblar la base de datos con datos de prueba, usa los **seeds** proporcionados:
-
-     ```bash
-     npm run seed:run
-     ```
+        ```bash
+        npm run seed:run
+        ```
 
 6. **Iniciar el Servidor**
+    - Inicia el servidor en modo **desarrollo**:
 
-   - Inicia el servidor en modo **desarrollo**:
-
-     ```bash
-     npm run start:dev
-     ```
-     
-     
+        ```bash
+        npm run start:dev
+        ```
 
 7. **Crear una migración (Opcional)**
+    - Si necesitas crear una **migration**, podes crearla atravez del siguiente comando:
 
-   - Si necesitas crear una **migration**, podes crearla atravez del siguiente comando:
-
-     ```bash
-     npm run m:generate -- src/infrastructure/db/migration/nombreDeMigracion
-     ```
+        ```bash
+        npm run m:generate -- src/infrastructure/db/migration/nombreDeMigracion
+        ```
 
     - Se Alcamenara en la carpeta `src/infrastructure/db/migration` junto con las demas migraciones.
+    - Luego para poder ejecutar los cambios de la **migration** podes hacerlo con el siguiente comando:
+
+        ```bash
+        npm run m:run
+        ```
 
 8. **Acceder a la API**
-
-   - La **API** estará disponible en `http://localhost:3000/api`   
-
-
+    - La **API** estará disponible en `http://localhost:3000/api`
 
 ## 🌟 Características del Proyecto
 
@@ -138,6 +133,7 @@ Asegúrate de tener instalados los siguientes componentes en tu máquina:
 ## 📂Estructura de Carpetas
 
 #### /db
+
 - `db.sql`: Dump o esquema inicial de la base de datos (estructura de tablas, relaciones, seeds, etc.).
 
 #### /src
@@ -167,7 +163,6 @@ El proyecto sigue una arquitectura por capas inspirada en principios de Clean Ar
 - **Use-cases**: encapsulan la lógica de aplicación. Orquestan múltiples servicios, controlan errores y determinan qué respuesta se debe emitir.
 - **Services**: acceden a fuentes de datos (ej. base de datos) y devuelven resultados puros, sin lógica HTTP.
 - **Interfaces**: definen contratos de los servicios y otros componentes para favorecer la inversión de dependencias, la flexibilidad y el testeo.
-
 
 # 🚀 CLI Generador de Features y Entidades
 

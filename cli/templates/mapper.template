@@ -1,0 +1,16 @@
+import { __Name__ } from "../../domain/entities/__name__";
+import { __Name__Entity } from "../../infrastructure/db/entities/__name__.entity";
+
+export class __Name__Mapper {
+    static toPersistence(__name__: __Name__): __Name__Entity {
+        const entity = new __Name__Entity();
+        entity.id = __name__.id; // si usas UUID generado en dominio
+        return entity;
+    }
+
+    static toDomain(entity: __Name__Entity): __Name__ {
+        return new __Name__(
+            entity.id,
+        );
+    }
+}
