@@ -36,7 +36,7 @@ export class RequestEntity extends BaseEntity {
     @OneToOne(() => PaymentEntity, (payment) => payment.request_id, { nullable: true })
     requestPayment!: PaymentEntity;
 
-    @ManyToOne(() => CartEntity, (cart) => cart.checkout)
+    @ManyToOne(() => CartEntity, (cart) => cart.requests)
     @JoinColumn({ name: 'cart_id' })
     cart!: CartEntity;
 }

@@ -4,7 +4,7 @@ import { UserDTO } from '../../../application/dtos/user.dto';
 import { hashPassword } from '../../utils/hashPassword';
 import { UserEntity } from '../../db/entities/user.entity';
 import { User, UserRole } from '../../../domain/entities/user';
-import { UserMapper } from '../../../application/mappers/user.mappers';
+import { UserMapper } from '../../../application/mappers/user.mapper';
 
 export class UserRepository extends BaseService<UserEntity> {
     constructor() {

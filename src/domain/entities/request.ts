@@ -1,16 +1,17 @@
 // domain/entities/request.ts
-import { User } from "./user";
-import { Payment } from "./payment";
-import { Car } from "./car";
+import { User } from './user';
+import { Payment } from './payment';
+import { Car } from './car';
 
 export enum StateCar {
-    REQUEST = "req",
-    CONFIRM = "con",
-    CANCEL = "can",
+    REQUEST = 'req',
+    CONFIRM = 'con',
+    CANCEL = 'can'
 }
 
 export class Request {
     constructor(
+        public id: string,
         public amount: number,
         public initialDate: Date,
         public finalDate: Date,
@@ -18,7 +19,7 @@ export class Request {
         public user: User,
         public car: Car,
         public payments: Payment[] = []
-    ) { }
+    ) {}
 
     // Ejemplo de lógica de dominio
     isActive(): boolean {
@@ -27,7 +28,7 @@ export class Request {
 
     cancel() {
         if (this.state === StateCar.CONFIRM) {
-            throw new Error("No se puede cancelar una solicitud confirmada");
+            throw new Error('No se puede cancelar una solicitud confirmada');
         }
         this.state = StateCar.CANCEL;
     }

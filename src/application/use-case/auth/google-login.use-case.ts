@@ -4,7 +4,7 @@ import { UserEntity } from '../../../infrastructure/db/entities/user.entity';
 import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum';
 import { HttpStatus } from '../../../shared/constants/http-status.enum';
 import { HttpException } from '../../../shared/exeptions/http.exeption';
-import { UserMapper } from '../../mappers/user.mappers';
+import { UserMapper } from '../../mappers/user.mapper';
 
 export interface UserGoogle {
     id: string;

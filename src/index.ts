@@ -22,6 +22,7 @@ class Server extends ConfigServer {
         super();
         this.passportUse();
         this.dbConnect();
+        this.cacheConnect();
         this.configureApp();
         this.listen();
     }
@@ -39,6 +40,16 @@ class Server extends ConfigServer {
             })
             .catch((err) => {
                 console.error('Error during Data Source initialization', err);
+            });
+    }
+
+    async cacheConnect(): Promise<void> {
+        return this.initCache
+            .then(() => {
+                console.log('Redis Client ready to use');
+            })
+            .catch((err) => {
+                console.error('Redis Client init error', err);
             });
     }
 

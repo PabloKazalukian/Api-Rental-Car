@@ -6,6 +6,7 @@ import { PaymentRouter } from './payment.routes';
 import { DiscountRouter } from './discount.routes';
 import { EmailRouter } from './email.routes';
 import { UserDiscountRouter } from './user-discount.route';
+import { CartRouter } from './cart.route';
 
 // export abstract class Routes<T, U> {
 //     public router: Router;
@@ -22,4 +23,14 @@ import { UserDiscountRouter } from './user-discount.route';
 //     protected abstract routes(): void;
 // }
 
-export const router = [UserRouter, AuthRouter, CarRouter, RequestRouter, PaymentRouter, DiscountRouter, EmailRouter, UserDiscountRouter];
+export const router = [
+    UserRouter,
+    AuthRouter,
+    CarRouter,
+    RequestRouter,
+    PaymentRouter,
+    DiscountRouter,
+    EmailRouter,
+    UserDiscountRouter,
+    CartRouter
+];

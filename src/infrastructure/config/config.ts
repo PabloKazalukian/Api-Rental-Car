@@ -1,6 +1,7 @@
-import dotenv from "dotenv";
-import { DataSource } from "typeorm";
-import { AppDataSource } from "../db/config/data.source";
+import dotenv from 'dotenv';
+import { DataSource } from 'typeorm';
+import { AppDataSource } from '../db/config/data.source';
+import { RedisProvider } from '../cache/redis.client';
 
 export abstract class ConfigServer {
     constructor() {
@@ -24,5 +25,14 @@ export abstract class ConfigServer {
         } catch (error: any) {
             throw new Error(`Failed to initialize repository: ${error.message}`);
         }
+    }
+
+    get initCache(): Promise<void> {
+        return RedisProvider.init()
+            .then(() => console.log('Redis initialized in ConfigServer'))
+            .catch((err) => {
+                console.error('Redis init failed in ConfigServer', err);
+                throw err;
+            });
     }
 }

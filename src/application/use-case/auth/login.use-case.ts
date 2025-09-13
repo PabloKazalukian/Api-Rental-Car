@@ -3,7 +3,7 @@ import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum
 import { HttpStatus } from '../../../shared/constants/http-status.enum';
 import { IAuthService } from '../../../domain/interface/repositories/auth.interface';
 import { User } from '../../../domain/entities/user';
-import { UserMapper } from '../../mappers/user.mappers';
+import { UserMapper } from '../../mappers/user.mapper';
 import { UserEntity } from '../../../infrastructure/db/entities/user.entity';
 import { getIO } from '../../../infrastructure/config/socket';
 

@@ -1,19 +1,18 @@
-import { ConfigServer } from "../src/config/config";
-import { DataSource } from "typeorm";
-
+import { ConfigServer } from '../src/infrastructure/config/config';
+import { DataSource } from 'typeorm';
 
 export class ServerTest extends ConfigServer {
     constructor() {
-        super()
+        super();
     }
 
     async dbConnect(): Promise<DataSource | void> {
         return this.initConnect
             .then(() => {
-                console.log("Data Source has been initialized!")
+                console.log('Data Source has been initialized!');
             })
             .catch((err) => {
-                console.error("Error during Data Source initialization", err)
+                console.error('Error during Data Source initialization', err);
             });
     }
 }

@@ -1,7 +1,12 @@
 import { BaseDTO } from '../../infrastructure/config/base.dto';
-import { IsNotEmpty } from "class-validator";
+import { IsArray, IsOptional } from 'class-validator';
+import { UserEntity } from '../../infrastructure/db/entities/user.entity';
+import { RequestEntity } from '../../infrastructure/db/entities/request.entity';
 
 export class CartDTO extends BaseDTO {
-    @IsNotEmpty()
-    exampleField!: string;
+    @IsArray()
+    user!: UserEntity;
+
+    @IsOptional()
+    requests!: string[];
 }

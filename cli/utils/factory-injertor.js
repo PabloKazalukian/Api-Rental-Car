@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { injectIntoFactory, injectImport } from './factory-utils.js';
+import { injectIntoFactory, injectImport, injectExport } from './factory-utils.js';
 
 const controllerFactory = path.resolve('src/application/factories/controller.factory.ts');
 const middlewareFactory = path.resolve('src/application/factories/middleware.factory.ts');
@@ -47,6 +47,19 @@ export function injectIntoFactories(
       }
           `
     );
+
+    injectImport(
+      controllersIndex,
+      `import { ${capitalized}Controller } from "./${name}.controller";`
+    );
+
+    // --- Export en index.controllers ---
+    injectExport(
+      controllersIndex,
+      `export const ${name}Controller = ControllerFactory.create${capitalized}Controller();`
+    );
+
+
   }
 
   if (middleware) {

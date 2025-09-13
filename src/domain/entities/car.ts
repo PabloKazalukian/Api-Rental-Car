@@ -1,5 +1,5 @@
 // domain/entities/car.ts
-import { Request } from "./request";
+import { Request } from './request';
 
 export class SpecificationsCar {
     constructor(
@@ -9,12 +9,13 @@ export class SpecificationsCar {
         public weight: string,
         public maxSpeed: string,
         public acceleration: string,
-        public consumption: string,
-    ) { }
+        public consumption: string
+    ) {}
 }
 
 export class Car {
     constructor(
+        public id: string,
         public image: string,
         public brand: string,
         public model: string,
@@ -22,7 +23,5 @@ export class Car {
         public price: number,
         public specifications: SpecificationsCar,
         public requests: Request[] = []
-    ) { }
-
-
+    ) {}
 }

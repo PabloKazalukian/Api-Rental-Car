@@ -24,3 +24,15 @@ export function injectImport(factoryFile, importLine) {
     console.log(`📥 Import agregado en: ${factoryFile}`);
   }
 }
+
+export function injectExport(indexFile, exportLine) {
+  let content = fs.readFileSync(indexFile, 'utf8');
+
+  if (!content.includes(exportLine)) {
+    content += '\n' + exportLine;
+    fs.writeFileSync(indexFile, content, 'utf8');
+    console.log(`📤 Export agregado en: ${indexFile}`);
+  } else {
+    console.log(`⚠️ Ya existía el export en: ${indexFile}`);
+  }
+}
