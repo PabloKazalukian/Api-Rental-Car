@@ -3,10 +3,7 @@ import { UserRepository } from '../../../gateways/repositories/user.repository';
 import { HttpResponse } from '../../../gateways/response/http.response';
 import { hashPassword, isSamePassword } from '../../../utils/hashPassword';
 import { instanceToPlain } from 'class-transformer';
-import { UserDTO } from '../../../../application/dtos/user.dto';
 import { UserEntity } from '../../../db/entities/user.entity';
-import { User } from '../../../../domain/entities/user';
-import { UserMapper } from '../../../../application/mappers/user.mapper';
 
 export class UserController {
     constructor(

@@ -6,7 +6,6 @@ import { CarRepository } from '../../gateways/repositories/car.repository';
 import { StateCar } from '../../../domain/entities/request';
 import { UserEntity } from '../entities/user.entity';
 import { UserRole, UserType, User } from '../../../domain/entities/user';
-import { UserMapper } from '../../../application/mappers/user.mapper';
 
 export class RequestSeeder {
     private userService = new UserRepository();
