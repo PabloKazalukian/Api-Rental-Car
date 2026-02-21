@@ -12,7 +12,7 @@ export class RequestController {
         private readonly requestSvc: RequestRepository,
         private readonly carSvc: CarRepository,
         private readonly httpResponse: HttpResponse
-    ) {}
+    ) { }
 
     async getAllRequest(req: Request, res: Response): Promise<Response> {
         try {
@@ -39,12 +39,19 @@ export class RequestController {
     async getRequestsByIds(req: Request, res: Response): Promise<Response> {
         try {
             const ids = req.body.idsRequest; // asegúrate que sea un array
+            console.log('Solicitando requests para IDs:', ids);
+
+            if (!ids || !Array.isArray(ids) || ids.length === 0) {
+                return this.httpResponse.Ok(res, []);
+            }
+
             const data = await this.requestSvc.findByIds(ids);
 
             if (!data) return this.httpResponse.NotFound(res, 'Solicitud no encontrada');
 
             return this.httpResponse.Ok(res, data);
         } catch (err) {
+            console.error('Error en getRequestsByIds:', err);
             return this.httpResponse.Error(res, err);
         }
     }

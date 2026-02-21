@@ -1,5 +1,5 @@
-import { User, UserRole, UserType } from "../../domain/entities/user";
-import { UserEntity } from "../../infrastructure/db/entities/user.entity";
+import { User, UserRole, UserType } from '../../domain/entities/user';
+import { UserEntity } from '../../infrastructure/db/entities/user.entity';
 
 export class UserMapper {
     static toPersistence(user: User): UserEntity {
@@ -14,13 +14,15 @@ export class UserMapper {
     }
 
     static toDomain(entity: UserEntity): User {
-        return new User(
-            entity.id,
-            entity.username,
-            entity.email,
-            entity.password,
-            entity.role,
-            entity.type
-        );
+        return new User(entity.id, entity.username, entity.email, entity.password, entity.role, entity.type);
+    }
+
+    static merge(entity: UserEntity, partialDomain: Partial<User>): UserEntity {
+        if (partialDomain.username !== undefined) entity.username = partialDomain.username;
+        if (partialDomain.email !== undefined) entity.email = partialDomain.email;
+        if (partialDomain.password !== undefined) entity.password = partialDomain.password;
+        if (partialDomain.role !== undefined) entity.role = partialDomain.role;
+        if (partialDomain.type !== undefined) entity.type = partialDomain.type;
+        return entity;
     }
 }

@@ -12,6 +12,7 @@ import { GoogleOAuthStrategy } from './infrastructure/security/strategies/google
 import { createServer } from 'http';
 import { initSocket } from './infrastructure/config/socket';
 import { router } from './infrastructure/interfaces/http/routes/routes';
+import { configureContainer } from './infrastructure/di/config-container';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -59,6 +60,8 @@ class Server extends ConfigServer {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(morgan('dev'));
         this.app.use(cookieParser());
+
+        configureContainer();
 
         /**CORS config */
         this.app.use(
@@ -133,10 +136,14 @@ class Server extends ConfigServer {
 
     public listen() {
         const httpServer = createServer(this.app);
+        console.log('Calling initSocket...');
         initSocket(httpServer); // inicializa y guarda la instancia
 
         httpServer.listen(this.port, () => {
-            console.log('listening on port ' + this.port);
+            console.log('\n==================================================');
+            console.log(`🚀 Server listening on port ${this.port}`);
+            console.log('✅ Socket.IO should be initialized and ready.');
+            console.log('==================================================\n');
         });
     }
 }

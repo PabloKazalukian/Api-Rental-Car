@@ -2,7 +2,7 @@ import { CartRepository } from '../../infrastructure/gateways/repositories/cart.
 import { CartController } from '../../infrastructure/interfaces/http/controllers/cart.controller';
 import { IAuthController } from '../../domain/interface/controllers/auth-controller.interface';
 import { IDiscountController } from '../../domain/interface/controllers/discount-controller.interface';
-import { IUserDiscountController } from '../../domain/interface/controllers/user-controller.interface';
+import { IUserDiscountController } from '../../domain/interface/controllers/userDiscount-controller.interface';
 import { AuthService } from '../../infrastructure/gateways/repositories/auth.service';
 import { CarRepository } from '../../infrastructure/gateways/repositories/car.repository';
 import { DiscountRepository } from '../../infrastructure/gateways/repositories/discount.repository';

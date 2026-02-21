@@ -10,7 +10,6 @@ export class CartController {
 
     async getCartById(req: Request, res: Response) {
         try {
-            console.log('LLEGUE AL CONTROLLER');
             const data = await this.cartService.findOrCreateCart(req.params.idUser);
             if (!data) return res.status(404).json({ message: 'Cart not found' });
             return this.httpResponse.Ok(res, data);
@@ -21,7 +20,7 @@ export class CartController {
 
     async createCart(req: Request, res: Response) {
         try {
-            const data = await this.cartService.findOrCreateCart(req.body);
+            const data = await this.cartService.createCart(req.body);
             return res.status(201).json(data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
@@ -30,7 +29,9 @@ export class CartController {
 
     async updateCart(req: Request, res: Response) {
         try {
-            const data = await this.cartService.updateCart(req.body);
+            const { idUser } = req.params;
+            const miArrayConDuplicados = [...new Set(req.body.requests as string[])];
+            const data = await this.cartService.updateCart(idUser, miArrayConDuplicados);
             if (!data) return res.status(404).json({ message: 'Cart not found' });
             return this.httpResponse.Ok(res, data);
         } catch (err) {

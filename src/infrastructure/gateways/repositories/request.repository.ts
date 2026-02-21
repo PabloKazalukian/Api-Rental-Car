@@ -24,6 +24,9 @@ export class RequestRepository extends BaseService<RequestEntity> {
     }
 
     async findByIds(ids: string[]): Promise<RequestEntity[]> {
+        if (!ids || ids.length === 0) {
+            return [];
+        }
         const repo = await this.execRepository();
         return repo.find({
             where: { id: In(ids) },
@@ -33,11 +36,26 @@ export class RequestRepository extends BaseService<RequestEntity> {
 
     async findByUser(idUser: string): Promise<RequestEntity[] | null> {
         const repo = await this.execRepository();
+        // return repo
+        //     .createQueryBuilder('request')
+        //     .leftJoinAndSelect('request.user_id', 'user_id')
+        //     .andWhere('(user_id.id = :iduser)', { iduser: idUser })
+        //     .select(['request', 'user_id.username', 'user_id.id', 'user_id.email'])
+        //     .getMany();
         return repo
             .createQueryBuilder('request')
-            .leftJoinAndSelect('request.user_id', 'user_id')
-            .andWhere('(user_id.id = :iduser)', { iduser: idUser })
-            .select(['request', 'user_id.username', 'user_id.id', 'user_id.email'])
+            .leftJoin('request.user_id', 'user')
+            .where('request.user_id = :iduser', { iduser: idUser })
+            .select([
+                'request.id',
+                'request.amount',
+                'request.initialDate',
+                'request.finalDate',
+                'request.state',
+                'user.id',
+                'user.username',
+                'user.email'
+            ])
             .getMany();
     }
 

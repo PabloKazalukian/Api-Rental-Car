@@ -5,6 +5,7 @@ import { PayloadToken } from '../../../interfaces/models/auth.interface';
 import { UserRepository } from './user.repository';
 import { IAuthService } from '../../../domain/interface/repositories/auth.interface';
 import { UserEntity } from '../../db/entities/user.entity';
+import { User } from '../../../domain/entities/user';
 
 /**
  * Servicio de autenticación que maneja validación de usuarios y generación de tokens JWT.
@@ -21,9 +22,9 @@ export class AuthService extends ConfigServer implements IAuthService {
      * Valida si un usuario existe y si su contraseña es correcta.
      * Puede recibir como identificador un nombre de usuario o un correo electrónico.
      */
-    public async validateUser(identifier: string, plainPassword: string): Promise<UserEntity | null> {
-        const userByUsername: UserEntity | null = await this.userService.findUserByUsername(identifier);
-        const userByEmail: UserEntity | null = await this.userService.findUserByEmail(identifier);
+    public async validateUser(identifier: string, plainPassword: string): Promise<User | null> {
+        const userByUsername: User | null = await this.userService.findUserByUsername(identifier);
+        const userByEmail: User | null = await this.userService.findUserByEmail(identifier);
 
         // Validar contraseña si se encontró usuario por nombre de usuario
         if (userByUsername) {

@@ -4,9 +4,13 @@ import { UserEntity } from '../../infrastructure/db/entities/user.entity';
 import { RequestEntity } from '../../infrastructure/db/entities/request.entity';
 
 export class CartDTO extends BaseDTO {
-    @IsArray()
     user!: UserEntity;
 
     @IsOptional()
+    requests!: string[];
+}
+
+export class UpdateCartDTO {
+    @IsArray()
     requests!: string[];
 }

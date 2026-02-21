@@ -28,10 +28,10 @@ export class GoogleLoginUseCase {
         if (!existingUserEntity) {
             // Mapear a DB y guardar
             const userEntity: UserEntity = UserMapper.toPersistence(domainUser);
-            const savedEntity: UserEntity = await this.userService.createUser(domainUser);
-            return UserMapper.toDomain(savedEntity);
+            // const savedEntity: UserEntity = await this.userService.createUser(domainUser);
+            return this.userService.createUser(domainUser);
         }
 
-        return UserMapper.toDomain(existingUserEntity);
+        return existingUserEntity;
     }
 }

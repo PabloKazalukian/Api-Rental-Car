@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { CartDTO } from '../dtos/cart.dto';
+import { CartDTO, UpdateCartDTO } from '../dtos/cart.dto';
 import { CartEntity } from '../../infrastructure/db/entities/cart.entity';
 import { JwtMiddleware } from './jwt.middleware';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
@@ -12,7 +12,7 @@ export class CartMiddleware extends JwtMiddleware {
 
     async cartValidator(req: Request, res: Response, next: NextFunction) {
         try {
-            const validator = new EntityValidator<CartEntity, CartDTO>(CartDTO);
+            const validator = new EntityValidator<CartEntity, UpdateCartDTO>(UpdateCartDTO);
             const validatedDTO = await validator.validate(req.body);
 
             req.body = validatedDTO;
@@ -22,4 +22,3 @@ export class CartMiddleware extends JwtMiddleware {
         }
     }
 }
-

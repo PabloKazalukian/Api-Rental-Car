@@ -22,7 +22,10 @@ export class RedisProvider {
                 console.log('✅ Redis connected to', process.env.REDIS_HOST);
             });
 
-            await RedisProvider.client.connect();
+            await RedisProvider.client.connect().catch((err) => {
+                console.warn('⚠️  Redis connection failed. Running without cache.', err.message);
+                // No re-throw, allow app to start
+            });
         }
     }
 

@@ -13,7 +13,7 @@ router.post('/cart', cartMiddleware.passAuth('jwt'), cartMiddleware.cartValidato
     cartController.createCart(req, res);
 });
 
-router.put('/cart', cartMiddleware.passAuth('jwt'), cartMiddleware.cartValidator.bind(cartMiddleware), (req, res) => {
+router.put('/cart/:idUser', cartMiddleware.passAuth('jwt'), cartMiddleware.cartValidator.bind(cartMiddleware), (req, res) => {
     cartController.updateCart(req, res);
 });
 

@@ -4,16 +4,20 @@ import { HttpResponse } from '../../../gateways/response/http.response';
 import { hashPassword, isSamePassword } from '../../../utils/hashPassword';
 import { instanceToPlain } from 'class-transformer';
 import { UserEntity } from '../../../db/entities/user.entity';
+import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
+import { IUserRepository } from '../../../../domain/interface/repositories/userRepository.interface';
+import { IUserController } from '../../../../domain/interface/controllers/user-controller.interface';
+import { User } from '../../../../domain/entities/user';
 
-export class UserController {
+export class UserController implements IUserController {
     constructor(
-        private readonly userService: UserRepository,
-        private readonly httpResponse: HttpResponse
+        private readonly userService: IUserRepository, // ← Interfaz, no implementación
+        private readonly httpResponse: IHttpResponse
     ) {}
 
     async getAllUser(req: Request, res: Response): Promise<Response> {
         try {
-            const data: UserEntity[] = await this.userService.findAllUser();
+            const data: User[] = await this.userService.findAll();
 
             return this.httpResponse.Ok(res, data);
         } catch (err) {
@@ -23,7 +27,7 @@ export class UserController {
 
     async getUserById(req: Request, res: Response): Promise<Response> {
         try {
-            const data: UserEntity | null = await this.userService.findById(req.params.idUser);
+            const data: User | null = await this.userService.findById(req.params.idUser);
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
 
             return this.httpResponse.Ok(res, instanceToPlain(data));
@@ -89,7 +93,7 @@ export class UserController {
             if (user !== null) {
                 user.password = pass;
 
-                const data = await this.userService.updateUser(req.params.idUser, user);
+                const data = await this.userService.update(req.params.idUser, user);
                 if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
                 return this.httpResponse.Ok(res, data);
             }
@@ -101,9 +105,9 @@ export class UserController {
 
     async modifyUser(req: Request, res: Response): Promise<Response> {
         try {
-            const data = await this.userService.updateUser(req.params.idUser, req.body);
+            const data = await this.userService.update(req.params.idUser, req.body);
 
-            if (!data.affected) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
+            if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
 
             return this.httpResponse.Ok(res, data);
         } catch (err) {
@@ -113,8 +117,8 @@ export class UserController {
 
     async deleteUser(req: Request, res: Response): Promise<Response> {
         try {
-            const data = await this.userService.deleteUser(req.params.idUser);
-            if (!data.affected) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
+            const data = await this.userService.delete(req.params.idUser);
+            if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
 
             return this.httpResponse.Ok(res, data);
         } catch (err) {

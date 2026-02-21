@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { HttpResponse } from '../../../gateways/response/http.response';
 import { UserDiscountRepository } from '../../../gateways/repositories/user-discount.repository';
 import { CreateUserDiscountUseCase } from '../../../../application/use-case/user-discount/create.user-case';
-import { IUserDiscountController } from '../../../../domain/interface/controllers/user-controller.interface';
+import { IUserDiscountController } from '../../../../domain/interface/controllers/userDiscount-controller.interface';
 
 export class UserDiscountController implements IUserDiscountController {
     constructor(

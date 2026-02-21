@@ -1,55 +1,80 @@
-import { DeleteResult, UpdateResult } from 'typeorm';
 import { BaseService } from '../../base.service';
-import { UserDTO } from '../../../application/dtos/user.dto';
-import { hashPassword } from '../../utils/hashPassword';
 import { UserEntity } from '../../db/entities/user.entity';
 import { User, UserRole } from '../../../domain/entities/user';
 import { UserMapper } from '../../../application/mappers/user.mapper';
+import { IUserRepository } from '../../../domain/interface/repositories/userRepository.interface';
 
-export class UserRepository extends BaseService<UserEntity> {
+export class UserRepository extends BaseService<UserEntity> implements IUserRepository {
     constructor() {
         super(UserEntity);
     }
 
-    async findAllUser(): Promise<UserEntity[]> {
+    async findAll(): Promise<User[]> {
         const repo = await this.execRepository();
-        return repo.find();
+        const entities = await repo.find();
+        return entities.map((entity) => UserMapper.toDomain(entity));
     }
 
-    async findById(id: string): Promise<UserEntity | null> {
+    async findById(id: string): Promise<User | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ id });
+        const entity = await repo.findOneBy({ id });
+        return entity ? UserMapper.toDomain(entity) : null;
     }
 
-    async findUserWithRole(id: string, role: UserRole): Promise<UserEntity | null> {
+    async findByEmail(email: string): Promise<User | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ id, role: role });
+        const entity = await repo.findOneBy({ email });
+        return entity ? UserMapper.toDomain(entity) : null;
     }
 
-    async createUser(body: User): Promise<UserEntity> {
-        // Hash password before saving to database
-        const newUser = UserMapper.toPersistence(body);
+    async createUser(user: User): Promise<User> {
+        const entity = UserMapper.toPersistence(user);
         const repo = await this.execRepository();
-        return repo.save(newUser);
+        const savedEntity = await repo.save(entity);
+        return UserMapper.toDomain(savedEntity);
     }
 
-    async deleteUser(id: string): Promise<DeleteResult> {
+    async update(id: string, userData: Partial<User>): Promise<User | null> {
         const repo = await this.execRepository();
-        return repo.delete({ id });
+
+        // Primero obtenemos la entidad existente
+        const existingEntity = await repo.findOneBy({ id });
+        if (!existingEntity) return null;
+
+        // Actualizamos solo los campos proporcionados
+        const updatedEntity = UserMapper.merge(existingEntity, userData);
+        const savedEntity = await repo.save(updatedEntity);
+
+        return UserMapper.toDomain(savedEntity);
     }
 
-    async updateUser(id: string, infoUpdate: UserEntity): Promise<UpdateResult> {
+    async delete(id: string): Promise<boolean> {
         const repo = await this.execRepository();
-        return repo.update(id, infoUpdate);
+        const result = await repo.delete(id);
+        return result.affected ? result.affected > 0 : false;
     }
 
-    async findUserByEmail(email: string): Promise<UserEntity | null> {
+    async findWithRole(id: string, role: UserRole): Promise<User | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ email });
+        const entity = await repo.findOneBy({ id, role });
+        return entity ? UserMapper.toDomain(entity) : null;
     }
 
-    async findUserByUsername(username: string): Promise<UserEntity | null> {
+    async findUserByEmail(email: string): Promise<User | null> {
         const repo = await this.execRepository();
-        return repo.findOneBy({ username });
+        const entity = await repo.findOneBy({ email });
+        return entity ? UserMapper.toDomain(entity) : null;
+    }
+
+    async findUserByUsername(username: string): Promise<User | null> {
+        const repo = await this.execRepository();
+        const entity = await repo.findOneBy({ username });
+        return entity ? UserMapper.toDomain(entity) : null;
+    }
+
+    async findUserWithRole(id: string, role: UserRole): Promise<User | null> {
+        const repo = await this.execRepository();
+        const entity = await repo.findOneBy({ id, role: role });
+        return entity ? UserMapper.toDomain(entity) : null;
     }
 }
