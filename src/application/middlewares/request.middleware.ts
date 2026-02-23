@@ -5,8 +5,9 @@ import { JwtMiddleware } from './jwt.middleware';
 import { parseDateOrThrow } from '../../infrastructure/utils/date.utils';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
 import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
+import { IRequestMiddleware } from '../../domain/interface/middlewares/request-middleware.interface';
 
-export class RequestMiddleware extends JwtMiddleware {
+export class RequestMiddleware extends JwtMiddleware implements IRequestMiddleware {
     constructor() {
         super(HttpResponseSingleton.getInstance());
     }

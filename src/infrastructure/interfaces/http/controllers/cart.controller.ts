@@ -18,7 +18,7 @@ export class CartController {
         }
     }
 
-    async createCart(req: Request, res: Response) {
+    async createCart(req: Request, res: Response): Promise<Response> {
         try {
             const data = await this.cartService.createCart(req.body);
             return res.status(201).json(data);

@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
 import { clearCookies, setAuthCookie, setAuthGoogleCookie } from '../../../utils/cookie.utils';
-import { LoginUseCase } from '../../../../application/use-case/auth/login.use-case';
-import { GoogleLoginUseCase, UserGoogle } from '../../../../application/use-case/auth/google-login.use-case';
-import { RefreshTokenUseCase } from '../../../../application/use-case/auth/refresh-token.use-case';
+import { ILoginUseCase } from '../../../../application/use-case/auth/login.use-case';
+import { IGoogleLoginUseCase, UserGoogle } from '../../../../application/use-case/auth/google-login.use-case';
+import { IRefreshTokenUseCase } from '../../../../application/use-case/auth/refresh-token.use-case';
 import { catchError } from '../../../../shared/exeptions/catch-error.util';
-import { HttpResponse } from '../../../gateways/response/http.response';
 import { User } from '../../../../domain/entities/user';
 import { IAuthController } from '../../../../domain/interface/controllers/auth-controller.interface';
+import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
 
 export class AuthController implements IAuthController {
     constructor(
-        private readonly loginUseCase: LoginUseCase,
-        private readonly googleLoginUseCase: GoogleLoginUseCase,
-        private readonly refreshTokenUseCase: RefreshTokenUseCase,
-        private readonly httpResponse: HttpResponse
+        private readonly loginUseCase: ILoginUseCase,
+        private readonly googleLoginUseCase: IGoogleLoginUseCase,
+        private readonly refreshTokenUseCase: IRefreshTokenUseCase,
+        private readonly httpResponse: IHttpResponse
     ) {}
 
     async login(req: Request, res: Response) {

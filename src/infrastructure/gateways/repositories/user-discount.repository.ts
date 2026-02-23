@@ -3,8 +3,9 @@ import { UserDiscountEntity } from "../../db/entities/user-discount.entity";
 import { BaseService } from "../../base.service";
 import { CreateUserDiscountDTO, UserDiscountDTO } from "../../../application/dtos/user-discount.dto";
 import { UserDiscount } from "../../../domain/entities/user-discount";
+import { IUserDiscountRepository } from "../../../domain/interface/repositories/user-discount-repository.interface";
 
-export class UserDiscountRepository extends BaseService<UserDiscountEntity> {
+export class UserDiscountRepository extends BaseService<UserDiscountEntity> implements IUserDiscountRepository {
     constructor() {
         super(UserDiscountEntity);
     }

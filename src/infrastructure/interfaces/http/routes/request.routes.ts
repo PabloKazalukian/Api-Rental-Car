@@ -1,33 +1,30 @@
-import { Router } from 'express';
-import { requestController } from '../controllers/index.controller';
+import { Router, Request, Response } from 'express';
+import { IRequestController } from '../../../../domain/interface/controllers/request-controller.interface';
 import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
+import { Container } from '../../../di/container';
 
 const router = Router();
 const requestMiddleware = MiddlewareFactory.createRequestMiddleware();
 
-router.get('/request', (req, res) => {
-    requestController.getAllRequest(req, res);
-});
-router.get('/request/:id', (req, res) => {
-    requestController.getRequestById(req, res);
-});
-router.post('/request/bulk', requestMiddleware.requestIdsValidator.bind(requestMiddleware), (req, res) => {
-    requestController.getRequestsByIds(req, res);
-});
-router.get('/request/allOfUserId/:user_id', (req, res) => {
-    requestController.getRequestByUser(req, res);
-});
-router.get('/request/allOfCarId/:car_id', (req, res) => {
-    requestController.getRequestBycar(req, res);
-});
-router.put('/request/cancel', (req, res) => {
-    requestController.cancelRequest(req, res);
-});
-router.put('/request/confirm', (req, res) => {
-    requestController.confirmRequest(req, res);
-});
-router.post('/request', requestMiddleware.requestValidator.bind(requestMiddleware), (req, res) => {
-    requestController.createRequest(req, res);
-});
+const resolveHandler = <K extends keyof IRequestController>(controllerName: string, methodName: K) => {
+    return async (req: Request, res: Response) => {
+        const controller = Container.resolve<IRequestController>(controllerName);
+        await controller[methodName](req, res);
+    };
+};
+
+router.get('/request', resolveHandler('IRequestController', 'getAllRequest'));
+router.get('/request/:id', resolveHandler('IRequestController', 'getRequestById'));
+router.post(
+    '/request/bulk',
+    requestMiddleware.requestIdsValidator.bind(requestMiddleware),
+    resolveHandler('IRequestController', 'getRequestsByIds')
+);
+router.get('/request/allOfUserId/:user_id', resolveHandler('IRequestController', 'getRequestByUser'));
+router.get('/request/allOfCarId/:car_id', resolveHandler('IRequestController', 'getRequestBycar'));
+router.put('/request/cancel', resolveHandler('IRequestController', 'cancelRequest'));
+router.put('/request/confirm', resolveHandler('IRequestController', 'confirmRequest'));
+
+router.post('/request', requestMiddleware.requestValidator.bind(requestMiddleware), resolveHandler('IRequestController', 'createRequest'));
 
 export const RequestRouter = router;

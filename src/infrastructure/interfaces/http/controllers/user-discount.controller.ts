@@ -3,11 +3,12 @@ import { HttpResponse } from '../../../gateways/response/http.response';
 import { UserDiscountRepository } from '../../../gateways/repositories/user-discount.repository';
 import { CreateUserDiscountUseCase } from '../../../../application/use-case/user-discount/create.user-case';
 import { IUserDiscountController } from '../../../../domain/interface/controllers/userDiscount-controller.interface';
+import { IUserDiscountRepository } from '../../../../domain/interface/repositories/user-discount-repository.interface';
 
 export class UserDiscountController implements IUserDiscountController {
     constructor(
         private readonly createUDiscUseCase: CreateUserDiscountUseCase,
-        private readonly userDiscountSvc: UserDiscountRepository,
+        private readonly userDiscountSvc: IUserDiscountRepository,
         private readonly httpResponse: HttpResponse
     ) {}
 

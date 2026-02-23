@@ -13,7 +13,11 @@ export interface UserGoogle {
     picture: string;
 }
 
-export class GoogleLoginUseCase {
+export interface IGoogleLoginUseCase {
+    execute(user: UserGoogle | undefined): Promise<User>;
+}
+
+export class GoogleLoginUseCase implements IGoogleLoginUseCase {
     constructor(private readonly userService: IUserService) {}
 
     async execute(user: UserGoogle | undefined): Promise<User> {

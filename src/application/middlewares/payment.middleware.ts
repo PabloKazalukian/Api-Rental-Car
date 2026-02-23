@@ -4,8 +4,9 @@ import { formatValidationErrors } from '../../shared/validators/error-formatter'
 import { PaymentDTO } from '../dtos/payment.dto';
 import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
 import { JwtMiddleware } from './jwt.middleware';
+import { IPaymentMiddleware } from '../../domain/interface/middlewares/payment-middleware.interface';
 
-export class PaymentMiddleware extends JwtMiddleware {
+export class PaymentMiddleware extends JwtMiddleware implements IPaymentMiddleware {
     constructor() {
         super(HttpResponseSingleton.getInstance());
     }

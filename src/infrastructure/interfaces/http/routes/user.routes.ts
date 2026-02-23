@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
-import { userController } from '../controllers/index.controller';
+// import { UserController } from '../controllers/index.controller';
 import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
 import { Container } from '../../../di/container';
 import { IUserController } from '../../../../domain/interface/controllers/user-controller.interface';
@@ -15,29 +15,18 @@ const resolveHandler = <K extends keyof IUserController>(controllerName: string,
     };
 };
 
-router.get('/user', (req, res) => {
-    resolveHandler('userController', 'getAllUser');
-});
-router.get('/user/:idUser', (req, res) => {
-    resolveHandler('userController', 'getUserById');
-});
-router.put('/user/modifyPass/:idUser', (req, res) => {
-    resolveHandler('userController', 'modifyPassword');
-});
-router.put('/user/:idUser', userMiddleware.userValidator.bind(userMiddleware), (req, res) => {
-    resolveHandler('userController', 'modifyUser');
-});
-router.post('/user', userMiddleware.userValidator.bind(userMiddleware), (req, res) => {
-    resolveHandler('userController', 'createUser');
-});
-router.post('/user/verifyEmail', (req, res) => {
-    resolveHandler('userController', 'verifyEmail');
-});
-router.post('/user/verifyUsername', (req, res) => {
-    resolveHandler('userController', 'verifyUsername');
-});
-router.delete('/user/:idUser', userMiddleware.passAuth('jwt'), userMiddleware.checkAdminRole.bind(userMiddleware), (req, res) => {
-    resolveHandler('userController', 'deleteUser');
-});
+router.get('/user', resolveHandler('IUserController', 'getAllUser'));
+router.get('/user/:idUser', resolveHandler('IUserController', 'getUserById'));
+router.put('/user/modifyPass/:idUser', resolveHandler('IUserController', 'modifyPassword'));
+router.put('/user/:idUser', userMiddleware.userValidator.bind(userMiddleware), resolveHandler('IUserController', 'modifyUser'));
+router.post('/user', userMiddleware.userValidator.bind(userMiddleware), resolveHandler('IUserController', 'createUser'));
+router.post('/user/verifyEmail', resolveHandler('IUserController', 'verifyEmail'));
+router.post('/user/verifyUsername', resolveHandler('IUserController', 'verifyUsername'));
+router.delete(
+    '/user/:idUser',
+    userMiddleware.passAuth('jwt'),
+    userMiddleware.checkAdminRole.bind(userMiddleware),
+    resolveHandler('IUserController', 'deleteUser')
+);
 
 export const UserRouter = router;

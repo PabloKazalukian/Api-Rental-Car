@@ -7,10 +7,13 @@ import { UserMapper } from '../../mappers/user.mapper';
 import { UserEntity } from '../../../infrastructure/db/entities/user.entity';
 import { getIO } from '../../../infrastructure/config/socket';
 
-export class LoginUseCase {
+export interface ILoginUseCase {
+    execute(user: User | undefined): Promise<{ accessToken: string; user: User }>;
+}
+export class LoginUseCase implements ILoginUseCase {
     constructor(private readonly authService: IAuthService) {}
 
-    async execute(user: User | undefined): Promise<{ accessToken: string; user: UserEntity }> {
+    async execute(user: User | undefined): Promise<{ accessToken: string; user: User }> {
         if (user === undefined) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.TOKEN_INVALID);
         const userEntity: UserEntity = UserMapper.toPersistence(user);
 

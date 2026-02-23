@@ -1,15 +1,12 @@
-import { NextFunction, Request, Response } from "express";
-import { validate } from "class-validator";
-import { HttpResponse } from '../../infrastructure/gateways/response/http.response';
-import { CarDTO } from "../dtos/car.dto";
-import { formatValidationErrors } from "../../shared/validators/error-formatter";
-import { JwtMiddleware } from "./jwt.middleware";
-import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
+import { NextFunction, Request, Response } from 'express';
+import { validate } from 'class-validator';
+import { CarDTO } from '../dtos/car.dto';
+import { formatValidationErrors } from '../../shared/validators/error-formatter';
+import { IHttpResponse } from '../../infrastructure/gateways/response/http-singleton.response';
+import { ICarMiddleware } from '../../domain/interface/middlewares/car-middleware.interface';
 
-export class CarMiddleware extends JwtMiddleware {
-    constructor() {
-        super(HttpResponseSingleton.getInstance());
-    }
+export class CarMiddleware implements ICarMiddleware {
+    constructor(private readonly httpResponse: IHttpResponse) {}
     carValidator(req: Request, res: Response, next: NextFunction) {
         const { image, brand, model, year, price, specifications_car } = req.body;
         const valid = new CarDTO();

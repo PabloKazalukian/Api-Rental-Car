@@ -1,18 +1,19 @@
 import { Request, Response } from 'express';
-import { RequestRepository } from '../../../gateways/repositories/request.repository';
-import { CarRepository } from '../../../gateways/repositories/car.repository';
 import { RequestDTO } from '../../../../application/dtos/request.dto';
 import { HttpResponse } from '../../../gateways/response/http.response';
 import { getDays } from '../../../utils/date.utils';
 import { CarEntity } from '../../../db/entities/car.entity';
 import { StateCar } from '../../../../domain/entities/request';
+import { IRequestController } from '../../../../domain/interface/controllers/request-controller.interface';
+import { IRequestRepository } from '../../../../domain/interface/repositories/request-repository.interface';
+import { ICarRepository } from '../../../../domain/interface/repositories/car-repository.interface';
 
-export class RequestController {
+export class RequestController implements IRequestController {
     constructor(
-        private readonly requestSvc: RequestRepository,
-        private readonly carSvc: CarRepository,
+        private readonly requestSvc: IRequestRepository,
+        private readonly carSvc: ICarRepository,
         private readonly httpResponse: HttpResponse
-    ) { }
+    ) {}
 
     async getAllRequest(req: Request, res: Response): Promise<Response> {
         try {

@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
-import { HttpResponse } from '../../infrastructure/gateways/response/http.response';
 import { UserEntity } from '../../infrastructure/db/entities/user.entity';
 import { UserRole } from '../../domain/entities/user';
 import { IErrorResponse } from '../../infrastructure/gateways/response/http-singleton.response';
-// import { Response } from "@sendgrid/helpers/classes";
+import { IJwtMiddleware } from '../../domain/interface/middlewares/jwt-middleware.interface';
 
-export class JwtMiddleware {
+export class JwtMiddleware implements IJwtMiddleware {
     constructor(public httpResponse: IErrorResponse) {}
 
     passAuth(type: string, options = {}) {

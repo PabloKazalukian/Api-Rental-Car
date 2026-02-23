@@ -5,6 +5,9 @@ import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum
 import { IUserService } from '../../../domain/interface/repositories/auth.interface';
 import { User } from '../../../domain/entities/user';
 
+export interface IRefreshTokenUseCase {
+    execute(user: JwtPayload | undefined): Promise<User>;
+}
 export class RefreshTokenUseCase {
     constructor(private readonly userService: IUserService) {}
 

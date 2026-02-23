@@ -1,16 +1,16 @@
-// infrastructure/gateways/repositories/cart.repository.ts
 import { CartEntity } from '../../db/entities/cart.entity';
 import { BaseService } from '../../base.service';
 import { RedisProvider } from '../../cache/redis.client';
 import { RedisKeys } from '../../cache/redis.key';
 import { CartDTO } from '../../../application/dtos/cart.dto';
+import { ICartRepository } from '../../../domain/interface/repositories/cart-repository.interface';
 
-export class CartRepository extends BaseService<CartEntity> {
+export class CartRepository extends BaseService<CartEntity> implements ICartRepository {
     constructor() {
         super(CartEntity);
     }
 
-    private cacheKey(userId: string) {
+    public cacheKey(userId: string): string {
         return RedisKeys.CART(userId);
     }
 

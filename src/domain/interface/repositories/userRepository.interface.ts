@@ -3,10 +3,10 @@
 import { User, UserRole } from '../../entities/user';
 
 export interface IUserRepository {
-    findAll(): Promise<User[]>; // ← Devuelve User de DOMINIO
+    findAll(): Promise<User[]>;
     findById(id: string): Promise<User | null>;
     findByEmail(email: string): Promise<User | null>;
-    createUser(user: User): Promise<User>; // ← Recibe y devuelve User de DOMINIO
+    createUser(user: User): Promise<User>;
     update(id: string, user: Partial<User>): Promise<User | null>;
     delete(id: string): Promise<boolean>;
     findWithRole(id: string, role: UserRole): Promise<User | null>;

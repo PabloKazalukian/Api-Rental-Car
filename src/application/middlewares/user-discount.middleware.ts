@@ -5,8 +5,9 @@ import { HttpResponseSingleton } from '../../infrastructure/gateways/response/ht
 import { UserDiscount } from '../../domain/entities/user-discount';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
 import { parseDateOrThrow } from '../../infrastructure/utils/date.utils';
+import { IUserDiscountMiddleware } from '../../domain/interface/middlewares/user-discount-middleware.interface';
 
-export class UserDiscountMiddleware extends JwtMiddleware {
+export class UserDiscountMiddleware extends JwtMiddleware implements IUserDiscountMiddleware {
     constructor() {
         super(HttpResponseSingleton.getInstance());
     }

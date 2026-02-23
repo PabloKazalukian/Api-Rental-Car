@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { CartDTO, UpdateCartDTO } from '../dtos/cart.dto';
+import { UpdateCartDTO } from '../dtos/cart.dto';
 import { CartEntity } from '../../infrastructure/db/entities/cart.entity';
 import { JwtMiddleware } from './jwt.middleware';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
 import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
+import { ICartMiddleware } from '../../domain/interface/middlewares/cart-middleware.interface';
 
-export class CartMiddleware extends JwtMiddleware {
+export class CartMiddleware extends JwtMiddleware implements ICartMiddleware {
     constructor() {
         super(HttpResponseSingleton.getInstance());
     }

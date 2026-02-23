@@ -2,8 +2,9 @@ import { DeleteResult, In, UpdateResult } from 'typeorm';
 import { BaseService } from '../../base.service';
 import { RequestDTO } from '../../../application/dtos/request.dto';
 import { RequestEntity } from '../../db/entities/request.entity';
+import { IRequestRepository } from '../../../domain/interface/repositories/request-repository.interface';
 
-export class RequestRepository extends BaseService<RequestEntity> {
+export class RequestRepository extends BaseService<RequestEntity> implements IRequestRepository {
     constructor() {
         super(RequestEntity);
     }

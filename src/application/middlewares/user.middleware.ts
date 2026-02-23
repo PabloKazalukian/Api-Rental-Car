@@ -1,34 +1,34 @@
-import { NextFunction, Request, Response } from "express";
-import { CreateUserDTO } from "../dtos/user.dto";
-import { JwtMiddleware } from "./jwt.middleware";
-import { UserRepository } from "../../infrastructure/gateways/repositories/user.repository";
-import { EntityValidator } from "../../infrastructure/utils/entity-validator";
-import { User, UserRole } from "../../domain/entities/user";
-import { HttpResponseSingleton } from "../../infrastructure/gateways/response/http-singleton.response";
+import { NextFunction, Request, Response } from 'express';
+import { CreateUserDTO } from '../dtos/user.dto';
+import { JwtMiddleware } from './jwt.middleware';
+import { UserRepository } from '../../infrastructure/gateways/repositories/user.repository';
+import { EntityValidator } from '../../infrastructure/utils/entity-validator';
+import { User, UserRole } from '../../domain/entities/user';
+import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
+import { IUserMiddleware } from '../../domain/interface/middlewares/user-middleware.interface';
 
-export class UserMiddleware extends JwtMiddleware {
+export class UserMiddleware extends JwtMiddleware implements IUserMiddleware {
     constructor(
         private userRepository: UserRepository
+        // private jwt = new JwtMiddleware
     ) {
-        super(HttpResponseSingleton.getInstance());;
+        super(HttpResponseSingleton.getInstance());
     }
 
     async mergeUser(req: Request, res: Response, next: NextFunction) {
         try {
             const user = await this.userRepository.findById(req.params.idUser);
-            if (!user)
-                return this.httpResponse.NotFound(res, "Usuario no encontrado");
+            if (!user) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
 
             req.body = { ...user, ...req.body }; // el body pisa al original
             next();
         } catch (err) {
-            return this.httpResponse.Error(res, "Error interno al fusionar usuario");
+            return this.httpResponse.Error(res, 'Error interno al fusionar usuario');
         }
     }
 
     async userValidator(req: Request, res: Response, next: NextFunction) {
         try {
-
             const userDomain: User = req.body;
             if (!userDomain.role) {
                 userDomain.role = UserRole.USER;
@@ -40,7 +40,6 @@ export class UserMiddleware extends JwtMiddleware {
             req.body = validatedDTO;
 
             next();
-
         } catch (err) {
             return this.httpResponse.Error(res, (err as Error).message);
         }

@@ -58,6 +58,7 @@ export class UserController implements IUserController {
             const data = await this.userService.findUserByEmail(req.body.email);
 
             if (!data) return this.httpResponse.NotFound(res, 'Usuario no encontrado');
+            console.log(data);
 
             return this.httpResponse.Ok(res, data);
         } catch (err) {

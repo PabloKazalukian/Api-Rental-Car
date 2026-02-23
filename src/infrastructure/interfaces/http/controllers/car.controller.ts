@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
-import { HttpResponse } from '../../../gateways/response/http.response';
-import { CarRepository } from '../../../gateways/repositories/car.repository';
+import { ICarRepository } from '../../../../domain/interface/repositories/car-repository.interface';
+import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
+import { ICarController } from '../../../../domain/interface/controllers/car-controller.interface';
 
-export class CarController {
+export class CarController implements ICarController {
     constructor(
-        private readonly carService: CarRepository,
-        private readonly httpResponse: HttpResponse
-    ) {}
+        private readonly carService: ICarRepository,
+        private readonly httpResponse: IHttpResponse
+    ) {
+        console.log('asdas');
+    }
 
     async getAllCar(req: Request, res: Response) {
         try {
@@ -27,10 +30,10 @@ export class CarController {
         }
     }
 
-    async createCar(req: Request, res: Response) {
+    async createCar(req: Request, res: Response): Promise<Response> {
         try {
             const data = await this.carService.createCar(req.body);
-            res.status(201).json(data);
+            return this.httpResponse.Created(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }
@@ -40,7 +43,7 @@ export class CarController {
         try {
             const data = await this.carService.findPriceCarById(req.params.id);
             if (!data) return res.status(404).json({ message: 'Car not found' });
-            res.status(200).json(data);
+            return this.httpResponse.Ok(res, data);
         } catch (err) {
             return this.httpResponse.Error(res, err);
         }

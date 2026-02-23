@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { configureContainer } from './infrastructure/di/config-container';
 import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -12,7 +13,6 @@ import { GoogleOAuthStrategy } from './infrastructure/security/strategies/google
 import { createServer } from 'http';
 import { initSocket } from './infrastructure/config/socket';
 import { router } from './infrastructure/interfaces/http/routes/routes';
-import { configureContainer } from './infrastructure/di/config-container';
 
 class Server extends ConfigServer {
     public app: express.Application = express();
@@ -20,6 +20,8 @@ class Server extends ConfigServer {
     private NAMESPACE = 'Server';
 
     constructor() {
+        configureContainer();
+
         super();
         this.passportUse();
         this.dbConnect();
@@ -60,8 +62,6 @@ class Server extends ConfigServer {
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(morgan('dev'));
         this.app.use(cookieParser());
-
-        configureContainer();
 
         /**CORS config */
         this.app.use(

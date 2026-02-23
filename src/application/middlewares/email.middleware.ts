@@ -1,14 +1,14 @@
-import { Request, Response, NextFunction } from "express";
-import { validate } from "class-validator";
-import { HttpResponse } from "../../infrastructure/gateways/response/http.response";
-import { EmailDTO } from "../dtos/email.dto";
-import { formatValidationErrors } from "../../shared/validators/error-formatter";
+import { Request, Response, NextFunction } from 'express';
+import { validate } from 'class-validator';
+import { HttpResponse } from '../../infrastructure/gateways/response/http.response';
+import { EmailDTO } from '../dtos/email.dto';
+import { formatValidationErrors } from '../../shared/validators/error-formatter';
+import { IEmailMiddleware } from '../../domain/interface/middlewares/email-middleware.interface';
 
-export class EmailMiddleware {
-    constructor(private httpResponse: HttpResponse) { }
+export class EmailMiddleware implements IEmailMiddleware {
+    constructor(private httpResponse: HttpResponse) {}
 
     emailValidator(req: Request, res: Response, next: NextFunction) {
-
         const { name, email, message } = req.body;
         const valid = new EmailDTO();
         valid.name = name;
@@ -17,7 +17,7 @@ export class EmailMiddleware {
 
         Object.assign(valid, req.body);
 
-        validate(valid).then(errors => {
+        validate(valid).then((errors) => {
             if (errors.length > 0) {
                 res.status(400).json({ message: errors[0].constraints });
                 return this.httpResponse.Error(res, formatValidationErrors(errors));
