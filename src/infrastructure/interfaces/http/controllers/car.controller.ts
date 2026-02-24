@@ -7,9 +7,7 @@ export class CarController implements ICarController {
     constructor(
         private readonly carService: ICarRepository,
         private readonly httpResponse: IHttpResponse
-    ) {
-        console.log('asdas');
-    }
+    ) {}
 
     async getAllCar(req: Request, res: Response) {
         try {

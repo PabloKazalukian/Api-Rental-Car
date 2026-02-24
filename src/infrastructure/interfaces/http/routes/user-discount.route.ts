@@ -3,7 +3,12 @@ import { MiddlewareFactory } from '../../../../application/factories/middleware.
 import { Container } from '../../../di/container';
 import { Request, Response } from 'express';
 import { IUserDiscountController } from '../../../../domain/interface/controllers/userDiscount-controller.interface';
-    
+import { JwtMiddleware } from '../../../../application/middlewares/jwt.middleware';
+import { IJwtMiddleware } from '../../../../domain/interface/middlewares/jwt-middleware.interface';
+import { IUserDiscountMiddleware } from '../../../../domain/interface/middlewares/user-discount-middleware.interface';
+
+const jwtMiddleware = Container.resolve<IJwtMiddleware>('IJwtMiddleware');
+
 const resolveHandler = <K extends keyof IUserDiscountController>(controllerName: string, methodName: K) => {
     return async (req: Request, res: Response) => {
         const controller = Container.resolve<IUserDiscountController>(controllerName);
@@ -11,13 +16,28 @@ const resolveHandler = <K extends keyof IUserDiscountController>(controllerName:
     };
 };
 
-
 const router = Router();
-const userDiscountMiddleware = MiddlewareFactory.createUserDiscountMiddleware();
+const userDiscountMiddleware = Container.resolve<IUserDiscountMiddleware>('IUserDiscountMiddleware');
 
-router.get('/user-discount', userDiscountMiddleware.passAuth('jwt', { session: false }), resolveHandler('IUserDiscountController', 'getAllUserDiscount'));
-router.get('/user-discount/:id', userDiscountMiddleware.passAuth('jwt', { session: false }), resolveHandler('IUserDiscountController', 'getUserDiscountById'));
-router.post('/user-discount/', userDiscountMiddleware.discountCreateValidator.bind(userDiscountMiddleware), resolveHandler('IUserDiscountController', 'createUserDiscount'));
-router.put('/user-discount/payment', userDiscountMiddleware.discountConfirmValidator.bind(userDiscountMiddleware), resolveHandler('IUserDiscountController', 'paymentUserDiscount'));
+router.get(
+    '/user-discount',
+    jwtMiddleware.passAuth('jwt', { session: false }),
+    resolveHandler('IUserDiscountController', 'getAllUserDiscount')
+);
+router.get(
+    '/user-discount/:id',
+    jwtMiddleware.passAuth('jwt', { session: false }),
+    resolveHandler('IUserDiscountController', 'getUserDiscountById')
+);
+router.post(
+    '/user-discount/',
+    userDiscountMiddleware.discountCreateValidator,
+    resolveHandler('IUserDiscountController', 'createUserDiscount')
+);
+router.put(
+    '/user-discount/payment',
+    userDiscountMiddleware.discountConfirmValidator,
+    resolveHandler('IUserDiscountController', 'paymentUserDiscount')
+);
 
 export const UserDiscountRouter = router;

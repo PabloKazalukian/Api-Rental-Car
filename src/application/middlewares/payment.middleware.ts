@@ -2,14 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { validate } from 'class-validator';
 import { formatValidationErrors } from '../../shared/validators/error-formatter';
 import { PaymentDTO } from '../dtos/payment.dto';
-import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
-import { JwtMiddleware } from './jwt.middleware';
+import { IHttpResponse } from '../../infrastructure/gateways/response/http-singleton.response';
 import { IPaymentMiddleware } from '../../domain/interface/middlewares/payment-middleware.interface';
 
-export class PaymentMiddleware extends JwtMiddleware implements IPaymentMiddleware {
-    constructor() {
-        super(HttpResponseSingleton.getInstance());
-    }
+export class PaymentMiddleware implements IPaymentMiddleware {
+    constructor(private readonly httpResponse: IHttpResponse) {}
 
     paymentValidator(req: Request, res: Response, next: NextFunction) {
         const { paid_date, created_time, automatic, request_id } = req.body;

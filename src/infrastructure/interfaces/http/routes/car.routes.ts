@@ -17,8 +17,12 @@ const resolveHandler = <K extends keyof ICarController>(controllerName: string, 
 
 router.get('/car', resolveHandler('ICarController', 'getAllCar'));
 
-router.get('/car/:id', carMiddleware.carValidator, resolveHandler('ICarController', 'getCarById'));
+router.get('/car/:id', resolveHandler('ICarController', 'getCarById'));
 router.get('/car/price/:id', resolveHandler('ICarController', 'getPriceById'));
-router.post('/car/create', resolveHandler('ICarController', 'createCar'));
+router.post(
+    '/car/create',
+    (req, res, next) => carMiddleware.carValidator.bind(carMiddleware)(req, res, next),
+    resolveHandler('ICarController', 'createCar')
+);
 
 export const CarRouter = router;

@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { HttpResponse } from '../../../gateways/response/http.response';
 import { PaymentRepository } from '../../../gateways/repositories/payment.repository';
-import { CreatePaymentUseCase } from '../../../../application/use-case/payment/payment.use-case';
+import { CreatePaymentUseCase, ICreatePaymentUseCase } from '../../../../application/use-case/payment/payment.use-case';
+import { IPaymentRepository } from '../../../../domain/interface/repositories/payment-repository.interface';
+import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
 
 interface IPaymentController {
     getAllPayment(req: Request, res: Response): Promise<Response>;
@@ -11,9 +13,9 @@ interface IPaymentController {
 
 export class PaymentController implements IPaymentController {
     constructor(
-        private readonly createPaymentUseCase: CreatePaymentUseCase,
-        private readonly paymentSvc: PaymentRepository,
-        private readonly httpResponse: HttpResponse
+        private readonly createPaymentUseCase: ICreatePaymentUseCase,
+        private readonly paymentSvc: IPaymentRepository,
+        private readonly httpResponse: IHttpResponse
     ) {}
 
     async getAllPayment(req: Request, res: Response) {

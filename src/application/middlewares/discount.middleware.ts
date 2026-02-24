@@ -1,17 +1,15 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateDiscountDTO } from '../dtos/discount.dto';
 import { JwtMiddleware } from './jwt.middleware';
-import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
+import { HttpResponseSingleton, IHttpResponse } from '../../infrastructure/gateways/response/http-singleton.response';
 import { Discount, DiscountType } from '../../domain/entities/discount';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
 import { DiscountErrorMessages } from '../../shared/constants/error-messages.enum';
 import { parseDateOrThrow } from '../../infrastructure/utils/date.utils';
 import { IDiscountMiddleware } from '../../domain/interface/middlewares/discount-middleware.interface';
 
-export class DiscountMiddleware extends JwtMiddleware implements IDiscountMiddleware {
-    constructor() {
-        super(HttpResponseSingleton.getInstance());
-    }
+export class DiscountMiddleware implements IDiscountMiddleware {
+    constructor(private readonly httpResponse: IHttpResponse) {}
 
     async discountValidator(req: Request, res: Response, next: NextFunction) {
         try {

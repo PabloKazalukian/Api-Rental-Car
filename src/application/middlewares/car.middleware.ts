@@ -11,6 +11,7 @@ export class CarMiddleware implements ICarMiddleware {
         const { image, brand, model, year, price, specifications_car } = req.body;
         const valid = new CarDTO();
 
+        console.log(req.body);
         valid.brand = brand;
         valid.model = model;
         valid.year = year;

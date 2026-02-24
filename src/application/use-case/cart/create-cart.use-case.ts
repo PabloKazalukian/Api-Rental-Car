@@ -7,6 +7,10 @@ import { HttpException } from '../../../shared/exeptions/http.exeption';
 import { CreateDiscountDTO } from '../../dtos/discount.dto';
 import { CartMapper } from '../../mappers/cart.mapper';
 
+export interface ICreateCartUseCase {
+    execute(userId: string): Promise<Cart>;
+}
+
 export class CreateCartUseCase {
     constructor(private readonly cartRepository: CartRepository) {}
 

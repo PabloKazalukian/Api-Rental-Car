@@ -1,15 +1,18 @@
-import { Discount } from "../../../domain/entities/discount";
-import { DiscountEntity } from "../../../infrastructure/db/entities/discount.entity";
-import { DiscountRepository } from "../../../infrastructure/gateways/repositories/discount.repository";
-import { CreateDiscountDTO } from "../../dtos/discount.dto";
-import { DiscountMapper } from "../../mappers/discount.mapper";
+import { Discount } from '../../../domain/entities/discount';
+import { IDiscountRepository } from '../../../domain/interface/repositories/discount-repository.interface';
+import { DiscountEntity } from '../../../infrastructure/db/entities/discount.entity';
+import { DiscountRepository } from '../../../infrastructure/gateways/repositories/discount.repository';
+import { CreateDiscountDTO } from '../../dtos/discount.dto';
+import { DiscountMapper } from '../../mappers/discount.mapper';
 
+export interface ICreateDiscountUseCase {
+    execute(discount: CreateDiscountDTO): Promise<Discount>;
+}
 
 export class CreateDiscountUseCase {
-    constructor(private readonly discountSvc: DiscountRepository) { }
+    constructor(private readonly discountSvc: IDiscountRepository) {}
 
     async execute(discount: CreateDiscountDTO): Promise<Discount> {
-
         const disc = new Discount(
             crypto.randomUUID(),
             discount.codeDiscount,
@@ -26,9 +29,7 @@ export class CreateDiscountUseCase {
 
         const saveDiscount: DiscountEntity = await this.discountSvc.createDiscount(discountentity);
 
-
         return DiscountMapper.toDomain(saveDiscount);
-
     }
 }
 // if (!user) throw new HttpException(HttpStatus.UNAUTHORIZED, AuthErrorMessages.INVALID_CREDENTIALS)

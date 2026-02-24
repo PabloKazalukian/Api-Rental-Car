@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import { HttpResponse } from '../../../gateways/response/http.response';
 import { DiscountRepository } from '../../../gateways/repositories/discount.repository';
-import { CreateDiscountUseCase } from '../../../../application/use-case/discount/create-discount.use-case';
+import { CreateDiscountUseCase, ICreateDiscountUseCase } from '../../../../application/use-case/discount/create-discount.use-case';
 import { IDiscountController } from '../../../../domain/interface/controllers/discount-controller.interface';
+import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
+import { IDiscountRepository } from '../../../../domain/interface/repositories/discount-repository.interface';
 
 export class DiscountController implements IDiscountController {
     constructor(
-        private readonly createDiscUseCase: CreateDiscountUseCase,
-        private readonly discountSvc: DiscountRepository,
-        private readonly httpResponse: HttpResponse
+        private readonly createDiscUseCase: ICreateDiscountUseCase,
+        private readonly discountSvc: IDiscountRepository,
+        private readonly httpResponse: IHttpResponse
     ) {}
 
     async getAllDiscount(req: Request, res: Response): Promise<Response> {

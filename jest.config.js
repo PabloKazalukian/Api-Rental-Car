@@ -11,7 +11,7 @@ module.exports = {
       }
     ]
   },
-  testMatch: ['<rootDir>/tests/**/*.spec.ts'],
+  testMatch: ['<rootDir>/tests/**/*.spec.ts', '<rootDir>/tests/**/*.test.ts'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   moduleFileExtensions: ['ts', 'js', 'json', 'node']
 };

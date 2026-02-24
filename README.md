@@ -22,42 +22,45 @@ Este proyecto es una aplicación web para gestionar alquileres de coches.
 | - createdAt: TIMESTAMP  |                                                        |                                               |                                |                                     |
 | - updatedAt: TIMESTAMP  |                                                        |                                               |                                |                                     |
 
-## 🪡Diagrama de Entidades
+## 🪡 Diagrama de Entidades
 
 ![Diagrama del Proyecto](assets/UML_entities.png)
 
+> [!NOTE]
+> El diagrama anterior representa las entidades principales y sus relaciones dentro del dominio del sistema.
+
 ## 🛣️ Recorrido de un pedido a la Api
 
-    ejemplo solicitud de todos los usuarios a la ruta api/user
-    index.ts --> routes/user.ts --> controller/user.controller.ts --> (opcional) use-case/login.use-case.ts -->services/user.service.ts --> entities/user.entity.ts(configuracion de la base de datos)
+El flujo de una solicitud sigue los principios de Clean Architecture:
 
-Initially appeared on
-[gist](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2). But the page cannot open anymore so that is why I have moved it here.
+`Cliente (HTTP) -> Routes -> Controller -> Use Cases -> Repositories/Gateways -> Domain Entities`
+
+1.  **Routes**: Punto de entrada que define el endpoint y aplica middlewares.
+2.  **Controller**: Gestiona la entrada/salida HTTP y delega la lógica al caso de uso.
+3.  **UseCase**: Contiene la lógica de aplicación pura.
+4.  **Repository/Gateway**: Implementación de infraestructura para persistencia o servicios externos.
+5.  **Entities**: Modelos de dominio que representan las reglas de negocio.
 
 ## 🚀 Instrucciones para Empezar
 
-Estas instrucciones te guiarán para obtener una copia del proyecto y ejecutarlo en tu máquina local con fines de desarrollo y pruebas. Consulta la sección de despliegue para más detalles sobre cómo implementar el proyecto en un sistema en producción.
-Este proyecto está estructurado siguiendo una arquitectura de capas inspirada en Clean Architecture, respetando los principios SOLID. Esto garantiza una separación clara de responsabilidades, facilidad de mantenimiento y escalabilidad. A continuación, te detallo los pasos necesarios para ponerlo en marcha.
-
-Estas instrucciones te guiarán para obtener una copia del proyecto y ejecutarlo en tu máquina local con fines de **desarrollo** y **pruebas**. Consulta la sección de **despliegue** para más detalles sobre cómo implementar el proyecto en un sistema en producción.
-
-Este proyecto está estructurado siguiendo una **arquitectura de capas** inspirada en **Clean Architecture**, respetando los **principios SOLID**. Esto garantiza una separación clara de responsabilidades, facilidad de mantenimiento y escalabilidad. A continuación, te detallo los pasos necesarios para ponerlo en marcha.
+Este proyecto está estructurado siguiendo una **Arquitectura de Capas** inspirada en **Clean Architecture**, respetando los principios **SOLID**. Esto garantiza una separación clara de responsabilidades, facilidad de mantenimiento y escalabilidad.
 
 ### 📋 Requisitos Previos
 
-Asegúrate de tener instalados los siguientes componentes en tu máquina:
+Asegúrate de tener instalados los siguientes componentes:
 
-- **Node.js** (versión 14.x o superior)
-- **npm** (versión 6.x o superior)
-- **MySQL** (versión 5.7 o superior) u otro sistema de gestión de bases de datos compatible con **TypeORM**
+- **Node.js** (versión 18.x o superior recomendada)
+- **npm** (versión 8.x o superior)
+- **MySQL** (versión 5.7 o superior)
+- **Redis** (para la capa de caché)
 
 ### 🛠️ Pasos para la Instalación
 
 1. **Clonar el Repositorio**
 
     ```bash
-    git clone https://github.com/tu-usuario/tu-repositorio.git
-    cd tu-repositorio
+    git clone https://github.com/tu-usuario/api-rental-car.git
+    cd api-rental-car
     ```
 
 2. **Instalar Dependencias**
@@ -66,103 +69,90 @@ Asegúrate de tener instalados los siguientes componentes en tu máquina:
     npm install
     ```
 
-3. **Configurar la Base de Datos**
-    - Crea una base de datos en **MySQL**:
+3. **Configurar la Base de Datos y Redis**
+    - Configura el archivo `.env` basado en `.env.example`:
 
-        ```sql
-        CREATE DATABASE car_rental;
-        ```
-
-    - Configura las variables de entorno en un archivo `.env` basado en el archivo `.env.example` que debería estar incluido en el proyecto. Ejemplo:
-
-        ```
+        ```env
         DB_HOST=localhost
         DB_PORT=3306
-        DB_USERNAME=tu_usuario
-        DB_PASSWORD=tu_contraseña
+        DB_USERNAME=root
+        DB_PASSWORD=secret
         DB_DATABASE=car_rental
+
+        REDIS_HOST=localhost
+        REDIS_PORT=6379
         ```
 
 4. **Ejecutar Migraciones**
-    - Este proyecto utiliza **TypeORM** para la gestión de la base de datos, incluyendo **migraciones** para mantener el esquema actualizado:
 
-        ```bash
-        npm run typeorm migration:run
-        ```
+    ```bash
+    npm run m:run
+    ```
 
-5. **Ejecutar Seeds (Opcional)**
-    - Si deseas poblar la base de datos con datos de prueba, usa los **seeds** proporcionados:
-
-        ```bash
-        npm run seed:run
-        ```
-
-6. **Iniciar el Servidor**
-    - Inicia el servidor en modo **desarrollo**:
-
-        ```bash
-        npm run start:dev
-        ```
-
-7. **Crear una migración (Opcional)**
-    - Si necesitas crear una **migration**, podes crearla atravez del siguiente comando:
-
-        ```bash
-        npm run m:generate -- src/infrastructure/db/migration/nombreDeMigracion
-        ```
-
-    - Se Alcamenara en la carpeta `src/infrastructure/db/migration` junto con las demas migraciones.
-    - Luego para poder ejecutar los cambios de la **migration** podes hacerlo con el siguiente comando:
-
-        ```bash
-        npm run m:run
-        ```
-
-8. **Acceder a la API**
-    - La **API** estará disponible en `http://localhost:3000/api`
+5. **Iniciar el Servidor**
+    ```bash
+    npm run start:dev
+    ```
 
 ## 🌟 Características del Proyecto
 
-- **Arquitectura de Capas y Clean Architecture**: El proyecto está diseñado con una estructura modular que separa las responsabilidades en capas, siguiendo los principios de **Clean Architecture** y **SOLID**.
-- **TypeORM**: Implementa una base de datos relacional con soporte para **migraciones**, **seeds** y **entidades** definidas en la carpeta `entities`.
-- **DTOs**: Utiliza objetos de transferencia de datos (ubicados en `dto`) para validar y estructurar la información enviada y recibida.
-- **Autenticación con Passport**: La autenticación está implementada con **Passport.js**, utilizando estrategias como **JWT** para proteger las rutas de la API.
-- **Estructura de Respuesta HTTP**: Define un formato consistente para las respuestas **HTTP**, facilitando la integración con clientes frontend.
-- **Manejo de Errores**: Incluye un sistema centralizado para manejar **errores** y devolver respuestas **HTTP** claras y útiles.
+- **Clean Architecture & SOLID**: Estructura modular que desacopla la lógica de negocio de los detalles de infraestructura.
+- **IoC Container (Inversion of Control)**: Contenedor de dependencias personalizado para gestionar el ciclo de vida de los servicios y facilitar el testing.
+- **Cache con Redis**: Implementación de una capa de caché para optimizar consultas y mejorar la velocidad de respuesta en `src/infrastructure/cache`.
+- **TypeORM**: Gestión robusta de la base de datos relacional con migraciones y entidades.
+- **Autenticación con Passport**: Protege las rutas mediante estrategias como **JWT** y soporte para login social.
+- **DTOs & Mappers**: Validación estricta de datos de entrada y transformación fluida entre capas.
+- **CLI Generator**: Herramienta personalizada para generar automáticamente la estructura de nuevos módulos (entidades, servicios, controladores, etc.).
 
-## 📂Estructura de Carpetas
+## 📂 Estructura de Carpetas
 
-#### /db
+### `/src/domain`
 
-- `db.sql`: Dump o esquema inicial de la base de datos (estructura de tablas, relaciones, seeds, etc.).
+Contiene la lógica esencial del negocio y las definiciones de contratos.
 
-#### /src
+- `/entities`: Modelos de negocio puros.
+- `/interface`: Definición de contratos (interfaces) para servicios, repositorios y middlewares.
+- `/value-objects`: Objetos que definen atributos del dominio con lógica propia.
 
-- `/config`: Configuración general del proyecto (entorno, base de datos, logging, DTOs de configuración).
-- `/controllers`: Encapsulan la lógica de entrada/salida HTTP. Orquestan servicios y formatean la respuesta.
-- `/dto`: Definición de Data Transfer Objects para validación y tipado de datos entrantes.
-- `/entities`: Mapeo de entidades ORM que representan las tablas de la base de datos.
-- `/interfaces`: Definición de contratos (TypeScript interfaces) usados para inyectar servicios en los use-cases, garantizando el cumplimiento de métodos esperados y favoreciendo el desacoplamiento entre capas.
-- `/middlewares`: Funciones que interceptan las requests/responses (auth, errores, validaciones).
-- `/providers`: Servicios externos o recursos reutilizables (ej: adapters de email, cache, storage).
-- `/migration`: Scripts de migración de la base de datos (versión actual, historial).
-- `/routes`: Definición y agrupación de rutas de la API (importa y conecta controladores).
-- `/seeds`: Scripts para poblar la base de datos con datos iniciales o de prueba.
-- `/services`: Contienen la lógica de negocio central y acceso a datos (reutilizados por controllers).
-- `/shared`: Utilidades, clases base o módulos comunes compartidos en distintos contextos.
-- `/strategies`: Estrategias específicas (ej: Passport, JWT, OAuth) para autenticación o autorización.
-- `/use-case`: Implementación explícita de casos de uso según la lógica del dominio.
-- `/utils`: Funciones auxiliares y helpers puros reutilizables en el proyecto.
-- `index.ts`: Punto de entrada principal. Inicializa y lanza la aplicación (servidor, middlewares, rutas).
+### `/src/application`
 
-### 🧩 Estructura y Arquitectura
+Orquestación de la lógica de aplicación.
 
-El proyecto sigue una arquitectura por capas inspirada en principios de Clean Architecture. Se separan responsabilidades de forma clara:
+- `/use-case`: Implementación de los casos de uso (ej: Login, Crear Pedido).
+- `/dtos`: Data Transfer Objects para validación de entrada.
+- `/mappers`: Transformación de datos entre infraestructura y dominio.
+- `/middlewares`: Lógica transversal (auth, validación) desacoplada de la infraestructura.
 
-- **Controllers**: gestionan la entrada/salida HTTP. No contienen lógica de negocio.
-- **Use-cases**: encapsulan la lógica de aplicación. Orquestan múltiples servicios, controlan errores y determinan qué respuesta se debe emitir.
-- **Services**: acceden a fuentes de datos (ej. base de datos) y devuelven resultados puros, sin lógica HTTP.
-- **Interfaces**: definen contratos de los servicios y otros componentes para favorecer la inversión de dependencias, la flexibilidad y el testeo.
+### `/src/infrastructure`
+
+Detalles de implementación técnica y frameworks.
+
+- `/di`: Configuración del contenedor de dependencias (IoC).
+- `/db`: Configuración de TypeORM, entidades de DB y migraciones.
+- `/cache`: Cliente y lógica de Redis.
+- `/gateways`: Implementaciones concretas de interfaces (repositorios, proveedores de email).
+- `/interfaces/http`: Punto de contacto con el exterior (Controllers y Routes).
+
+### `/src/shared`
+
+Utilidades, constantes y decoradores reutilizables en todo el proyecto.
+
+## 🏗️ Inyección de Dependencias (IoC)
+
+El proyecto utiliza un sistema de **Inversión de Control** manual para garantizar el desacoplamiento:
+
+1.  **Container** (`src/infrastructure/di/container.ts`): Gestiona el registro de clases, factories y singletons.
+2.  **Configuración** (`src/infrastructure/di/config-container.ts`): Centraliza la inicialización de todas las dependencias del proyecto.
+3.  **Resolución**: Las rutas resuelven sus controladores a través del contenedor, asegurando que todas las dependencias (servicios, casos de uso, repositorios) se inyecten correctamente.
+
+```typescript
+// Ejemplo de registro en config-container.ts
+Container.registerSingleton<ICarRepository>('ICarRepository', CarRepository);
+Container.registerFactory<ICarController>('ICarController', () => {
+    const carRepository = Container.resolve<ICarRepository>('ICarRepository');
+    return new CarController(carRepository, httpResponse);
+});
+```
 
 # 🚀 CLI Generador de Features y Entidades
 

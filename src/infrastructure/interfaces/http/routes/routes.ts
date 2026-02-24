@@ -8,21 +8,6 @@ import { EmailRouter } from './email.routes';
 import { UserDiscountRouter } from './user-discount.route';
 import { CartRouter } from './cart.route';
 
-// export abstract class Routes<T, U> {
-//     public router: Router;
-//     protected controller: T;
-//     protected middleware: U;
-
-//     constructor(controller: T, middleware: U) {
-//         this.router = Router();
-//         this.controller = controller;
-//         this.middleware = middleware;
-//         this.routes();
-//     }
-
-//     protected abstract routes(): void;
-// }
-
 export const router = [
     UserRouter,
     AuthRouter,

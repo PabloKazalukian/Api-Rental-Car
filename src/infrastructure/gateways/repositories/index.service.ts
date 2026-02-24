@@ -18,6 +18,6 @@ export const requestRepository = new RequestRepository();
 export const paymentRepository = new PaymentRepository();
 export const discountRepository = new DiscountRepository();
 export const emailRepository = new EmailRepository(resendProvider);
-export const userDiscountRepository = new UserDiscountRepository();
+// export const userDiscountRepository = new UserDiscountRepository();
 
 export const cartRepository = new CartRepository();

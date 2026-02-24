@@ -4,9 +4,10 @@ import { HttpResponse } from '../../infrastructure/gateways/response/http.respon
 import { EmailDTO } from '../dtos/email.dto';
 import { formatValidationErrors } from '../../shared/validators/error-formatter';
 import { IEmailMiddleware } from '../../domain/interface/middlewares/email-middleware.interface';
+import { IHttpResponse } from '../../infrastructure/gateways/response/http-singleton.response';
 
 export class EmailMiddleware implements IEmailMiddleware {
-    constructor(private httpResponse: HttpResponse) {}
+    constructor(private httpResponse: IHttpResponse) {}
 
     emailValidator(req: Request, res: Response, next: NextFunction) {
         const { name, email, message } = req.body;

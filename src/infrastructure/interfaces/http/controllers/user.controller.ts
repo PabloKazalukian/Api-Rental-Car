@@ -1,9 +1,6 @@
 import { Request, Response } from 'express';
-import { UserRepository } from '../../../gateways/repositories/user.repository';
-import { HttpResponse } from '../../../gateways/response/http.response';
 import { hashPassword, isSamePassword } from '../../../utils/hashPassword';
 import { instanceToPlain } from 'class-transformer';
-import { UserEntity } from '../../../db/entities/user.entity';
 import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
 import { IUserRepository } from '../../../../domain/interface/repositories/userRepository.interface';
 import { IUserController } from '../../../../domain/interface/controllers/user-controller.interface';

@@ -1,20 +1,25 @@
-import { Router } from 'express';
-import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
-import { cartController } from '../controllers/index.controller';
+import { Router, Request, Response } from 'express';
+import { Container } from '../../../di/container';
+import { IJwtMiddleware } from '../../../../domain/interface/middlewares/jwt-middleware.interface';
+import { ICartController } from '../../../../domain/interface/controllers/cart-controller.interface';
+import { ICartMiddleware } from '../../../../domain/interface/middlewares/cart-middleware.interface';
 
 const router = Router();
-const cartMiddleware = MiddlewareFactory.createCartMiddleware();
 
-router.get('/cart/:idUser', (req, res) => {
-    cartController.getCartById(req, res);
-});
+const jwtMiddleware = Container.resolve<IJwtMiddleware>('IJwtMiddleware');
+const cartMiddleware = Container.resolve<ICartMiddleware>('ICartMiddleware');
 
-router.post('/cart', cartMiddleware.passAuth('jwt'), cartMiddleware.cartValidator.bind(cartMiddleware), (req, res) => {
-    cartController.createCart(req, res);
-});
+const resolveHandler = <K extends keyof ICartController>(controllerName: string, methodName: K) => {
+    return async (req: Request, res: Response) => {
+        const controller = Container.resolve<ICartController>(controllerName);
+        await controller[methodName](req, res);
+    };
+};
 
-router.put('/cart/:idUser', cartMiddleware.passAuth('jwt'), cartMiddleware.cartValidator.bind(cartMiddleware), (req, res) => {
-    cartController.updateCart(req, res);
-});
+router.get('/cart/:idUser', resolveHandler('ICartController', 'getCartById'));
+
+router.post('/cart', jwtMiddleware.passAuth('jwt'), cartMiddleware.cartValidator, resolveHandler('ICartController', 'createCart'));
+
+router.put('/cart/:idUser', jwtMiddleware.passAuth('jwt'), cartMiddleware.cartValidator, resolveHandler('ICartController', 'updateCart'));
 
 export const CartRouter = router;

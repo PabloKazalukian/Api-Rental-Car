@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
-import { CartRepository } from '../../../gateways/repositories/cart.repository';
-import { HttpResponse } from '../../../gateways/response/http.response';
+import { ICartController } from '../../../../domain/interface/controllers/cart-controller.interface';
+import { IHttpResponse } from '../../../gateways/response/http-singleton.response';
+import { ICartRepository } from '../../../../domain/interface/repositories/cart-repository.interface';
 
-export class CartController {
+export class CartController implements ICartController {
     constructor(
-        private readonly cartService: CartRepository,
-        private readonly httpResponse: HttpResponse
+        private readonly cartService: ICartRepository,
+        private readonly httpResponse: IHttpResponse
     ) {}
 
     async getCartById(req: Request, res: Response) {

@@ -1,19 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateUserDTO } from '../dtos/user.dto';
-import { JwtMiddleware } from './jwt.middleware';
-import { UserRepository } from '../../infrastructure/gateways/repositories/user.repository';
 import { EntityValidator } from '../../infrastructure/utils/entity-validator';
 import { User, UserRole } from '../../domain/entities/user';
-import { HttpResponseSingleton } from '../../infrastructure/gateways/response/http-singleton.response';
+import { IHttpResponse } from '../../infrastructure/gateways/response/http-singleton.response';
 import { IUserMiddleware } from '../../domain/interface/middlewares/user-middleware.interface';
+import { IUserRepository } from '../../domain/interface/repositories/userRepository.interface';
 
-export class UserMiddleware extends JwtMiddleware implements IUserMiddleware {
+export class UserMiddleware implements IUserMiddleware {
     constructor(
-        private userRepository: UserRepository
-        // private jwt = new JwtMiddleware
-    ) {
-        super(HttpResponseSingleton.getInstance());
-    }
+        private userRepository: IUserRepository,
+        private readonly httpResponse: IHttpResponse
+    ) {}
 
     async mergeUser(req: Request, res: Response, next: NextFunction) {
         try {

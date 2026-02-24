@@ -4,6 +4,10 @@ import { HttpException } from '../../../shared/exeptions/http.exeption';
 import { HttpStatus } from '../../../shared/constants/http-status.enum';
 import { AuthErrorMessages } from '../../../shared/constants/error-messages.enum';
 
+export interface ICreatePaymentUseCase {
+    execute(data: any): Promise<any>;
+}
+
 export class CreatePaymentUseCase {
     constructor() {}
     async execute(data: any) {

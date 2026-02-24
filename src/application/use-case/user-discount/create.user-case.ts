@@ -10,6 +10,10 @@ import { CreateUserDiscountDTO } from '../../dtos/user-discount.dto';
 import { DiscountMapper } from '../../mappers/discount.mapper';
 import { UserDiscountMapper } from '../../mappers/user-discount.mapper';
 
+export interface ICreateUserDiscountUseCase {
+    execute(uDiscount: CreateUserDiscountDTO): Promise<UserDiscount>;
+}
+
 export class CreateUserDiscountUseCase {
     constructor(
         private readonly uDiscountSvc: IUserDiscountRepository,

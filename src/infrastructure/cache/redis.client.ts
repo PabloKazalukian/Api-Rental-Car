@@ -48,4 +48,16 @@ export class RedisProvider {
         const client = this.getClient();
         return client.del(key);
     }
+
+    // ... dentro de la clase RedisProvider
+
+    static async disconnect(): Promise<void> {
+        if (RedisProvider.client) {
+            await RedisProvider.client.quit();
+            // Es importante setearlo a undefined para que si se
+            // vuelve a iniciar no intente usar una conexión cerrada
+            (RedisProvider.client as any) = undefined;
+            console.log('✅ Redis connection closed');
+        }
+    }
 }

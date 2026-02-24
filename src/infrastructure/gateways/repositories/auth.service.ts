@@ -6,13 +6,14 @@ import { UserRepository } from './user.repository';
 import { IAuthService } from '../../../domain/interface/repositories/auth.interface';
 import { UserEntity } from '../../db/entities/user.entity';
 import { User } from '../../../domain/entities/user';
+import { IUserRepository } from '../../../domain/interface/repositories/userRepository.interface';
 
 /**
  * Servicio de autenticación que maneja validación de usuarios y generación de tokens JWT.
  */
 export class AuthService extends ConfigServer implements IAuthService {
     constructor(
-        private readonly userService: UserRepository,
+        private readonly userService: IUserRepository,
         private readonly jwtInstance = jwt
     ) {
         super();

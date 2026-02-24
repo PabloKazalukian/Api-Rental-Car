@@ -10,6 +10,7 @@ export class JwtMiddleware implements IJwtMiddleware {
 
     passAuth(type: string, options = {}) {
         return (req: Request, res: Response, next: NextFunction) => {
+            console.log('autenticando');
             passport.authenticate(type, { session: false, ...options }, (err: any, user: any, info: any) => {
                 if (err) {
                     return this.httpResponse.Error(res, 'Error en autenticación');
