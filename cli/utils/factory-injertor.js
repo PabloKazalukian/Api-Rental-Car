@@ -2,10 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { injectIntoFactory, injectImport, injectExport } from './factory-utils.js';
 
-const controllerFactory = path.resolve('src/application/factories/controller.factory.ts');
-const middlewareFactory = path.resolve('src/application/factories/middleware.factory.ts');
-const controllersIndex = path.resolve('src/infrastructure/interfaces/http/controllers/index.ts');
-const servicesIndex = path.resolve('src/infrastructure/gateways/repositories/index.service.ts');
+// const servicesIndex = path.resolve('src/infrastructure/gateways/repositories/index.service.ts');
 
 /**
  * Inyecta un nuevo Controller y Middleware en las factories globales
