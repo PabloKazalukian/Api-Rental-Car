@@ -1,9 +1,7 @@
 import { Router } from 'express';
-import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
 import { Container } from '../../../di/container';
 import { Request, Response } from 'express';
 import { IUserDiscountController } from '../../../../domain/interface/controllers/userDiscount-controller.interface';
-import { JwtMiddleware } from '../../../../application/middlewares/jwt.middleware';
 import { IJwtMiddleware } from '../../../../domain/interface/middlewares/jwt-middleware.interface';
 import { IUserDiscountMiddleware } from '../../../../domain/interface/middlewares/user-discount-middleware.interface';
 

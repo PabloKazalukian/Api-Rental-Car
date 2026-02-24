@@ -1,5 +1,4 @@
 import { Router, Request, Response } from 'express';
-import { MiddlewareFactory } from '../../../../application/factories/middleware.factory';
 import { IEmailController } from '../../../../domain/interface/controllers/email-controller.interface';
 import { Container } from '../../../di/container';
 import { IEmailMiddleware } from '../../../../domain/interface/middlewares/email-middleware.interface';
